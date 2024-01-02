@@ -1,0 +1,32 @@
+%% Default font setup for systems using xelatex (simpler settings for CJK fonts)
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ensc-font}[\filedate\space Default font setup for long documents]
+
+\RequirePackage{amsmath} % Must load definitions of command before font settings
+\RequirePackage{fontspec}
+\RequirePackage{xeCJK}
+\RequirePackage{unicode-math} % Must be placed here before any font settings
+
+% Latin character settings 
+\setmainfont[Ligatures=TeX]{Linux Libertine O}
+\setsansfont{Libertinus Sans}
+\setmonofont[Scale=MatchLowercase]{Fira Code}
+
+% CJK settings
+\setCJKmainfont{I.BMing}
+%\setsansfont[Ligatures=TeX]{Source Han Sans}
+%\setmonofont[Ligatures=TeX]{Source Code Pro}
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt
+
+% Use latin modern for math symbols
+\setmathfont{STIX Two Math} % Using latin modern symbols by default
+
+% Fall back to main font for latin and numerical characters
+\setmathfont[range=\mathit/{latin,greek,Latin,Greek,num}]{LibertinusSerif-Italic}
+\setmathfont[range=\mathup/{latin,greek,Latin,Greek,num}]{LibertinusSerif-Regular}
+\setmathfont[range=\mathbfup/{latin,greek,Latin,Greek,num}]{LibertinusSerif-Bold}
+\setmathfont[range=\mathbfit/{latin,greek,Latin,Greek,num}]{LibertinusSerif-BoldItalic}
+
+% Additional symbols that should be handled by Libertinus
+\setmathfont[range={"221E}]{Libertinus Serif}% "0221E = \infty

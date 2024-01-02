@@ -1,0 +1,35 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{lstsytling}[\filedate\space Default styling for code listing]
+\RequirePackage{listings}
+%\usepackage[dvipsnames]{xcolor}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+
+\lstset{ % Setting up the default arguments for lstlisting in latex documents
+	backgroundcolor=\color{blue!10},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	commentstyle=\color{mygreen},
+	deletekeywords={...},
+	escapeinside={\%*}{*)},
+	extendedchars=true,
+	keepspaces=true,
+	keywordstyle=\color{blue},
+	language=C++,   % the defaul of the code
+	numbers=left,
+	numbersep=5pt,
+	numberstyle=\tiny\color{mygray},
+	rulecolor=\color{black},
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	stepnumber=1,
+	stringstyle=\color{mymauve},
+	tabesize=2,
+	title=lstname
+}

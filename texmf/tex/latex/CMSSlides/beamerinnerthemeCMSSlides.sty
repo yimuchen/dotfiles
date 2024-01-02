@@ -1,0 +1,47 @@
+\mode<presentation>
+
+\setbeamersize{text margin left=0.8cm}
+\setbeamersize{text margin right=0.8cm}
+
+%% Font settings
+\usefonttheme{professionalfonts} % using non standard fonts for beamer
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\usepackage{unicode-math} % Must be placed here before any font settings
+\setmainfont{Libertinus Serif}
+\setsansfont{Nimbus Sans}
+\setmonofont[Scale=MatchLowercase]{Fira Code}
+
+% Use latin modern for math symbols
+\setmathfont{XITS Math} % Using latin modern symbols by default
+
+% Fall back to main font for latin and numerical characters
+\setmathfont[range=\mathit/{latin,Latin,num}]{Libertinus Serif}
+\setmathfont[range=\mathup/{latin,Latin,num}]{Libertinus Serif}
+\setmathfont[range=\mathbfup/{latin,Latin,num}]{Libertinus Serif}
+\setmathfont[range=\mathbfit/{latin,Latin,num}]{Libertinus Serif}
+
+% Additional character
+\setmathfont[range={"221E}]{Liberation Serif}% "0221E = \infty
+
+%% Beamer font fixed to not change
+\setbeamertemplate{itemize/enumerate body begin}{\normalsize}
+\setbeamertemplate{itemize/enumerate subbody begin}{\normalsize}
+\setbeamertemplate{itemize/enumerate subsubbody begin}{\normalsize}
+
+%% Changing the Bulletin style
+\setbeamertemplate{itemize item}{\tiny\raise2.0pt\hbox{\donotcoloroutermaths$\blacktriangleright$}}
+\setbeamertemplate{itemize subitem}{\tiny\raise2.0pt\hbox{\donotcoloroutermaths$\blacktriangleright$}}
+\setbeamertemplate{itemize subsubitem}{\tiny\raise2.0pt\hbox{\donotcoloroutermaths$\blacktriangleright$}}
+
+%% Setting stuff for Chinese fonts 
+\setCJKmainfont{Noto Sans CJK JP}
+\newCJKfontfamily\MingFont{Noto Serif CJK JP}
+\newCJKfontfamily\KaiFont{Adobe Kaiti Std}
+%\setsansfont[Ligatures=TeX]{Source Han Sans}
+%\setmonofont[Ligatures=TeX]{Source Code Pro}
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt
+\setlength{\parskip}{0.3cm}
+
+\mode<all>

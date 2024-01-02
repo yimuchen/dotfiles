@@ -1,0 +1,5 @@
+# For keepassxc interaction 
+keepassxc_browser
+# For command line autocomplete
+argcomplete
+

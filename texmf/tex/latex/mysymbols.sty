@@ -1,0 +1,136 @@
+%% Custom styling file for commonly used symbols
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mysymbols}[Common symbols used for document creation]
+\RequirePackage{xspace}
+\RequirePackage{amsmath}
+\RequirePackage{slashed}
+
+% Defining enclosing parenthesis
+\newcommand{\enc}[1]{\ensuremath{\left( #1 \right)}}
+\newcommand{\encsq}[1]{\ensuremath{\left[ #1 \right] }}
+\newcommand{\encang}[1]{\ensuremath{\left\langle #1\right\rangle}}
+\newcommand{\encbr}[1]{\ensuremath{\left\lbrace #1 \right\rbrace}}
+\newcommand{\encvert}[1]{\ensuremath{\left\lvert #1 \right\rvert}}
+\newcommand{\efrac}[2]{\ensuremath{\enc{\frac{#1}{#2}}}}
+\newcommand{\cond}[2]{\ensuremath{\left. \enc{#1} \right|_{#2} }}
+%% Vector operators
+\newcommand{\cross}{\ensuremath{\times}}
+
+%% Differential operators and symbols
+\newcommand{\diff}[2]{ \frac{d #1}{d #2} }
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pdd}[2]{\frac{\partial^2 #1}{\partial #2^2}}
+\newcommand{\pdc}[3]{ \left( \frac{\partial #1}{\partial #2} \right)_{#3}}
+\newcommand{\dive}{\ensuremath{\vec{\nabla}\cdot}}
+\newcommand{\grad}{\ensuremath{\vec{\nabla}}}
+\newcommand{\curl}{\ensuremath{ \nabla \times}}
+\newcommand{\lap}{\ensuremath{\nabla^2 }}
+\def\dbar{{\mathchar'26\mkern-12mu d}}
+\newcommand{\pathint}[1]{\ensuremath{\int\hspace{-0.5em}\mathcal{D}#1\,}}
+
+% Commutation relation
+\newcommand{\com}[2]{\ensuremath{\left[ \, #1 \, , \, #2 \right]}}
+\newcommand{\anticom}[2]{\ensuremath{\left\lbrace \, #1 \, , \, #2 \right\rbrace}}
+
+% Dirac Notation shorthand (mismatching exclosure
+\newcommand{\bra}[1]{\ensuremath{\left\langle #1 \right\rvert}}
+\newcommand{\ket}[1]{\ensuremath{\left\lvert #1 \right\rangle }}
+\newcommand{\braket}[2]{\ensuremath{\left\langle #1 \vphantom{#2} \right| \left. #2 \vphantom{#1} \right\rangle}}
+\newcommand{\Obraket}[3]{\ensuremath{ \left\langle #1 \vphantom{#2} \vphantom{#3} \right| #2 \left| \vphantom{#1} \vphantom{#2} #3 \right\rangle}}
+
+%% contraction notation
+\newcommand{\con}[2]{\ensuremath{\left\langle #1 \,,\, #2 \right\rangle}}
+
+%% Custom functions styles
+\newcommand{\abs}[1]{\encvert{#1}}
+\newcommand{\set}[1]{\encbr{#1}}
+\newcommand{\mean}[1]{\encang{#1}}
+\newcommand{\Real}[1]{\ensuremath{\mathbb{Re}\encsq{#1}}}
+\newcommand{\atan}{\ensuremath{{\tan}^{-1}}}
+\newcommand{\asin}{\ensuremath{{\sin}^{-1}}}
+\newcommand{\acos}{\ensuremath{{\cos}^{-1}}}
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\erf}{erf}
+\DeclareMathOperator{\Tr}{Tr}
+\newcommand{\Norm}{\ensuremath{\mathcal{N}}}
+
+
+%%In-text ordering
+\newcommand{\first}{\ensuremath{\text{1}^\text{st}}}
+\newcommand{\second}{\ensuremath{\text{2}^\text{nd}}}
+\newcommand{\third}{\ensuremath{\text{3}^\text{rd}}}
+
+
+%% Programming related objects
+\newcommand{\CPP}{C\nolinebreak\hspace{-.05em}\raisebox{.1ex}{\textbf{+}}\nolinebreak\hspace{-.10em}\raisebox{.1ex}{\textbf{+}}}
+\newcommand{\CPPv}[1]{\CPP\hspace{-0.05em}{#1}}
+
+\newcommand{\ROOT}{\textsc{Root}}
+\newcommand{\ROOFIT}{\textsc{RooFit}}
+\newcommand{\PYROOT}{Py\ROOT}
+\newcommand{\NUMPY}{\textsc{NumPy}}
+\newcommand{\SCIPY}{\textsc{SciPy}}
+\newcommand{\OPENCV}{\textsc{OpenCV}}
+
+
+%% For units
+\newcommand{\unit}[1]{\ensuremath{\text{\,#1}}\xspace} % For typical, all roman character units with no special cerning
+\newcommand{\muunit}[1]{\ensuremath{\,\mu\text{#1}}\xspace} % All roman character units with leading \mu
+% Length
+\newcommand{\mum}{\muunit{m}}
+\newcommand{\micron}{\mum}
+\newcommand{\cm}{\unit{cm}}
+\newcommand{\mm}{\unit{mm}}
+\newcommand{\meter}{\unit{m}}
+% Time
+\newcommand{\secunit}{\unit{s}}
+\newcommand{\nsec}{\unit{ns}}
+\newcommand{\mus}{\muunit{s}}
+% Energy momentum related (eV wants special kerning)
+\newcommand{\preeV}[1]{\ensuremath{\text{#1}\text{e}\hspace{-0.08em}\text{V}}}
+\newcommand{\preeVc}[1]{\ensuremath{\preeV{#1}\hspace{-0.16em}/\hspace{0.08em}c}}
+\newcommand{\preeVcc}[1]{\ensuremath{{\preeVc{#1}^\text{2}}}\xspace}
+\newcommand{\keV}{\unit{\preeV{k}}} % Concreate objects warrent the additional spacing
+\newcommand{\MeV}{\unit{\preeV{M}}}
+\newcommand{\GeV}{\unit{\preeV{G}}}
+\newcommand{\TeV}{\unit{\preeV{T}}}
+\newcommand{\PeV}{\unit{\preeV{P}}}
+\newcommand{\keVc}{\unit{\preeVc{k}}} % Momentum units (usually not required, but just in case is needed for disamgibutiy
+\newcommand{\MeVc}{\unit{\preeVc{M}}}
+\newcommand{\GeVc}{\unit{\preeVc{G}}}
+\newcommand{\TeVc}{\unit{\preeVc{T}}}
+\newcommand{\keVcc}{\unit{\preeVcc{k}}} % Mass units
+\newcommand{\MeVcc}{\unit{\preeVcc{M}}}
+\newcommand{\GeVcc}{\unit{\preeVcc{G}}}
+\newcommand{\TeVcc}{\unit{\preeVcc{T}}}
+% Magnetic field
+\newcommand{\Tesla}{\unit{T}}
+% Data and data throughput
+\newcommand{\MB}{\unit{MB}}
+\newcommand{\GB}{\unit{GB}}
+\newcommand{\TB}{\unit{TB}}
+\newcommand{\MBs}{\unit{MB/s}}
+\newcommand{\GBs}{\unit{GB/s}}
+\newcommand{\TBs}{\unit{TB/s}}
+
+%% Physics object related - taken from ptdr-definition
+\newcommand{\PT}{\ensuremath{p_{\mathrm{T}}}\xspace}
+\newcommand{\pt}{\ensuremath{p_{\mathrm{T}}}\xspace}
+\newcommand{\ET}{\ensuremath{E_{\mathrm{T}}}\xspace}
+\newcommand{\HT}{\ensuremath{H_{\mathrm{T}}}\xspace}
+\newcommand{\et}{\ensuremath{E_{\mathrm{T}}}\xspace}
+\newcommand{\Em}{\ensuremath{E\hspace{-0.6em}/}\xspace}
+\newcommand{\Pm}{\ensuremath{p\hspace{-0.5em}/}\xspace}
+\newcommand{\PTm}{\ensuremath{{p}_\mathrm{T}\hspace{-1.02em}/\kern 0.5em}\xspace}
+\newcommand{\ptmiss}{\ensuremath{p_{\mathrm{T}}^{\text{miss}}}\xspace}
+\newcommand{\ETm}{\ensuremath{E_{\mathrm{T}}^{\text{miss}}}\xspace}
+\newcommand{\MET}{\ETm}
+\newcommand{\ETmiss}{\ETm}
+\newcommand{\VEtmiss}{\ensuremath{{\vec E}_{\mathrm{T}}^{\text{miss}}}\xspace}
+\newcommand{\ptvec}{\ensuremath{{\vec p}_{\mathrm{T}}}\xspace}
+\newcommand{\ptvecmiss}{\ensuremath{{\vec p}_{\mathrm{T}}^{\kern1pt\text{miss}}}\xspace}
+
+
+%%% Miscellaneous itesm 
+\newcommand{\MSB}{\ensuremath{\overline{MS}}}
