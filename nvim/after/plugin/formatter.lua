@@ -47,7 +47,7 @@ require("formatter").setup({
 				local clangfmt_config = find_format_config(".clang-format")
 
 				-- Hot fixes required for CLANG
-				local clangfmt_default = vim.fn.expand("$HOME/.config/nvim/format_cfg/clang-format")
+				local clangfmt_default = vim.fn.expand("$HOME/.config/nvim/external/clang-format")
 
 				if uncrusitfy_config ~= "" then
 					print("Formatting with uncrustify with configutation file: ", uncrusitfy_config)
@@ -82,7 +82,7 @@ require("formatter").setup({
 		tex = {
 			function()
 				local indent_config = find_format_config(".latexindent.yaml")
-				local indent_default = vim.fn.expand("$HOME/.config/nvim/format_cfg/indentconfig.yaml")
+				local indent_default = vim.fn.expand("$HOME/.config/nvim/external/indentconfig.yaml")
 				if indent_config ~= "" then
 					return util.withl(fmtft.latex.latexindent, "--local=" .. indent_config)()
 				end
