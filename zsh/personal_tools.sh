@@ -30,6 +30,9 @@ export G4INSTALL=/usr/share/Geant4-10.6.0/geant4make/
 export G4TMP=/tmp/
 export G4TMPDIR=/tmp/
 
+# For using the formatters typically handled by neovim-mason
+export PATH=$PATH:$HOME/.local/share/nvim/mason/bin
+
 # Custom python scripts with auto-completion
 if [ -d $HOME/.pyscripts ]; then
   export PATH=$PATH:$HOME/.pyscripts
@@ -113,7 +116,7 @@ function update_clock() {
   sudo hwclock -w
 }
 
-if [ -f $HOME/.zsh/network_alias.sh]; then
+if [ -f $HOME/.zsh/network_alias.sh ]; then
   ## Some network shorthands contains potentially sensitive and should not be passed to open source handlers.
   source $HOME/.zsh/network_alias.sh
 fi
