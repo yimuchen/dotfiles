@@ -31,6 +31,11 @@ require("lazy").setup({
 			require("monokai-pro").setup()
 		end,
 	},
+	-- Lua line settings
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+	},
 
 	-- Treesitter
 	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
@@ -52,6 +57,9 @@ require("lazy").setup({
 		build = "make install_jsregexp",
 	},
 	{ "saadparwaiz1/cmp_luasnip" },
+
+	-- For training
+	{ "ThePrimeagen/vim-be-good" },
 
 	-- Notebook editing in VIM
 	-- use({ "GCBallesteros/jupytext.nvim", config = true })
