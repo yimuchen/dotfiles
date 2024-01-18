@@ -3,7 +3,6 @@
 import fnmatch
 import logging
 import os
-import re
 import subprocess
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Union
@@ -30,14 +29,17 @@ class SyncRequest(object):
         if self.exclude is None:
             self.exclude = []
 
-        ## Additional things to always exclude regardless of use settings.
+        # Additional things to always exclude regardless of use settings.
         for default_exclude in [
             "**/.git/",  # Avoid version tracking mismatches
             "**/.git/*",
-            "**/.vscode/",  # Avoid information of the editor setup from being passed to remote machines
+            "**/.vscode/",  # Avoid information of the editor being passed to remote machines
             "**/.vscode/*",
             "*~",  # Temporary files used by neovim editor
             "**/*~",
+            "**/CMakeCache.txt",  # CMake related files
+            "**/CMakeFiles/",
+            "**/CMakeFiles/*",
         ]:
             if default_exclude not in self.exclude:
                 self.exclude.append(default_exclude)
