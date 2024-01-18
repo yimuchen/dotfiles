@@ -58,9 +58,9 @@ require("lazy").setup({
 	},
 	{ "saadparwaiz1/cmp_luasnip" },
 
-	-- For training
+	-- For VIM motion training
 	{ "ThePrimeagen/vim-be-good" },
 
 	-- Notebook editing in VIM
-	-- use({ "GCBallesteros/jupytext.nvim", config = true })
+	{ "GCBallesteros/jupytext.nvim", config = true }
 })
