@@ -25,5 +25,17 @@ lsp_zero.on_attach(function(client, bufnr)
 	-- vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
 end)
 
+-- Additional settings for specific language servers
+require("lspconfig").pylsp.setup({
+	settings = {
+		pylsp = {
+			plugins = {
+				-- Use flake8 instead of pycodestyle
+				flake8 = { enabled = true },
+				pycodestyle = { enabled = false },
+			},
+		},
+	},
+})
 
 -- Autocomplete (interaction with neovim.cmp is set in `cmp.lua`)
