@@ -26,16 +26,6 @@ assume that the user will set up python virtual environments using
 [`conda`][conda], where we set always attempt to provide [`black`][black] and
 [`isort`][isort] as the default formatter).
 
-## Decision on external settings
-
-The detailed settings for LSP and related to linting/formattings tools should
-be handled by the automatic detection methods of the tools based on the file
-being edited, as this ensures that the formatting can be handled on a
-per-project directory basis. The neovim `lau` configurations will only handle
-which LSP tools to use as the default, while the configuration of these tools
-should be handled by the project files. Some global configurations are provided
-in the `external` folder to handle common default overrides.
-
 [mason]: https://github.com/williamboman/mason.nvim
 [conda]: https://docs.conda.io/en/latest/
 [black]: https://github.com/psf/black

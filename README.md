@@ -81,7 +81,7 @@ pulling the required packages. Then the external manager [`mason`][mason] can
 pull all the predefined LSP and formatting tools by running the command
 `:MasonToolsUpdate`.
 
-For how the neovim configuration is done, see the documentation in
+For the how the neovim configuration is done, see the documentation in
 [`nvim/README.md`](nvim) file.
 
 [primetut]: https://www.youtube.com/watch?v=w7i4amO_zaE
@@ -91,7 +91,7 @@ For how the neovim configuration is done, see the documentation in
 ## Latex settings
 
 Custom latex aliasing, symbols and styling files. This is mainly for standalone
-documents generate without minimum document format restrictions and _not_
+documents generate without minimum document format restrictions and *not*
 publication ready. For any serious publications, it would be better to directly
 create a separate copy to ensure the object styles are properly frozen.
 
