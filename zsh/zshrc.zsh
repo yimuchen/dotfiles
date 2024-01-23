@@ -26,6 +26,7 @@ HIST_STAMPS="yyyyy-mm-dd"
 
 # Additional utility functions that will be provided in separate files
 source $HOME/.zsh/common_utils.sh
+source $HOME/.zsh/conda_path.sh
 
 if [[ ${HOST} == "ensc"* ]]; then # Personal machine
   export EDITOR='nvim'
@@ -36,22 +37,13 @@ elif [[ $HOST == "login-el"*".uscms.org" ]]; then
   source $HOME/.zsh/cmssw_tools.sh
 elif [[ $HOST == "lxplus"*".cern.ch" ]] ; then
   source $HOME/.zsh/cmssw_tools.sh
+elif [[ $HOST == "hepcms"*".umd.edu" ]] ; then
+  source $HOME/.zsh/cmssw_tools.sh
 fi
 
 # Additional theme settings is stored in p10k.zsh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/opt/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
+# As conda initialize is handled separately for each machine, we look at the
+# path defined in the zsh/conda_path.sh methods
+
