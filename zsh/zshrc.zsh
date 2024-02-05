@@ -30,6 +30,7 @@ source $HOME/.zsh/conda_path.sh
 
 if [[ ${HOST} == "ensc"* ]]; then # Personal machine
   export EDITOR='nvim'
+  alias  nv='nvim'
   source $HOME/.zsh/personal_tools.sh
 elif [[ $HOST == "cmslpc"*".fnal.gov" ]] ; then
   source $HOME/.zsh/cmssw_tools.sh
