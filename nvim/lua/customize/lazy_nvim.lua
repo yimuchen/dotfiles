@@ -38,29 +38,31 @@ require("lazy").setup({
 	},
 
 	-- Treesitter
-	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
-	"mbbill/undotree",
-	"tpope/vim-fugitive",
+	{ "nvim-treesitter/nvim-treesitter",          build = ":TSUpdate" },
+	{ "mbbill/undotree" },
+	{ "tpope/vim-fugitive" },
 
 	-- LSP zero and language related plugins
-	{ "VonHeikemen/lsp-zero.nvim", branch = "v3.x" },
+	{ "VonHeikemen/lsp-zero.nvim",                branch = "v3.x" },
 	{ "neovim/nvim-lspconfig" },
-	{ "williamboman/mason.nvim" }, -- Engine for managing external dependencies
+	{ "williamboman/mason.nvim" },            -- Engine for managing external dependencies
 	{ "williamboman/mason-lspconfig.nvim" },
 	{ "WhoIsSethDaniel/mason-tool-installer.nvim" }, -- Formatter and linting tool installation
-	{ "hrsh7th/nvim-cmp" }, -- For auto completion
+	{ "hrsh7th/nvim-cmp" },                   -- For auto completion
 	{ "hrsh7th/cmp-nvim-lsp" },
-	{ "mhartington/formatter.nvim" }, -- Engine for calling external formatters
-	{ -- Snippet engine
-		"L3MON4D3/LuaSnip",
-		version = "v2.*",
-		build = "make install_jsregexp",
-	},
-	{ "saadparwaiz1/cmp_luasnip" },
+	-- { "mhartington/formatter.nvim" }, -- Engine for calling external formatters
 
-	-- For training
+	-- Snippet engin
+	--{
+	--	"L3MON4D3/LuaSnip",
+	--		version = "v2.*",
+	--		build = "make in stall_jsregexp",
+	--	},
+	-- 	{ "saadparwaiz1/cmp_luasnip" },
+
+	-- For VIM motion training
 	{ "ThePrimeagen/vim-be-good" },
 
 	-- Notebook editing in VIM
-	-- use({ "GCBallesteros/jupytext.nvim", config = true })
+	{ "GCBallesteros/jupytext.nvim",              config = true },
 })

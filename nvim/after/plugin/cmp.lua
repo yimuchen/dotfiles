@@ -3,7 +3,7 @@ local cmp = require("cmp")
 
 -- Packages that require configuration
 local lsp_zero = require("lsp-zero")
-local lsnip = require("luasnip")
+-- local lsnip = require("luasnip")
 
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
 local cmp_action = lsp_zero.cmp_action()
@@ -19,7 +19,7 @@ cmp.setup({
 		{ name = "path" },
 		{ name = "nvim_lsp" },
 		{ name = "nvim_lua" },
-		{ name = "luasnip" },
+		-- { name = "luasnip" },
 	},
 	formatting = lsp_zero.cmp_format(),
 	mapping = cmp.mapping.preset.insert({
