@@ -27,7 +27,6 @@ require("mason-lspconfig").setup({
     "clangd",          -- C++
     "ltex",            -- tex/latex (with spell checking for markdown as well
     -- Any additional server you might want added
-    "tsserver",
     "rust_analyzer",
   },
   -- No additional handlers are required for now
@@ -40,8 +39,6 @@ require('mason-tool-installer').setup {
     'clang-format', -- C/C++ formatting
     'latexindent',  -- Latex formatting
     'codespell',    -- Spell checking in variable name and comments
-    -- TS formatting and
-    'prettierd',
   },
   auto_update = false,
   run_on_start = false,
@@ -50,9 +47,4 @@ require('mason-tool-installer').setup {
 
 -- Additional injections using null-ls
 local null_ls = require("null-ls");
-null_ls.setup({
-  sources = {
-    null_ls.builtins.formatting.prettier,
-    null_ls.builtins.diagnostics.eslint,
-  },
-})
+null_ls.setup({ sources = {}, })
