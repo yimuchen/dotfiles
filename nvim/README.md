@@ -7,10 +7,11 @@ All configurations are written in `lua`.
   exception being the `lazy_nvim.lua` file, which lists all plugins to be
   installed.
 - Plugin and LSP specific configurations are stored in the corresponding
-  `after/<plugin>.lua` files.
-- External configuration for text editing tools not strictly used just for
-  neovim (mainly for text formatting tools) will be stored in `external`
-  directory.
+  `after/plugin/<plugin>.lua` files. In particular, specific LSP configurations
+  should have their own `lspconfig-<language>.lua` file.
+- All code formatting should be handled by each of the package settings. Some
+  default settings for handling languages that I commonly use will be saved in
+  the `external` directory for handling new projects.
 
 ## Decision on external dependencies
 
