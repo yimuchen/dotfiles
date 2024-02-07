@@ -18,20 +18,20 @@ alias usecms='source /cvmfs/cms.cern.ch/cmsset_default.sh'
 
 # Loading the cmssw settings if not already loaded
 if [[ -z "${SCRAM_ARCH}" ]]; then
-  source /cvmfs/cms.cern.ch/cmsset_default.sh
+   source /cvmfs/cms.cern.ch/cmsset_default.sh
 fi
 
 function smake() {
-  # Function for running scram b on half the cores available
-  if [ -z "$CMSSW_BASE" ]; then
-    echo "\$CMSSW_BASE is not defined, make sure you are in a CMSSW environment"
-    return 1
-  fi
+   # Function for running scram b on half the cores available
+   if [ -z "$CMSSW_BASE" ]; then
+      echo "\$CMSSW_BASE is not defined, make sure you are in a CMSSW environment"
+      return 1
+   fi
 
-  local num_core=$(nproc)
-  local run_core=$((num_core / 2))
-  echo "Running on $run_core(out of $num_core) threads.."
-  cd ${CMSSW_BASE}/src
-  scram b -j $run_core
-  cd -
+   local num_core=$(nproc)
+   local run_core=$((num_core / 2))
+   echo "Running on $run_core(out of $num_core) threads.."
+   cd ${CMSSW_BASE}/src
+   scram b -j $run_core
+   cd -
 }

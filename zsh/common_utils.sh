@@ -1,4 +1,3 @@
-##--
 # Utility function for interacting with the system
 
 #-----  Common alias list ------------------------------------------------------
@@ -17,22 +16,21 @@ alias tmux="TERM=screen-256color-bce tmux"
 alias ssh='ssh -Y'
 alias less='less -R'
 
-
 #---- Additional utility function
 function get_jupyter_url() {
-  # Getting the url of the of the jupyter server session that is running in this
-  # directory
-  local json_file=$(ls -1t ${PWD}/.local/share/jupyter/runtime/jpserver-*.json | head -n 1)
-  local token=$(jq -r '.token' ${json_file})
-  local port=$(jq -r '.port' ${json_file})
-  # Assuming that localhost is used to expose the runtime
-  echo "http://localhost:${port}/?token=${token}"
+   # Getting the url of the of the jupyter server session that is running in this
+   # directory
+   local json_file=$(ls -1t ${PWD}/.local/share/jupyter/runtime/jpserver-*.json | head -n 1)
+   local token=$(jq -r '.token' ${json_file})
+   local port=$(jq -r '.port' ${json_file})
+   # Assuming that localhost is used to expose the runtime
+   echo "http://localhost:${port}/?token=${token}"
 }
 
 function cert_gen_cmd() {
-  ## Printing the command to generate certificate generation on screen
-  echo "You can get your certificate at: https://ca.cern.ch/ca/user/Request.aspx?template=EE2User"
-  echo "Below ar the commands using the certificate:"
-  echo ">> openssl pkcs12 -in <MyCert.p12> -clcerts -nokeys -out \$HOME/.globus/usercert.pem"
-  echo ">> openssl pkcs12 -in <MyCert.p12> -nocerts -out \$HOME/.globus/userkey.pem"
+   ## Printing the command to generate certificate generation on screen
+   echo "You can get your certificate at: https://ca.cern.ch/ca/user/Request.aspx?template=EE2User"
+   echo "Below ar the commands using the certificate:"
+   echo ">> openssl pkcs12 -in <MyCert.p12> -clcerts -nokeys -out \$HOME/.globus/usercert.pem"
+   echo ">> openssl pkcs12 -in <MyCert.p12> -nocerts -out \$HOME/.globus/userkey.pem"
 }
