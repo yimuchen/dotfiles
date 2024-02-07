@@ -44,7 +44,8 @@ def __make_kpb_connection__() -> Tuple[kpb.Connection, kpb.Identity]:
     """Default settings for getting a connection"""
 
     # Generation of the file used to store the script association credentials.
-    # Making persistent to avoid multiple reconfirm when the user uses this script
+    # Making this persistent avoids multiple reconfirm when the using this
+    # script
     identity_path = os.path.join(os.getenv("HOME"), ".pyscriptkeepass")
 
     state_file = Path(identity_path)
@@ -65,7 +66,7 @@ def __make_kpb_connection__() -> Tuple[kpb.Connection, kpb.Identity]:
         logging.getLogger().debug("Not associated yet, associating now...")
         try:
             connection.associate(identity)
-        except kpb.exceptions.ProtocolError as err:
+        except kpb.exceptions.ProtocolError:
             logging.getLogger().error(
                 "Database is not open! Check to see that keepassXC is open and unlocked"
             )
@@ -113,7 +114,7 @@ def run_kinit(sites: List[str]):
     """Running kinit command, credentials should be stored as kerberos://SITE.URL"""
     for domain in sites:
         cred = get_credentials("kerberos", domain)
-        ## Running the kinit command
+        # Running the kinit command
         identity = "{}@{}".format(cred["login"], domain)
         subprocess.run(
             ["/usr/bin/kinit", "-r", "7d", identity],
@@ -157,7 +158,7 @@ def add_voms_args(parsers: argparse.ArgumentParser):
 def run_voms(certificate: str, ssh_servers: List[str]):
     cred = get_credentials("cert", certificate)
 
-    ## Looping over
+    # Looping over
     for server in ssh_servers:
         try:
             logging.getLogger().info(f"Running voms-proxy-init for {server}")
@@ -169,7 +170,8 @@ def run_voms(certificate: str, ssh_servers: List[str]):
                 "--valid",
                 "192:00",  # Valid time (8 days by default)
                 "--out",
-                "'${HOME}/x509up_u${UID}'",  # proxy file in single quotes for env expansion
+                # proxy file in single quotes for env expansion
+                "'${HOME}/x509up_u${UID}'",
             ]
             cmd = " ".join(ssh_cmd + voms_cmd)
             p = subprocess.Popen(
@@ -266,4 +268,3 @@ if __name__ == "__main__":
     function_name = function_args.pop("subcmd")
     assert function_name in __cmd_map__.keys(), "Command not recognized!!"
     __cmd_map__[function_name](**function_args)
-

@@ -47,7 +47,7 @@ def _run_loop(file_list: List[str], quite=False, dry_run=False):
             "convert",
             *("-density", str(args.density)),
             "-trim",
-            file, ## Must be in this order??
+            file,  # Must be in this order??
             *("-quality", "100"),
             # '-sharpen', '0x1.0',  #
             outfile,
