@@ -6,11 +6,21 @@ require("mason-lspconfig").setup({
 
 -- Use the prettier formatter by default
 require('mason-tool-installer').setup({
-  ensure_installed = { 'prettierd', },
+  ensure_installed = { 'prettier', },
   auto_update = false,
   run_on_start = false,
 })
 
--- Additional injections using null-ls
+-- Additional injections with null-ls
 local null_ls = require("null-ls");
-null_ls.setup({ sources = { null_ls.builtins.formatting.prettier }, })
+null_ls.setup({
+  sources = { null_ls.builtins.formatting.prettier.with({
+    filetypes = {
+      "javascript", "typescript", "typescriptreact",
+      "css", "scss",
+      "html", "json",
+      "yaml", "graphql", "txt",
+    }
+  })
+  }
+})
