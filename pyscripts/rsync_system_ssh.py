@@ -117,7 +117,7 @@ class RsyncHandler(pyinotify.ProcessEvent):
             timeout=1000,  # Check in increments of 1 seconds (avoid excessive call when editing files
         )
         for req in self.sync_list:
-            logging.getLogger().debug("Added watch path", req.local_path)
+            logging.getLogger().debug("Added watch path:" + req.local_path)
             self.watch_manager.add_watch(
                 req.local_path, mask=RsyncHandler.MASK, rec=True
             )
@@ -127,15 +127,15 @@ class RsyncHandler(pyinotify.ProcessEvent):
         self.run_list = {}
 
     def process_IN_CREATE(self, event: pyinotify.Event):
-        logging.getLogger().debug("Creating:", event.pathname)
+        logging.getLogger().debug("Creating:" + event.pathname)
         self.register_rsync(event)
 
     def process_IN_MODIFY(self, event: pyinotify.Event):
-        logging.getLogger().debug("Modifying:", event.pathname)
+        logging.getLogger().debug("Modifying:" + event.pathname)
         self.register_rsync(event)
 
     def process_IN_DELETE(self, event: pyinotify.Event):
-        logging.getLogger().debug("Removing:", event.pathname)
+        logging.getLogger().debug("Removing:" + event.pathname)
         self.register_remove(event)
 
     def register_rsync(self, event: pyinotify.Event):
@@ -171,7 +171,7 @@ class RsyncHandler(pyinotify.ProcessEvent):
                     self.notifier.process_events()  # Running the various run functions
                 if len(self.run_list):
                     for key, cmd in self.run_list.items():
-                        logging.getLogger().info("Running command:", " ".join(cmd))
+                        logging.getLogger().info("Running command:" + " ".join(cmd))
                         subprocess.run(cmd)
             except KeyboardInterrupt or InterruptedError:
                 break
@@ -183,6 +183,10 @@ if __name__ == "__main__":
     import json
 
     import argcomplete
+
+    # Disabling all logging
+    logging.root.setLevel(logging.NOTSET)
+    logging.basicConfig(level=logging.NOTSET)
 
     parser = argparse.ArgumentParser(
         "rsync_system_ssh", "watching file system to sync to remote system over a ssh"

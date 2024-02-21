@@ -54,16 +54,16 @@ require("lazy").setup({
   -- { "mhartington/formatter.nvim" }, -- Engine for calling external formatters
 
   -- Snippet engin
-  --{
-  --	"L3MON4D3/LuaSnip",
-  --		version = "v2.*",
-  --		build = "make in stall_jsregexp",
-  --	},
-  -- 	{ "saadparwaiz1/cmp_luasnip" },
+  {
+    "L3MON4D3/LuaSnip",
+    version = "v2.*",
+    build = "make in stall_jsregexp",
+  },
+  { "saadparwaiz1/cmp_luasnip" },
 
   -- For VIM motion training
   { "ThePrimeagen/vim-be-good" },
 
   -- Notebook editing in VIM
-  { "GCBallesteros/jupytext.nvim",              config = true },
+  { "GCBallesteros/jupytext.nvim", config = true },
 })
