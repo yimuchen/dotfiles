@@ -44,7 +44,3 @@ require('mason-tool-installer').setup {
   run_on_start = false,
   debounce_hours = 5, -- at least 5 hours between attempts to install/update
 }
-
--- Additional injections using null-ls
-local null_ls = require("null-ls");
-null_ls.setup({ sources = {}, })
