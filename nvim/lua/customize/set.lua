@@ -16,7 +16,7 @@ vim.opt.smartindent = true
 
 -- Displaying problematic whitespace characters
 vim.opt.list = true
-vim.opt.listchars = "tab: ▷,trail:▨,extends:>,precedes:<"
+vim.opt.listchars = { tab = "▷ ", trail = "▨", extends = ">", precedes = "<" }
 
 -- Do not attemp to wrap the text on display, use main instead
 vim.opt.wrap = false
@@ -46,7 +46,7 @@ vim.opt.colorcolumn = "120"
 -- Setting the folding expression
 vim.opt.foldmethod = "expr" -- Folding using treesitter syntax parser
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldlevel = 20 -- Expand everything by default
+vim.opt.foldlevel = 20      -- Expand everything by default
 
 -- Additional file type association
 vim.filetype.add({
@@ -58,4 +58,13 @@ vim.filetype.add({
 		["sshconfig"] = "sshconfig",
 		--["/etc/foo/config"] = "toml",
 	},
+})
+
+-- Highlighting text on yank
+vim.api.nvim_create_autocmd('TextYankPost', {
+	desc = 'Highlight when yanking (copying) text',
+	group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+	callback = function()
+		vim.highlight.on_yank()
+	end,
 })
