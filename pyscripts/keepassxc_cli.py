@@ -146,7 +146,7 @@ def add_voms_args(parsers: argparse.ArgumentParser):
         nargs="+",
         default=[
             "fnal-default",
-            "lxplus7-bash",
+            "lxplus7-default",
             "umdcms-bash",
             "cmsconnect-default",
         ],

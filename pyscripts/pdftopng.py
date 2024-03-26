@@ -71,9 +71,9 @@ if __name__ == "__main__":
         description="Convert PDF files to high quality PNG files",
     )
 
-    parser.add_argument(
-        "files", type=str, nargs="+"
-    ).completer = argcomplete.FilesCompleter(allowednames="*.pdf")
+    parser.add_argument("files", type=str, nargs="+").completer = (
+        argcomplete.FilesCompleter(allowednames="*.pdf")
+    )
     parser.add_argument(
         "-d",
         "--density",
