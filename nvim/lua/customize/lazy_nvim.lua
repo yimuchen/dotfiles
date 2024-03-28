@@ -29,44 +29,41 @@ require('lazy').setup {
     },
   },
 
-  -- Monokai color scheme
-  {
+  { -- Monokai color scheme
     'loctvl842/monokai-pro.nvim',
     config = function()
       require('monokai-pro').setup()
     end,
   },
-  {
+  { -- Comment highlighter for notes and to-dos
     'folke/todo-comments.nvim',
     event = 'VimEnter',
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = { signs = false },
   },
 
-  -- Lua line settings
-  {
+  { -- Nice status lines
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
 
-  -- Treesitter
+  -- Treesitter for syntax highlighting
   { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
-  { 'mbbill/undotree' },
-  { 'tpope/vim-fugitive' },
+  { 'mbbill/undotree' }, -- TODO: Learn to how to effectively use undotree!!
+  { 'tpope/vim-fugitive' }, -- TODO: Learn how to effectivley use git in nvim
 
   -- LSP zero and language related plugins
   { 'VonHeikemen/lsp-zero.nvim', branch = 'v3.x' },
   { 'neovim/nvim-lspconfig' },
-  { 'nvimtools/none-ls.nvim' }, -- For additional formatting methods
   { 'williamboman/mason.nvim' }, -- Engine for managing external dependencies
   { 'williamboman/mason-lspconfig.nvim' },
   { 'WhoIsSethDaniel/mason-tool-installer.nvim' }, -- Formatter and linting tool installation
-  -- For auto completion
-  {
+  { 'stevearc/conform.nvim' }, -- Formatting engine
+  { -- For auto completion
     'hrsh7th/nvim-cmp',
     dependencies = {
       'hrsh7th/cmp-nvim-lsp',
-      { -- Snippet engine for writing custom snippeds
+      { -- Snippet engine for writing custom snippets
         'L3MON4D3/LuaSnip',
         version = 'v2.*',
         build = 'make in stall_jsregexp',
@@ -76,13 +73,15 @@ require('lazy').setup {
       'hrsh7th/cmp-path',
     },
   },
-  -- Formatting engine
-  { 'stevearc/conform.nvim' },
 
-  -- For VIM motion training
-  { 'ThePrimeagen/vim-be-good' },
+  { 'ThePrimeagen/vim-be-good' }, -- For VIM motion training
 
-  -- Notebook editing in VIM
+  { -- For syncing local edits to remote paths
+    'OscarCreator/rsync.nvim',
+    build = 'make',
+    dependencies = 'nvim-lua/plenary.nvim',
+  },
+
+  -- Notebook editing in VIM / TODO: Try and make this work better?
   { 'GCBallesteros/jupytext.nvim', config = true },
 }
-  -- Snippet engine

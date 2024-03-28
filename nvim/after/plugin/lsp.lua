@@ -63,7 +63,7 @@ require('mason').setup {}
 require('mason-lspconfig').setup {
   ensure_installed = { -- List of LSP to use by default
     'clangd', -- C++
-    'texlab', -- TeX/LaTeX
+    -- 'texlab', -- TeX/LaTeX
     -- Any additional server you might want added
     'rust_analyzer',
   },
