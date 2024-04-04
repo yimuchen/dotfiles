@@ -14,11 +14,9 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Listing packages to install
 require('lazy').setup {
-  -- Having lazy manage itself
-  'folke/lazy.nvim',
+  'folke/lazy.nvim', -- Having lazy manage itself
 
-  -- Fuzzy finder telescope
-  {
+  { -- Fuzzy finder telescope
     'nvim-telescope/telescope.nvim',
     tag = '0.1.x',
     dependencies = {
@@ -28,13 +26,7 @@ require('lazy').setup {
       'nvim-telescope/telescope-fzf-native.nvim',
     },
   },
-
-  { -- Monokai color scheme
-    'loctvl842/monokai-pro.nvim',
-    config = function()
-      require('monokai-pro').setup()
-    end,
-  },
+  { 'loctvl842/monokai-pro.nvim' }, -- Monokai color scheme
   { -- Comment highlighter for notes and to-dos
     'folke/todo-comments.nvim',
     event = 'VimEnter',
@@ -46,7 +38,13 @@ require('lazy').setup {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
-
+  { -- Breadcrumb for feature signature
+    'utilyre/barbecue.nvim',
+    name = 'barbecue',
+    version = '*',
+    dependencies = { 'SmiteshP/nvim-navic', 'nvim-tree/nvim-web-devicons' },
+    opts = {},
+  },
   -- Treesitter for syntax highlighting
   { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
   { 'mbbill/undotree' }, -- TODO: Learn to how to effectively use undotree!!
@@ -66,7 +64,7 @@ require('lazy').setup {
       { -- Snippet engine for writing custom snippets
         'L3MON4D3/LuaSnip',
         version = 'v2.*',
-        build = 'make in stall_jsregexp',
+        build = 'make install_jsregexp',
       },
       'saadparwaiz1/cmp_luasnip',
       'hrsh7th/cmp-nvim-lsp',
@@ -77,10 +75,17 @@ require('lazy').setup {
   { 'ThePrimeagen/vim-be-good' }, -- For VIM motion training
 
   { -- For syncing local edits to remote paths
-    'OscarCreator/rsync.nvim',
-    build = 'make',
-    dependencies = 'nvim-lua/plenary.nvim',
+    'coffebar/transfer.nvim',
+    lazy = true,
+    cmd = { 'TransferInit', 'DiffRemote', 'TransferUpload', 'TransferDownload', 'TransferDirDiff', 'TransferRepeat' },
+    opts = {},
   },
+
+  -- Disabling until rsync supports multihost
+  --  'OscarCreator/rsync.nvim',
+  --  build = 'make',
+  --  dependencies = 'nvim-lua/plenary.nvim',
+  --},
 
   -- Notebook editing in VIM / TODO: Try and make this work better?
   { 'GCBallesteros/jupytext.nvim', config = true },
