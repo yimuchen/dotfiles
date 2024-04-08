@@ -74,12 +74,6 @@ require('lazy').setup {
 
   { 'ThePrimeagen/vim-be-good' }, -- For VIM motion training
 
-  { -- For syncing local edits to remote paths
-    'coffebar/transfer.nvim',
-    lazy = true,
-    cmd = { 'TransferInit', 'DiffRemote', 'TransferUpload', 'TransferDownload', 'TransferDirDiff', 'TransferRepeat' },
-    opts = {},
-  },
 
   -- Disabling until rsync supports multihost
   --  'OscarCreator/rsync.nvim',
