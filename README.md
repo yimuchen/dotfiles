@@ -11,8 +11,8 @@ will be soft-linked to the required repositories.
 The manager system [oh-my-zsh][oh-my-zsh] will be used to handle the primary
 tools. Additional configuration that helps with day-to-day tasks on specific
 machines, as well as additional settings for the plugins will be added to the
-contents of the [`zsh`](zsh) folder. A simple parsing is done on the main `zshrc`
-script to determine the machine type and load in the required methods.
+contents of the [`zsh`](zsh) folder. A simple parsing is done on the main
+`zshrc` script to determine the machine type and load in the required methods.
 
 Assuming that you already have zsh installed, the settings can be loaded in
 with the following commands:
