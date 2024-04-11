@@ -18,6 +18,9 @@ vim.opt.smartindent = true
 vim.opt.list = true
 vim.opt.listchars = { tab = '▷ ', trail = '▨', extends = '>', precedes = '<' }
 
+-- Setting up the leader key for custom hot keys
+vim.g.mapleader = ' '
+
 -- Do not attemp to wrap the text on display, use main instead
 vim.opt.wrap = false
 

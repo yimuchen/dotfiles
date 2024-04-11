@@ -26,29 +26,8 @@ require('lazy').setup {
       'nvim-telescope/telescope-fzf-native.nvim',
     },
   },
-  { 'loctvl842/monokai-pro.nvim' }, -- Monokai color scheme
-  { -- Comment highlighter for notes and to-dos
-    'folke/todo-comments.nvim',
-    event = 'VimEnter',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    opts = { signs = false },
-  },
-
-  { -- Nice status lines
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-  },
-  { -- Breadcrumb for feature signature
-    'utilyre/barbecue.nvim',
-    name = 'barbecue',
-    version = '*',
-    dependencies = { 'SmiteshP/nvim-navic', 'nvim-tree/nvim-web-devicons' },
-    opts = {},
-  },
   -- Treesitter for syntax highlighting
   { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
-  { 'mbbill/undotree' }, -- TODO: Learn to how to effectively use undotree!!
-  { 'tpope/vim-fugitive' }, -- TODO: Learn how to effectivley use git in nvim
 
   -- LSP zero and language related plugins
   { 'VonHeikemen/lsp-zero.nvim', branch = 'v3.x' },
@@ -71,15 +50,36 @@ require('lazy').setup {
       'hrsh7th/cmp-path',
     },
   },
+  { -- For buffer-based file system navigation
+    'stevearc/oil.nvim',
+    opts = {},
+    -- Optional dependencies
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+  },
+
+  --
+  -- A bunch of nice eye candy !
+  --
+  { 'loctvl842/monokai-pro.nvim' }, -- Monokai color scheme
+  { 'nvim-lualine/lualine.nvim', dependencies = { 'nvim-tree/nvim-web-devicons' } }, -- Nice status lines
+  { 'lukas-reineke/indent-blankline.nvim', main = 'ibl', opts = {} }, -- indent guides
+  { -- Comment highlighter for notes and to-dos
+    'folke/todo-comments.nvim',
+    event = 'VimEnter',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = { signs = false },
+  },
+  { -- Breadcrumb for feature signature
+    'utilyre/barbecue.nvim',
+    name = 'barbecue',
+    version = '*',
+    dependencies = { 'SmiteshP/nvim-navic', 'nvim-tree/nvim-web-devicons' },
+    opts = {},
+  },
 
   { 'ThePrimeagen/vim-be-good' }, -- For VIM motion training
-
-
-  -- Disabling until rsync supports multihost
-  --  'OscarCreator/rsync.nvim',
-  --  build = 'make',
-  --  dependencies = 'nvim-lua/plenary.nvim',
-  --},
+  { 'mbbill/undotree' }, -- TODO: Learn to how to effectively use undotree!!
+  { 'tpope/vim-fugitive' }, -- TODO: Learn how to effectivley use git in nvim
 
   -- Notebook editing in VIM / TODO: Try and make this work better?
   { 'GCBallesteros/jupytext.nvim', config = true },
