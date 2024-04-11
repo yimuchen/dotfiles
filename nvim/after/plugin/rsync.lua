@@ -134,7 +134,7 @@ local get_rsync_config = function()
   -- Various file paths that we recognize:
   for _, path in ipairs { '.rsync.json', '.nvim/rsync.json' } do
     local find_path = root_dir .. '/' .. path
-    if vim.fn.findfile(find_path) ~= nil then
+    if vim.fn.findfile(find_path) ~= '' then
       return parse_configuration(root_dir, find_path)
     end
   end
@@ -180,7 +180,7 @@ end
 local run_rsync = function(dry_run, auto_trigger)
   local config = get_rsync_config()
   if config == nil then
-    vim.notify('Cannot find valid configurations file', vim.log.levels.INFO)
+    vim.notify_once('Cannot find valid configurations file', vim.log.levels.INFO)
     return
   end
   for _, remote_config in ipairs(config.remote_hosts) do
