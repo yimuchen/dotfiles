@@ -108,15 +108,26 @@ local recent_dirs = {
   fold_section = false,
   title = 'Recent projects',
   margin = 1,
-  content = find_projects(),
+  content = {},
   highlight = 'String',
   oldfiles_amount = 0,
 }
 
+local _colorcolumn_settings = vim.opt.colorcolumn
+
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'startup' }, -- Only calling find on empty buffer, and is the  filestype startup
+  pattern = { '*' },
   callback = function()
-    recent_dirs.content = find_projects()
+    if vim.bo.filetype == 'startup' then
+      -- Only calling if the filestype startup
+      recent_dirs.content = find_projects()
+      vim.opt.colorcolumn = ''
+    else
+      -- Need to recover the settings when opening a new filetype (the set is
+      -- always ran before the plugins after scripts so we know that this will
+      -- be properly stored
+      vim.opt.colorcolumn = _colorcolumn_settings
+    end
   end,
 })
 
@@ -149,9 +160,9 @@ local settings = {
   options = {
     mapping_keys = true,
     cursor_column = 0.5,
-    empty_lines_between_mappings = true,
+    empty_lines_between_mappings = false,
     disable_statuslines = true,
-    paddings = { 12, 3, 3, 0 },
+    paddings = { 5, 3, 3, 0 },
   },
   mappings = {
     execute_command = '<CR>',
