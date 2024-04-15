@@ -8,7 +8,7 @@ will be soft-linked to the required repositories.
 
 ## Shell (ZSH)
 
-The manager system [oh-my-zsh][oh-my-zsh] will be used to handle the primary
+The manager system [oh-my-zsh] will be used to handle the primary
 tools. Additional configuration that helps with day-to-day tasks on specific
 machines, as well as additional settings for the plugins will be added to the
 contents of the [`zsh`](zsh) folder. A simple parsing is done on the main
@@ -30,8 +30,6 @@ ln -sf $PWD/zsh             $HOME/.zsh
 ln -sf $HOME/.zsh/zshrc.zsh $HOME/.zshrc
 ln -sf $HOME/.zsh/p10k.zsh  $HOME/.p10k.zsh
 ```
-
-[oh-my-zsh]: https://github.com/ohmyzsh/ohmyzsh/tree/master
 
 ## Python helper scripts
 
@@ -62,7 +60,7 @@ also runs into external dependency management, this should always be coupled
 with the other session configurations (see the `README.md` file in the
 [`nvim`](nvim) directory for more information).
 
-To install the required plugins using [lazy.nvim][lazy.nvim] after installing
+To install the required plugins using [lazy.nvim] after installing
 the case neovim, first link the configuration files to the common configuration
 location:
 
@@ -83,10 +81,6 @@ pull all the predefined LSP and formatting tools by running the command
 
 For how the neovim configuration is done, see the documentation in
 [`nvim/README.md`](nvim) file.
-
-[primetut]: https://www.youtube.com/watch?v=w7i4amO_zaE
-[lazy.vim]: https://github.com/folke/lazy.nvim
-[mason]: https://github.com/williamboman/mason.nvim
 
 ## Latex settings
 
@@ -109,8 +103,6 @@ repository) Some external dependencies might be needed for the font
 configuration to function. For additional details, see the
 [`texmf/tex/latex/README`](texmf/tex/latex).
 
-[texlive]: https://www.tug.org/texlive/
-
 ## Conda
 
 For setting up python virtual environment for python code development, we
@@ -126,3 +118,8 @@ ln -sf $PWD/condarc $HOME/.condarc
 ```
 
 [conda]: https://docs.conda.io/en/latest/
+[lazy.nvim]: https://github.com/folke/lazy.nvim
+[mason]: https://github.com/williamboman/mason.nvim
+[oh-my-zsh]: https://github.com/ohmyzsh/ohmyzsh/tree/master
+[primetut]: https://www.youtube.com/watch?v=w7i4amO_zaE
+[texlive]: https://www.tug.org/texlive/
