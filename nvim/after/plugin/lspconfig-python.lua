@@ -18,7 +18,20 @@ require('lspconfig').pylsp.setup {
 -- Formatting methods
 require('conform').formatters_by_ft.python = { 'isort', 'black' }
 
+-- Additional surrounding function
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'python',
+  callback = function()
+    require('mini.ai').config.custom_textobjects['M'] = function()
+      --- Triple quote /excluding new lines
+      return { string.format('%s().-()%s', '"""\n', '\n *"""\n') }
+    end
+  end,
+})
+
+--
 -- Snippets
+--
 local ls = require 'luasnip'
 --local sn = ls.snippet_node
 local t = ls.text_node

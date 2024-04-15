@@ -32,9 +32,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- Keymaps for formatting using LSP
     map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
     imap('<C-h>', vim.lsp.buf.signature_help, 'Signature [H]elp')
-    vim.keymap.set('n', '<leader>fb', function()
-      require('conform').format { async = true, lsp_fallback = true }
-    end, { desc = '[F]ormat [b]uffer' })
 
     -- The following two autocommands are used to highlight references of the
     -- word under your cursor when your cursor rests there for a little while.
@@ -84,6 +81,33 @@ require('mason-tool-installer').setup {
 }
 
 -- Defualt formatting options
-require('conform').setup {
-  ['_'] = { 'trim_whitespace' },
+local conform = require 'conform'
+conform.setup {
+  formatters_by_ft = {
+    ['_'] = { 'trim_whitespace' },
+  },
 }
+
+-- Setting up keybindings for formatting
+vim.keymap.set('n', '<leader>fb', function()
+  conform.format { async = true, lsp_fallback = true }
+end, { desc = '[F]ormat [b]uffer' })
+
+vim.keymap.set('n', '<leader>fw', function() -- In case there is trailing white spaces in multiline strings
+  conform.format { formatters = { 'trim_whitespace' } }
+end, { desc = '[F]ormat [W]hitespaces' })
+
+-- Additional wrapping, as formatter should not (by default) try to modify wrapping
+-- since this can potentially break the meaning of strings
+vim.keymap.set('n', '<leader>fp', 'gwap', { desc = '[F]ormat [P]aragraph (wrapping)' })
+
+-- Because of how mini.ai works. we need to trigger the keystrokes in normal
+-- mode ('n'), but the commands technically work in visual mode ('x'). See the
+-- mini.lua file to see the definition of custom scopes
+local gw_mini = function(scope)
+  return function()
+    vim.api.nvim_feedkeys('gw' .. scope, 'x', false)
+  end
+end
+vim.keymap.set('n', '<leader>fm', gw_mini 'iM', { desc = '[F]ormat [M]ultiline string (wrap)' })
+vim.keymap.set('n', '<leader>fc', gw_mini 'aC', { desc = '[F]ormat [C]omment' })

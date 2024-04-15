@@ -18,10 +18,7 @@ vim.opt.smartindent = true
 vim.opt.list = true
 vim.opt.listchars = { tab = '▷ ', trail = '▨', extends = '>', precedes = '<' }
 
--- Setting up the leader key for custom hot keys
-vim.g.mapleader = ' '
-
--- Do not attemp to wrap the text on display, use main instead
+-- Do not attempt to wrap the text on display
 vim.opt.wrap = false
 
 -- Back up information
@@ -60,6 +57,11 @@ vim.filetype.add {
     --["/etc/foo/config"] = "toml",
   },
 }
+
+-- Adding some additonal key mappings for vim in-built functions
+vim.g.mapleader = ' ' -- leader key for custom mapping
+-- vim.keymap.set('n', '<leader>00', 'gg', { desc = 'Mapping test' })
+-- vim.keymap.set('n', '<leader>99', 'GG', { desc = 'Mapping test 2' })
 
 -- Highlighting text on yank
 vim.api.nvim_create_autocmd('TextYankPost', {
