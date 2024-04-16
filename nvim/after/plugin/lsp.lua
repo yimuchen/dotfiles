@@ -28,8 +28,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map('gI', tbuiltin.lsp_implementations, '[G]oto [I]mplementation')
     map('<leader>ds', tbuiltin.lsp_document_symbols, '[D]ocument [S]ymbols')
     map('<leader>ws', tbuiltin.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-
-    -- Keymaps for formatting using LSP
     map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
     imap('<C-h>', vim.lsp.buf.signature_help, 'Signature [H]elp')
 
@@ -104,10 +102,12 @@ vim.keymap.set('n', '<leader>fp', 'gwap', { desc = '[F]ormat [P]aragraph (wrappi
 -- Because of how mini.ai works. we need to trigger the keystrokes in normal
 -- mode ('n'), but the commands technically work in visual mode ('x'). See the
 -- mini.lua file to see the definition of custom scopes
-local gw_mini = function(scope)
+local call_mini = function(cmd)
   return function()
-    vim.api.nvim_feedkeys('gw' .. scope, 'x', false)
+    vim.api.nvim_feedkeys(cmd, 'x', false)
   end
 end
-vim.keymap.set('n', '<leader>fm', gw_mini 'iM', { desc = '[F]ormat [M]ultiline string (wrap)' })
-vim.keymap.set('n', '<leader>fc', gw_mini 'aC', { desc = '[F]ormat [C]omment' })
+vim.keymap.set('n', '<leader>fm', call_mini 'gwiM', { desc = '[F]ormat [M]ultiline string (wrap)' })
+vim.keymap.set('n', '<leader>fc', call_mini 'gwgc', { desc = '[F]ormat [C]omment' })
+vim.keymap.set('n', '<leader>/', call_mini 'gcc', { desc = 'Toggle comment' })
+vim.keymap.set('x', '<leader>/', call_mini 'gc', { desc = 'Toggle comment' })
