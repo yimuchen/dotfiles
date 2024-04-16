@@ -8,6 +8,11 @@ export XDG_CONFIG_HOME=$HOME/.config # KDE command line application theming
 export MOZ_X11_EGL=1
 export MOZ_ENABLE_WAYLAND=1
 
+# Input methods
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+
 # LIBVA
 export LIBVA_DRIVERS_PATH=/usr/lib/dri/
 export LIBVA_DRIVER_NAME=vdpau
