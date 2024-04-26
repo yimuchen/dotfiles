@@ -32,6 +32,7 @@ require('lazy').setup {
   -- LSP zero and language related plugins
   { 'VonHeikemen/lsp-zero.nvim', branch = 'v3.x' },
   { 'neovim/nvim-lspconfig' },
+  { 'folke/neodev.nvim', opts = {} }, -- For Lua auto complete in vim configurations
   { 'williamboman/mason.nvim' }, -- Engine for managing external dependencies
   { 'williamboman/mason-lspconfig.nvim' },
   { 'WhoIsSethDaniel/mason-tool-installer.nvim' }, -- Formatter and linting tool installation

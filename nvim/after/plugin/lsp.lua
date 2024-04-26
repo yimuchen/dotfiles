@@ -95,8 +95,8 @@ vim.keymap.set('n', '<leader>fw', function() -- In case there is trailing white 
   conform.format { formatters = { 'trim_whitespace' } }
 end, { desc = '[F]ormat [W]hitespaces' })
 
--- Additional wrapping, as formatter should not (by default) try to modify wrapping
--- since this can potentially break the meaning of strings
+-- Additional wrapping, as formatter should not (by default) try to modify
+-- wrapping since this can potentially break the meaning of strings
 vim.keymap.set('n', '<leader>fp', 'gwap', { desc = '[F]ormat [P]aragraph (wrapping)' })
 
 -- Because of how mini.ai works. we need to trigger the keystrokes in normal

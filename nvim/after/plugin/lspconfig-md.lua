@@ -8,4 +8,4 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 -- Formatting methods
-require('conform').formatters_by_ft.markdown = { 'mdformat' }
+require('conform').formatters_by_ft.markdown = { 'prettier' }
