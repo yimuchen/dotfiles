@@ -19,4 +19,19 @@ require('nvim-treesitter.configs').setup {
     -- languages
     additional_vim_regex_highlighting = false,
   },
+
+  -- Symbol based navigations
+  textobjects = {
+    move = {
+      enable = true,
+      goto_next_start = {
+        [']C'] = { query = '@code_cell.inner', desc = '[(])N]Next [c]ode block' },
+        [']F'] = { query = '@function.outer', desc = '[(])N]ext [F]unction' },
+      },
+      goto_previous_start = {
+        ['[C'] = { query = '@code_cell.inner', desc = '[([)P]revious [c]ode block' },
+        ['[F'] = { query = '@function.outer', desc = '[([)P]revious [F]unction' },
+      },
+    },
+  },
 }

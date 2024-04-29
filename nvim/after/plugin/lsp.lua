@@ -24,6 +24,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- Navigation based on lsp related functions. For multiple items, we will be
     -- using telescope
     map('gd', tbuiltin.lsp_definitions, '[G]o to [d]efinition')
+    map('gb', ':e#<CR>', '[G]o [b]ack to previous')
     map('gr', tbuiltin.lsp_references, '[G]oto [R]eferences')
     map('gI', tbuiltin.lsp_implementations, '[G]oto [I]mplementation')
     map('<leader>ds', tbuiltin.lsp_document_symbols, '[D]ocument [S]ymbols')
