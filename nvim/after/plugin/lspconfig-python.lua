@@ -38,7 +38,7 @@ require('jupytext').setup { -- Casting notebooks as markdown files
   output_extension = 'md',
   force_ft = 'markdown',
 }
-require('quarto').setup {
+require('quarto').setup { -- Setting up quarto to run python with molten
   codeRunner = {
     enable = true,
     ft_runners = {

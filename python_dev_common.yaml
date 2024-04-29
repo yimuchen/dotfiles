@@ -7,4 +7,5 @@ dependencies:
     - pynvim # For REPL interaction
     - mdformat # For notebook editing in nvim
     - mdformat-frontmatter
+    - jupytext
 
