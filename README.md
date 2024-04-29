@@ -8,13 +8,13 @@ will be soft-linked to the required repositories.
 
 ## Shell (ZSH)
 
-The manager system [oh-my-zsh] will be used to handle the primary
+The manager system [`oh-my-zsh`][oh-my-zsh] will be used to handle the primary
 tools. Additional configuration that helps with day-to-day tasks on specific
 machines, as well as additional settings for the plugins will be added to the
 contents of the [`zsh`](zsh) folder. A simple parsing is done on the main
 `zshrc` script to determine the machine type and load in the required methods.
 
-Assuming that you already have zsh installed, the settings can be loaded in
+Assuming that you already have `zsh` installed, the settings can be loaded in
 with the following commands:
 
 ```bash
@@ -60,7 +60,7 @@ also runs into external dependency management, this should always be coupled
 with the other session configurations (see the `README.md` file in the
 [`nvim`](nvim) directory for more information).
 
-To install the required plugins using [lazy.nvim] after installing
+To install the required plugins using [`lazy.nvim`] after installing
 the case neovim, first link the configuration files to the common configuration
 location:
 
@@ -108,8 +108,8 @@ configuration to function. For additional details, see the
 For setting up python virtual environment for python code development, we
 expect the user the use [`conda`][conda] to create the virtual environment,
 then use `pip install -e ./<package>` to include the developing package in edit
-mode. For all conda environements, the defaul python linter (flake8) and
-formatters (black and isort) to always be available to the virtual environment.
+mode. For all `conda` environments, the default python linter (flake8) and
+formatters (`black` and `isort`) to be always available to the virtual environment.
 (TODO: check how flake8 interacts with the LSP settings). To use this setting
 simply link `condarc` to the home folder.
 
