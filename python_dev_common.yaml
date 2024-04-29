@@ -1,0 +1,10 @@
+dependencies:
+  - python-lsp-server
+  # Additional dependencies for lsp
+  - python-lsp-black
+  - pip:
+    - python-lsp-isort
+    - pynvim # For REPL interaction
+    - mdformat # For notebook editing in nvim
+    - mdformat-frontmatter
+
