@@ -46,22 +46,8 @@ vim.opt.foldmethod = 'expr' -- Folding using treesitter syntax parser
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.opt.foldlevel = 20 -- Expand everything by default
 
--- Additional file type association
-vim.filetype.add {
-  extension = {
-    service = 'cfg',
-  },
-  filename = {
-    ['zshrc'] = 'sh',
-    ['sshconfig'] = 'sshconfig',
-    --["/etc/foo/config"] = "toml",
-  },
-}
-
 -- Adding some additonal key mappings for vim in-built functions
 vim.g.mapleader = ' ' -- leader key for custom mapping
--- vim.keymap.set('n', '<leader>00', 'gg', { desc = 'Mapping test' })
--- vim.keymap.set('n', '<leader>99', 'GG', { desc = 'Mapping test 2' })
 
 -- Highlighting text on yank
 vim.api.nvim_create_autocmd('TextYankPost', {

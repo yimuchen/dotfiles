@@ -58,6 +58,42 @@ require('lazy').setup {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
 
+  -- Python notebook interactions
+  {
+    'benlubas/molten-nvim',
+    version = '<2.0.0', -- Pinning this version for now
+    dependencies = {
+      '3rd/image.nvim', -- For image display
+      'quarto-dev/quarto-nvim', -- Slicing markdown files into cells and allow molten to use execute
+      'jmbuhr/otter.nvim', -- Enabling LSP in markdown
+      'GCBallesteros/jupytext.nvim', -- Automatic conversion of buffers on open and close
+    },
+    build = ':UpdateRemotePlugins',
+    init = function()
+      vim.g.molten_image_provider = 'image.nvim'
+      vim.g.molten_output_win_max_height = 20
+    end,
+  },
+  { -- Additional settings foor displaying images in terminal
+    '3rd/image.nvim',
+    dependencies = { 'luarocks.nvim' },
+    opts = {
+      backend = 'kitty',
+      max_width = 100,
+      max_height_window_percentage = math.huge,
+      max_width_window_percentage = math.huge,
+      window_overlap_clear_enabled = true, -- toggles images when windows are overlapped
+      window_overlap_clear_ft_ignore = { 'cmp_menu', 'cmp_docs', '' },
+    },
+  },
+  { -- Additional settings for interfacing imagemagik with luarocks
+    'vhyrro/luarocks.nvim',
+    priority = 1001, -- this plugin needs to run before anything else
+    opts = {
+      rocks = { 'magick' },
+    },
+  },
+
   {
     'echasnovski/mini.nvim',
     dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects' }, -- For scope awareness
@@ -109,7 +145,4 @@ require('lazy').setup {
   { 'ThePrimeagen/vim-be-good' }, -- For VIM motion training
   { 'mbbill/undotree' }, -- TODO: Learn to how to effectively use undotree!!
   { 'tpope/vim-fugitive' }, -- TODO: Learn how to effectivley use git in nvim
-
-  -- Notebook editing in VIM / TODO: Try and make this work better?
-  { 'GCBallesteros/jupytext.nvim', config = true },
 }

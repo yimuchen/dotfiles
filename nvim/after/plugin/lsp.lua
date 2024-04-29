@@ -83,6 +83,7 @@ local conform = require 'conform'
 conform.setup {
   formatters_by_ft = {
     ['_'] = { 'trim_whitespace' },
+    ['*'] = { 'injected' }, -- Try to allow injected formatter for all items
   },
 }
 
