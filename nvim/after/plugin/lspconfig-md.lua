@@ -1,3 +1,4 @@
+-- Formatting methods
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'markdown' },
   callback = function()
@@ -12,4 +13,3 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
--- Formatting methods
