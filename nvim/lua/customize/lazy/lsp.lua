@@ -80,6 +80,32 @@ return { -- LSP zero and language related plugins
       conform.format { formatters = { 'trim_whitespace' } }
     end, { desc = '[F]ormat [W]hitespaces' })
 
+    vim.api.nvim_create_user_command('ConformFormat', function(opt) -- Running a custom formatter directly by name
+      conform.format { formatters = { opt.fargs[1] } }
+    end, {
+      nargs = 1,
+      complete = function(arglead, cmdline, cursorpos)
+        local all_formatters = {}
+        -- First loop is for modified conformers
+        for name, _ in pairs(conform.formatters) do
+          if string.sub(name, 0, #arglead) == arglead then
+            all_formatters[name] = true
+          end
+        end
+        for name, _ in pairs(require('conform.formatters').list_all_formatters()) do
+          if string.sub(name, 0, #arglead) == arglead and all_formatters[name] == nil then
+            all_formatters[name] = true
+          end
+        end
+
+        local ret_list = {}
+        for name, _ in pairs(all_formatters) do
+          table.insert(ret_list, name)
+        end
+        return ret_list
+      end,
+    })
+
     -- Additional wrapping, as formatter should not (by default) try to modify
     -- wrapping since this can potentially break the meaning of strings
     vim.keymap.set('n', '<leader>fp', 'gwap', { desc = '[F]ormat [P]aragraph (wrapping)' })
