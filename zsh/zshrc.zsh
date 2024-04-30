@@ -21,8 +21,7 @@ autoload -U compinit && compinit
 source $ZSH/oh-my-zsh.sh
 
 # User configurations - main items will be split into other files
-export EDITOR='vim'
-HIST_STAMPS="yyyyy-mm-dd"
+export EDITOR='nvim'
 
 # Additional utility functions that will be provided in separate files
 source $HOME/.zsh/common_utils.sh

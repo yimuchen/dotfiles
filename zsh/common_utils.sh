@@ -12,9 +12,9 @@ alias size='du --max-depth=1 --human-readable --all | sort -h'
 alias less='less --raw-control-chars'
 alias root='root -l' # CERN ROOT
 alias wget='wget --continue'
-alias tmux="TERM=screen-256color-bce tmux"
 alias ssh='ssh -Y'
 alias less='less -R'
+alias history='history -i'
 
 #---- Additional utility function
 function get_jupyter_url() {
