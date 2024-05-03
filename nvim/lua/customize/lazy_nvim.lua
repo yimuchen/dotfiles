@@ -12,9 +12,8 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Listing packages to install
+-- Packages to install will be define in the lazy directory
 require('lazy').setup {
   spec = 'customize.lazy',
   change_detection = { notify = false },
-
 }

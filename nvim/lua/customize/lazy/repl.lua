@@ -4,24 +4,8 @@ return {
     'benlubas/molten-nvim',
     version = '<2.0.0', -- Pinning this version for now
     dependencies = {
-      {
-        '3rd/image.nvim', -- For image display
-        opts = {
-          backend = 'kitty',
-          max_width = 100,
-          max_height_window_percentage = math.huge,
-          max_width_window_percentage = math.huge,
-          window_overlap_clear_enabled = true, -- toggles images when windows are overlapped
-          window_overlap_clear_ft_ignore = { 'cmp_menu', 'cmp_docs', '' },
-        },
-      },
-      { -- Additional settings for interfacing imagemagik with luarocks
-        'vhyrro/luarocks.nvim',
-        priority = 1001, -- this plugin needs to run before anything else
-        opts = {
-          rocks = { 'magick' },
-        },
-      },
+      '3rd/image.nvim', -- For image display
+      'vhyrro/luarocks.nvim', -- Additional dependency for image.nvim
       'quarto-dev/quarto-nvim', -- Slicing markdown files into cells and allow molten to use execute
       'jmbuhr/otter.nvim', -- Enabling LSP in markdown
       'GCBallesteros/jupytext.nvim', -- Automatic conversion of buffers on open and close
@@ -62,5 +46,23 @@ return {
       vim.keymap.set('n', '<leader>mrl', runner.run_line, { desc = '[M]olten [R]un [l]ine', silent = true })
       vim.keymap.set('v', '<leader>mr', runner.run_range, { desc = '[M]olten [R]un visual', silent = true })
     end,
+  },
+  {
+    '3rd/image.nvim', -- For image display
+    opts = {
+      backend = 'kitty',
+      max_width = 100,
+      max_height_window_percentage = math.huge,
+      max_width_window_percentage = math.huge,
+      window_overlap_clear_enabled = true, -- toggles images when windows are overlapped
+      window_overlap_clear_ft_ignore = { 'cmp_menu', 'cmp_docs', '' },
+    },
+  },
+  { -- Additional settings for interfacing imagemagik with luarocks
+    'vhyrro/luarocks.nvim',
+    priority = 1001, -- this plugin needs to run before anything else
+    opts = {
+      rocks = { 'magick' },
+    },
   },
 }
