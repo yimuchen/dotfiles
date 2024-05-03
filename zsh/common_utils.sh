@@ -34,3 +34,9 @@ function cert_gen_cmd() {
    echo ">> openssl pkcs12 -in <MyCert.p12> -clcerts -nokeys -out \$HOME/.globus/usercert.pem"
    echo ">> openssl pkcs12 -in <MyCert.p12> -nocerts -out \$HOME/.globus/userkey.pem"
 }
+
+function show_term_color() {
+  for i in {0..255}; do
+    print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'};
+  done
+}
