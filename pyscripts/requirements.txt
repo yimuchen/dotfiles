@@ -1,5 +1,5 @@
 # For keepassxc interaction 
-keepassxc_browser
+pykeepass
 # For command line autocomplete
 argcomplete
 

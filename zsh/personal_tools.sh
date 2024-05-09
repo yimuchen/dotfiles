@@ -1,4 +1,4 @@
-# Required for user-level ltex
+# Required for ltex-ls
 export LD_LIBRARY_PATH=/usr/lib/jvm/$(archlinux-java get)/lib/:$LD_LIBRARY_PATH
 
 # For changing system theme when opening GUI program from command line
@@ -45,6 +45,7 @@ if [ -d $HOME/.pyscripts ]; then
       eval "$(register-python-argcomplete ${SCRIPT_FILE})"
    done
 fi
+export KPXC_DATABASE=$HOME/.ssh/Database.kdbx
 
 # Package management helper functions
 alias pacsize="expac -H M '%m\t%n' | sort -h"

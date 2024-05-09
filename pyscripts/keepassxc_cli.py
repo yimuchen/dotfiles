@@ -2,95 +2,36 @@
 # Helper methods for interacting with the keepassXC
 
 import argparse
+import getpass
 import logging
 import os
 import subprocess
-import sys
-from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 import argcomplete
-import keepassxc_browser as kpb
+from pykeepass import PyKeePass
+from pykeepass.entry import Entry
 
 
-def __make_client_idstr__() -> str:
+def get_credentials(db: PyKeePass, protocol: str, url: str) -> Entry:
     """
-    Making the client ID string. To ensure uniqueness of the string across
-    different devices and users, the user client ID use the UUID of the root
-    device (should be present for all UNIX based devices), and the UID of the
-    user.
+    Multiple URLs can be defined in the keepassxc "browser intergration"
+    session. This will be stored in the  Entry.custom_properties and should be
+    stored with the keys that starts with "KP2A_URL".
     """
-    devices = subprocess.check_output(["lsblk", "-l"]).decode("utf8").split("\n")
-    maxmatch = 0
-    device = ""
-    for d in devices:
-        if not d:
-            continue
-        devpath = d.split()[-1]
-        if os.getenv("HOME").startswith(devpath) and len(devpath) > maxmatch:
-            maxmatch = len(devpath)
-            device = d.split()[0]
-    assert device != "", "Device not found!"
-    UUID = (
-        subprocess.check_output(["lsblk", "-dno", "UUID", f"/dev/{device}"])
-        .decode("utf8")
-        .strip()
-    )
-    UID = os.getuid()
-    return f"pyscripts_keepassxc_{UUID}_{UID}"
 
+    def is_target(x: Entry) -> bool:
+        for key, val in x.custom_properties.items():
+            if not key.startswith("KP2A_URL"):
+                continue
+            if val == f"{protocol}://{url}":
+                return True
+        return False
 
-def __make_kpb_connection__() -> Tuple[kpb.Connection, kpb.Identity]:
-    """Default settings for getting a connection"""
-
-    # Generation of the file used to store the script association credentials.
-    # Making this persistent avoids multiple reconfirm when the using this
-    # script
-    identity_path = os.path.join(os.getenv("HOME"), ".pyscriptkeepass")
-
-    state_file = Path(identity_path)
-    if state_file.exists():
-        logging.getLogger().debug("Reading identity file")
-        with state_file.open("r") as f:
-            data = f.read()
-        identity = kpb.Identity.unserialize(__make_client_idstr__(), data)
-    else:
-        logging.getLogger().info("Identify file doesn't exist! Creating new")
-        identity = kpb.Identity(__make_client_idstr__())
-
-    connection = kpb.Connection()
-    connection.connect()
-    connection.change_public_keys(identity)
-
-    if not connection.test_associate(identity):
-        logging.getLogger().debug("Not associated yet, associating now...")
-        try:
-            connection.associate(identity)
-        except kpb.exceptions.ProtocolError:
-            logging.getLogger().error(
-                "Database is not open! Check to see that keepassXC is open and unlocked"
-            )
-            sys.exit(1)
-        with open(identity_path, "w") as f:
-            f.write(identity.serialize())
-    return connection, identity
-
-
-def get_credentials(protocol: str, url: str):
-    """
-    Getting the credential information. As of KeepassXC version 2.7.0, entries
-    are only searchable via the URL. Here we are allowing the same crediential
-    to be used multiple times by using the entries in the "Browser Integration"
-    section.
-    """
-    connection, identity = __make_kpb_connection__()
-    logins = connection.get_logins(identity, url=f"{protocol}://{url}")
-    if len(logins) == 0:
-        raise ValueError("URL entry not found")
-    elif len(logins) > 1:
-        raise ValueError("Multiple values found for URL!")
-    else:
-        return logins[0]
+    logins = [x for x in db.entries if is_target(x)]
+    assert len(logins) != 0, "No entries not found"
+    assert len(logins) <= 1, "Multiple values found for URL!"
+    return logins[0]
 
 
 """
@@ -110,15 +51,15 @@ def add_kinit_args(parsers: argparse.ArgumentParser):
     )
 
 
-def run_kinit(sites: List[str]):
+def run_kinit(db: PyKeePass, sites: List[str]):
     """Running kinit command, credentials should be stored as kerberos://SITE.URL"""
     for domain in sites:
-        cred = get_credentials("kerberos", domain)
+        cred = get_credentials(db, "kerberos", domain)
         # Running the kinit command
-        identity = "{}@{}".format(cred["login"], domain)
+        identity = "{}@{}".format(cred.username, domain)
         subprocess.run(
             ["/usr/bin/kinit", "-r", "7d", identity],
-            input=cred["password"],
+            input=cred.password,
             encoding="ascii",
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
@@ -155,8 +96,8 @@ def add_voms_args(parsers: argparse.ArgumentParser):
     )
 
 
-def run_voms(certificate: str, ssh_servers: List[str]):
-    cred = get_credentials("cert", certificate)
+def run_voms(db: PyKeePass, certificate: str, ssh_servers: List[str]):
+    cred = get_credentials(db, "cert", certificate)
 
     # Looping over
     for server in ssh_servers:
@@ -181,7 +122,7 @@ def run_voms(certificate: str, ssh_servers: List[str]):
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
-            p.communicate(input=str.encode(cred["password"] + "\n"))
+            p.communicate(input=str.encode(cred.password + "\n"))
             p.wait()
         except Exception as err:
             logging.getLogger().error("Error when running voms", err)
@@ -219,12 +160,13 @@ def add_rdp_args(parsers: argparse.ArgumentParser):
 
 
 def run_rdp(
+    db: PyKeePass,
     host: str,
     args: Optional[List[str]] = None,
     port: Optional[int] = None,
 ):
     """Starting the an RDP session using given credentials"""
-    cred = get_credentials("rdp", host)
+    cred = get_credentials(db, "rdp", host)
     if port is None:
         host_token = f"/v:{host}"
     else:
@@ -234,8 +176,8 @@ def run_rdp(
     cmd = [
         "xfreerdp",
         host_token,
-        f'/u:{cred["login"]}',
-        f'/p:{cred["password"]}',
+        f"/u:{cred.username}",
+        f"/p:{cred.password}",
     ]  #
     cmd.extend(args)  # Splitting the additional arguments
     subprocess.run(cmd)
@@ -244,7 +186,10 @@ def run_rdp(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         "keepassxc_cli",
-        "Password interaction for CLI tools with keepassxc browser API",
+        """
+        Password interaction for CLI tools with keepassxc browser API. Set up
+        as path to the database using the environment variable "KPXC_DATABASE".
+        """,
     )
     subparsers = parser.add_subparsers(dest="subcmd")
     add_kinit_args(subparsers)
@@ -264,7 +209,15 @@ if __name__ == "__main__":
     logging.basicConfig()
     logging.getLogger().setLevel(logging.DEBUG)
 
-    function_args = args.__dict__
+    assert (
+        "KPXC_DATABASE" in os.environ
+    ), "Define environment variable 'KPXC_DATABASE' as a path to data base"
+    dbpath = os.environ["KPXC_DATABASE"]
+
+    function_args = {
+        "db": PyKeePass(dbpath, getpass.getpass(prompt=f"Password for [{dbpath}]: ")),
+        **args.__dict__,
+    }
     function_name = function_args.pop("subcmd")
     assert function_name in __cmd_map__.keys(), "Command not recognized!!"
     __cmd_map__[function_name](**function_args)

@@ -1,0 +1,40 @@
+{
+  description = "Home Manager configuration of yimuchen";
+
+  inputs = {
+    # Specify the source of Home Manager and Nixpkgs.
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+  outputs = { nixpkgs, home-manager, ... }:
+    let
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+    in {
+      # Configurations for personal systems
+      homeConfigurations."ensc" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [ ./nix-config/host/personal.nix ];
+      };
+
+      # Adding shell that is required for developement using editors, this is
+      # mainly to include additional language servers and formatters that are
+      # not listed for interactive use.
+      devShells.default = mkShell {
+        buildInputs = [
+          # Lua tools for neovim configurations
+          pkgs.lua-language-server
+          pkgs.stylua
+
+          # Python tools 
+          (pkgs.python3.withPackages
+            (ps: [ ps.python-lsp-server ps.black ps.isort ]))
+        ];
+      };
+    };
+}
+
