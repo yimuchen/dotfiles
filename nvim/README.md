@@ -6,38 +6,18 @@ All configurations are written in `lua`.
   the are placed in the [`lau/customize`](lau/customize), with the main
   exception being the `lazy_nvim.lua` file, which lists all plugins to be
   installed.
-- Plugin and LSP specific configurations are stored in the corresponding
-  `after/plugin/<plugin>.lua` files. In particular, specific LSP configurations
-  should have their own `lspconfig-<language>.lua` file.
-- All code formatting should be handled by each of the package settings. Some
-  default settings for handling languages that I commonly use will be saved in
-  the `external` directory for handling new projects.
+- Global plugin configurations common to all editing sessions are stored in the
+  `lua/customize/lazy` directory.
+- Language specific configuration should be defined in each of their
+  `after/plugin/lspconfig-<language>.lua` file. Additional plugin
+  configurations should also be placed here.
 
 ## Decision on external dependencies
 
-To allow for this neovim configuration to be portable, we will attempt to have
-that [`mason`][mason] manage external tools used for text editing. If you want
-to use the same formatters in the usual command-line interface (as you might
-want to perform linting and formatting outside at neovim session), the mason
-path should be exposed as part of the `$PATH` environment variables (by default
-this should be `$HOME/.local/share/nvim/mason/bin`). One exception to this rule
-would be the formatter and linting tools for python, which should be coupled
-with the python virtual environment used for the session. (By default we will
-assume that the user will set up python virtual environments using
-[`conda`][conda], where we set always attempt to provide [`black`][black] and
-[`isort`][isort] as the default formatter).
-
-## Decision on external settings
-
-The detailed settings for LSP and related to linting/formattings tools should
-be handled by the automatic detection methods of the tools based on the file
-being edited, as this ensures that the formatting can be handled on a
-per-project directory basis. The neovim `lau` configurations will only handle
-which LSP tools to use as the default, while the configuration of these tools
-should be handled by the project files. Some global configurations are provided
-in the `external` folder to handle common default overrides.
-
-[mason]: https://github.com/williamboman/mason.nvim
-[conda]: https://docs.conda.io/en/latest/
-[black]: https://github.com/psf/black
-[isort]: https://pycqa.github.io/isort/
+Nix should be used to handled external dependencies. See the corresponding
+[`neovim.nix`](../nix-config/modules/neovim.nix) file to ensure that the
+required package are installed (Or install these globally using your own
+package manager if you are not using nix). Notice that language specific
+packages (language servers and formatters) should be installed in your
+development shell rather than globally, as this ensures that the tools used
+for editing matches the tools used for building and running the code.
