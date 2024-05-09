@@ -24,17 +24,24 @@
       # Adding shell that is required for developement using editors, this is
       # mainly to include additional language servers and formatters that are
       # not listed for interactive use.
-      devShells.default = mkShell {
-        buildInputs = [
+      devShells.${system}.default = pkgs.mkShell {
+        name = "Development shell for dotfiles";
+        packages = [
           # Lua tools for neovim configurations
           pkgs.lua-language-server
           pkgs.stylua
 
-          # Python tools 
+          # shell tools for environment configurations
+          pkgs.nodePackages.bash-language-server
+          pkgs.shfmt
+
+          # Python tools
           (pkgs.python3.withPackages
             (ps: [ ps.python-lsp-server ps.black ps.isort ]))
         ];
       };
+      # We need to treat this as a package,
+      defaultPackage.x86_64-linux = pkgs.zsh;
     };
 }
 
