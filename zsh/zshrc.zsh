@@ -31,7 +31,7 @@ source $HOME/.zsh/conda_path.sh
 
 if [[ ${HOST} == "ensc"* ]]; then # Personal machine
   export EDITOR='nvim'
-  alias  nv='nvim'
+  source $HOME/.zsh/nix.sh
   source $HOME/.zsh/personal_tools.sh
   typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=7   # White
   typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=232 # BLACK
