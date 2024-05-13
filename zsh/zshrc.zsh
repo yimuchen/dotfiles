@@ -25,7 +25,6 @@ export EDITOR='nvim'
 
 # Additional utility functions that will be provided in separate files
 source $HOME/.zsh/common_utils.sh
-source $HOME/.zsh/conda_path.sh
 # Additional theme settings is stored in p10k.zsh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 

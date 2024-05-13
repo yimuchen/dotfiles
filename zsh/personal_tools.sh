@@ -35,8 +35,6 @@ export G4INSTALL=/usr/share/Geant4-10.6.0/geant4make/
 export G4TMP=/tmp/
 export G4TMPDIR=/tmp/
 
-# For using the formatters typically handled by neovim-mason
-export PATH=$PATH:$HOME/.local/share/nvim/mason/bin
 
 # Custom python scripts with auto-completion
 if [ -d $HOME/.pyscripts ]; then

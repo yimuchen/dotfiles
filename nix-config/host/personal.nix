@@ -12,8 +12,11 @@
     ../modules/kitty.nix
   ];
 
-  # Miscellaneous one-off packages that one should install
-  home.packages = [ pkgs.yt-dlp ];
+  # Miscellaneous one-off packages that I will be using
+  home.packages = [
+    # pkgs.conda
+    pkgs.micromamba
+  ];
 
   home.sessionVariables = { };
 
