@@ -1,22 +1,18 @@
--- Mason will not be used for the various installation, as black, flake8 and
--- isort is are plugins not registered under mason.
-require('lspconfig').pylsp.setup {
-  settings = {
-    pylsp = {
-      plugins = {
-        -- Use flake8 instead of pycodestyle
-        flake8 = { enabled = true },
-        pycodestyle = { enabled = false },
-        -- Default formatting
-        black = { enabled = true },
-        isort = { enable = true },
-      },
+-- pylsp will be used for context aware language server
+require('lspconfig').pylsp.setup {}
+-- Using ruff-lsp as a the primary language server for linting. This should be made
+-- available in your language configurations.
+require('lspconfig').ruff_lsp.setup {
+  init_options = {
+    settings = {
+      -- Any extra CLI arguments for `ruff` go here.
+      args = {},
     },
   },
 }
 
 -- Formatting methods
-require('conform').formatters_by_ft.python = { 'isort', 'black' }
+require('conform').formatters_by_ft.python = { 'ruff_fix', 'ruff_format' }
 
 -- Additional surrounding function
 vim.api.nvim_create_autocmd('FileType', {

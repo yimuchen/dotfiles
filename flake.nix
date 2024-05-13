@@ -35,9 +35,9 @@
           pkgs.nodePackages.bash-language-server
           pkgs.shfmt
 
-          # Python tools
-          (pkgs.python3.withPackages
-            (ps: [ ps.python-lsp-server ps.black ps.isort ]))
+          # Python language tools
+          pkgs.ruff-lsp
+          (pkgs.python3.withPackages (ps: [ ps.pykeepass ps.argcomplete ]))
         ];
       };
       # We need to treat this as a package,
