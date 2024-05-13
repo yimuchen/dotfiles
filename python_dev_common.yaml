@@ -1,9 +1,11 @@
+channels:
+  - conda-forge
+  - defaults
 dependencies:
+  - ruff-lsp
   - python-lsp-server
-  # Additional dependencies for lsp
-  - python-lsp-black
+  - pip
   - pip:
-    - python-lsp-isort
     - pynvim # For REPL interaction
     - mdformat # For notebook editing in nvim
     - mdformat-frontmatter
