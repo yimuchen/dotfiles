@@ -69,9 +69,21 @@ return { -- LSP zero and language related plugins
     conform.setup {
       formatters_by_ft = {
         ['_'] = { 'trim_whitespace' },
-        ['*'] = { 'injected' }, -- Try to allow injected formatter for all items
+        -- ['*'] = { 'injected' }, -- Try to allow injected formatter for all items
       },
     }
+    vim.api.nvim_create_autocmd('FileType', {
+      pattern = { '*' },
+      callback = function(opts)
+        local ft = vim.bo[opts.buf].filetype
+        -- Special file types to exclude from injected formats
+        local exclude_inject = { svelte = true }
+        if not exclude_inject[ft] then
+          conform.formatters_by_ft['*'] = { 'injected' }
+        end
+      end,
+    })
+
     -- Setting up keybindings for formatting
     vim.keymap.set('n', '<leader>fb', function()
       conform.format { async = true, lsp_fallback = false }
