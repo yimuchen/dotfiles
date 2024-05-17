@@ -13,15 +13,21 @@
 { pkgs, config, ... }: {
   programs.neovim = {
     enable = true;
-
     # Required for REPL notebook like interaction with image preview
-    extraPython3Packages = ps: [ ps.pynvim ];
     extraLuaPackages = ps: [ ps.magick ];
+    extraPython3Packages = ps: [
+      ps.pynvim
+      ps.jupyter-client
+      # cairosvg # for image rendering
+      ps.ipython
+      # nbformat
+      # ... other python packages
+    ];
 
     # Additional package for global languages
     extraPackages = [
+      pkgs.imagemagick
       # Nix tools for global nix configurations
-      pkgs.nixd
       pkgs.nixfmt
 
       # Markdown tool
@@ -32,12 +38,15 @@
       # Additional tools used by other plugins
       pkgs.ripgrep # For telescope
     ];
-
   };
 
   # Link to the major configuration path
   home.file.".config/nvim".source = config.lib.file.mkOutOfStoreSymlink
     "${config.home.homeDirectory}/.config/home-manager/nvim";
 
-  home.packages = [ pkgs.git ];
+  home.packages = [
+    pkgs.git
+    # Language server needs to be listed as global (?)
+    pkgs.nixd
+  ];
 }

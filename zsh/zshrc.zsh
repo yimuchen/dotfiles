@@ -64,6 +64,3 @@ fi
 
 
 
-# As conda initialize is handled separately for each machine, we look at the
-# path defined in the zsh/conda_path.sh methods
-
