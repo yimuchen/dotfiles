@@ -5,7 +5,6 @@ return {
     version = '<2.0.0', -- Pinning this version for now
     dependencies = {
       '3rd/image.nvim', -- For image display
-      'vhyrro/luarocks.nvim', -- Additional dependency for image.nvim
       'quarto-dev/quarto-nvim', -- Slicing markdown files into cells and allow molten to use execute
       'jmbuhr/otter.nvim', -- Enabling LSP in markdown
       'GCBallesteros/jupytext.nvim', -- Automatic conversion of buffers on open and close
@@ -32,7 +31,15 @@ return {
       }
 
       -- Common settings for all REPL related functions
-      vim.keymap.set('n', '<leader>mi', ':MoltenInit<CR>', { silent = true, desc = '[M]olten [I]nitialize' })
+      vim.keymap.set('n', '<leader>mi', function()
+        local conda_env = os.getenv 'CONDA_DEFAULT_ENV'
+        if conda_env == nil then
+          vim.cmd 'MoltenInit'
+          return
+        else
+          vim.cmd('MoltenInit ' .. conda_env)
+        end
+      end, { silent = true, desc = '[M]olten [I]nitialize' })
       vim.keymap.set('n', '<leader>mel', ':MoltenEvaluateLine<CR>', { silent = true, desc = '[M]olten [E]valuate [L]ine' })
       vim.keymap.set('v', '<leader>mev', ':<C-u>MoltenEvaluateVisual<CR>gv', { silent = true, desc = '[M]olten [E]valuate [V]isual' })
       vim.keymap.set('n', '<leader>moh', ':MoltenHideOutput<CR>', { silent = true, desc = '[M]olten [O]utput [H]ide' })
@@ -49,6 +56,7 @@ return {
   },
   {
     '3rd/image.nvim', -- For image display
+    -- dir = '/home/ensc/Homework/Personal/image.nvim',
     opts = {
       backend = 'kitty',
       max_width = 100,
@@ -56,13 +64,6 @@ return {
       max_width_window_percentage = math.huge,
       window_overlap_clear_enabled = true, -- toggles images when windows are overlapped
       window_overlap_clear_ft_ignore = { 'cmp_menu', 'cmp_docs', '' },
-    },
-  },
-  { -- Additional settings for interfacing imagemagik with luarocks
-    'vhyrro/luarocks.nvim',
-    priority = 1001, -- this plugin needs to run before anything else
-    opts = {
-      rocks = { 'magick' },
     },
   },
 }

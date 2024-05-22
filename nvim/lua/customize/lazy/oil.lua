@@ -18,8 +18,6 @@ return {
         -- ['`'] = 'actions.cd',
         -- ['~'] = 'actions.tcd',
         -- Hard selection functions
-        ['<CR>'] = 'actions.select',
-        ['<C-t>'] = 'actions.select_tab',
         -- Interactions is the browser interface
       },
       use_default_keymaps = false,
@@ -37,8 +35,8 @@ return {
 
     -- Helpers that can be used at all levels
     local actions = require 'oil.actions'
-    register('bv', actions.open_cwd, { desc = '[B]rowser [V]iew' })
-    register('bh', actions.show_help, { desc = '[B]rowser [H]elp' })
+    register('bv', actions.open_cwd, '[B]rowser [V]iew' )
+    register('bh', actions.show_help, '[B]rowser [H]elp' )
     vim.keymap.set('n', '<leader>bm', require('oil').open, { desc = '[B]rowser [M]odify buffer directory' })
 
     vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
@@ -57,6 +55,8 @@ return {
         register('bx', actions.open_external, '[B]rowser e[X]ternal')
         -- Additional mapping used for closing browser
         vim.keymap.set('n', '<C-c>', actions.close.callback, { desc = 'Close Browser' })
+        vim.keymap.set('n', '<CR>', actions.select.callback, { desc = 'Select line' })
+        vim.keymap.set('n', '<C-t>', actions.select_tab.callback, { desc = 'Select in tabe' })
 
         -- Starting in preview by default, this doesn't work...
         -- actions.preview.callback()

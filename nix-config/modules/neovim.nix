@@ -26,7 +26,6 @@
 
     # Additional package for global languages
     extraPackages = [
-      pkgs.imagemagick
       # Nix tools for global nix configurations
       pkgs.nixfmt
 
@@ -37,6 +36,8 @@
 
       # Additional tools used by other plugins
       pkgs.ripgrep # For telescope
+      # pkgs.ueberzugpp # For image display
+      pkgs.imagemagick
     ];
   };
 
