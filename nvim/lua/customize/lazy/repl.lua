@@ -58,7 +58,7 @@ return {
     '3rd/image.nvim', -- For image display
     -- dir = '/home/ensc/Homework/Personal/image.nvim',
     opts = {
-      backend = 'kitty',
+      backend = 'ueberzug',
       max_width = 100,
       max_height_window_percentage = math.huge,
       max_width_window_percentage = math.huge,

@@ -13,6 +13,7 @@
 { pkgs, config, ... }: {
   programs.neovim = {
     enable = true;
+    withNodeJs = true;
     # Required for REPL notebook like interaction with image preview
     extraLuaPackages = ps: [ ps.magick ];
     extraPython3Packages = ps: [
@@ -26,6 +27,9 @@
 
     # Additional package for global languages
     extraPackages = [
+      # Common items for neovim
+      pkgs.tree-sitter
+
       # Nix tools for global nix configurations
       pkgs.nixfmt
 
@@ -36,7 +40,7 @@
 
       # Additional tools used by other plugins
       pkgs.ripgrep # For telescope
-      # pkgs.ueberzugpp # For image display
+      pkgs.ueberzugpp # For image display
       pkgs.imagemagick
     ];
   };
