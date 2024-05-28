@@ -46,6 +46,7 @@
         # Additional development shells
         python = (import ./devshells/python.nix pkgs);
         lua = (import ./devshells/lua.nix pkgs);
+        tex = (import ./devshells/tex.nix pkgs);
       };
     };
 }
