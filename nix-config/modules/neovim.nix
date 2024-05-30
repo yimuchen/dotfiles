@@ -32,6 +32,7 @@
 
       # Nix tools for global nix configurations
       pkgs.nixfmt
+      pkgs.nixd
 
       # Markdown tool
       # pkgs.ltex-ls # Currently not working with hybrid setup?? Fix in the future
@@ -42,6 +43,7 @@
       pkgs.ripgrep # For telescope
       pkgs.ueberzugpp # For image display
       pkgs.imagemagick
+
     ];
   };
 
@@ -49,9 +51,6 @@
   home.file.".config/nvim".source = config.lib.file.mkOutOfStoreSymlink
     "${config.home.homeDirectory}/.config/home-manager/nvim";
 
-  home.packages = [
-    pkgs.git
-    # Language server needs to be listed as global (?)
-    pkgs.nixd
-  ];
+  # Additional packages that are related to neovim usage
+  home.packages = [ pkgs.git ];
 }

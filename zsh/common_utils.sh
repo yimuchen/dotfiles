@@ -40,3 +40,10 @@ function show_term_color() {
     print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'};
   done
 }
+
+
+function pdf2sixel() {
+   gs -sDEVICE=pngalpha -o %stdout -r144 -dBATCH -dNOPAUSE -dQUIET ${1} |
+   img2sixel --width=1200 -
+}
+

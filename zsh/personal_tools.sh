@@ -100,20 +100,6 @@ function rootremote() {
    root /tmp/$(basename $remotefile)
 }
 
-function displayremote() {
-   local remotehost=$1
-   local remotefile=$2
-   local filename=$(basename $remotefile)
-   local extension=${filename##*.}
-   if [[ $extension == "pdf" ]]; then
-      ssh $remotehost "cat ${remotefile}" |
-         gs -sDEVICE=pngalpha -o %stdout -r144 -dBATCH -dNOPAUSE -dQUIET - |
-         img2sixel --width=1200 -
-   else
-      ssh $remotehost "cat ${remotefile}" |
-         img2sixel --width=1200 -
-   fi
-}
 
 function update_clock() {
    sudo ntpd -qg

@@ -20,6 +20,11 @@
         inherit pkgs;
         modules = [ ./nix-config/host/personal.nix ];
       };
+      # Configurations for LPC systems
+      homeConfigurations."yimuchen" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [ ./nix-config/host/lpc.nix ];
+      };
       # We need to treat this as a package,
       defaultPackage.${system} = pkgs.zsh;
 
