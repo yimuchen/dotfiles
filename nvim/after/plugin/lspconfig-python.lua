@@ -2,17 +2,10 @@
 require('lspconfig').pylsp.setup {}
 -- Using ruff-lsp as a the primary language server for linting. This should be made
 -- available in your language configurations.
-require('lspconfig').ruff_lsp.setup {
-  init_options = {
-    settings = {
-      -- Any extra CLI arguments for `ruff` go here.
-      args = {},
-    },
-  },
-}
+require('lspconfig').ruff.setup {}
 
 -- Formatting methods
-require('conform').formatters_by_ft.python = { 'ruff_fix', 'ruff_format' }
+require('conform').formatters_by_ft.python = { 'ruff_format', 'ruff_organize_imports' }
 
 -- Additional surrounding function
 vim.api.nvim_create_autocmd('FileType', {
