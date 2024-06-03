@@ -21,6 +21,8 @@ def get_credentials(db: PyKeePass, protocol: str, url: str) -> Entry:
     """
 
     def is_target(x: Entry) -> bool:
+        if x.url == f"{protocol}://{url}":
+            return True
         for key, val in x.custom_properties.items():
             if not key.startswith("KP2A_URL"):
                 continue
