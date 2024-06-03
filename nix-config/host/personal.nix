@@ -10,7 +10,7 @@
     ../modules/shell-helper.nix
     ../modules/zsh.nix
     ../modules/kitty.nix
-    ../modules/misc.nix # Common on-off packages
+    ../modules/misc.nix # Common one-off packages
     # ../modules/graphical/misc.nix
     # ../modules/graphical/firefox.nix
   ];

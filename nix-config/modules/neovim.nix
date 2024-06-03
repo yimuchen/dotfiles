@@ -6,7 +6,7 @@
 # language-specific tools should be determined by the development environment
 # you are working with, and not with this global configuration. There are 3
 # exceptions to this:
-# 
+#
 # - Nix (used to configure global nix settings and package flakes)
 # - Markdown (used as my noting format, and not nessecarily tied to a package)
 
@@ -25,17 +25,25 @@
       # ... other python packages
     ];
 
-    # Additional package for global languages
+    # Additional package for "global" languages
+    #
+    # Nix - since all flake needs to be defined before directory can be setup
+    # Lua - As any package may require a custom neovim configuration
+    # Markdown - Use to generic note taking
     extraPackages = [
       # Common items for neovim
       pkgs.tree-sitter
 
-      # Nix tools for global nix configurations
+      # Nix tools
       pkgs.nixfmt
       pkgs.nixd
 
+      # Lua tools
+      pkgs.lua-language-server
+      pkgs.stylua
+
       # Markdown tool
-      # pkgs.ltex-ls # Currently not working with hybrid setup?? Fix in the future
+      # pkgs.ltex-ls # Currently not working with hybrid setup??
       pkgs.marksman
       pkgs.mdformat
 

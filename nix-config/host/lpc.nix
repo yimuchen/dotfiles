@@ -8,15 +8,16 @@
   imports = [ ../modules/neovim.nix ../modules/zsh.nix ../modules/misc.nix ];
 
   # Miscellaneous one-off packages on LPC machines
-  home.packages = [ ];
+  home.packages = [
+    pkgs.cacert # Required for newer versions of git
+  ];
 
   home.sessionVariables = {
     MAMBA_ROOT_PREFIX = "${config.home.homeDirectory}/.mamba";
     DEFAULT_DEVSHELL_STORE =
       "${config.home.homeDirectory}/.config/home-manager/devshells";
     # Resetting the cert file - required for the new files of nix
-    SSL_CERT_FILE =
-      "${config.home.homeDirectory}/.nix-profile/etc/ssl/certs/ca-bundle.crt";
+    SSL_CERT_FILE = "${config.home.homeDirectory}/etc/ssl/certs/ca-bundle.crt";
   };
 
   # Let Home Manager install and manage itself.
@@ -28,8 +29,5 @@
     config.lib.file.mkOutOfStoreSymlink "/uscms_data/d3/yimuchen/mamba";
   home.file.".conda".source =
     config.lib.file.mkOutOfStoreSymlink "/uscms_data/d3/yimuchen/conda";
-  # Exposing the system settings as part of the installation
-  #home.file.".nix-profile/etc/passwd".source =
-  #  config.lib.file.mkOutOfStoreSymlink "/etc/passwd";
 }
 

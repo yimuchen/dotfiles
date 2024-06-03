@@ -21,10 +21,11 @@
         modules = [ ./nix-config/host/personal.nix ];
       };
       # Configurations for LPC systems
-      homeConfigurations."yimuchen" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [ ./nix-config/host/lpc.nix ];
-      };
+      homeConfigurations."yimuchen" =
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./nix-config/host/lpc.nix ];
+        };
       # We need to treat this as a package,
       defaultPackage.${system} = pkgs.zsh;
 
@@ -45,7 +46,8 @@
 
             # Python language tools
             pkgs.ruff-lsp
-            (pkgs.python3.withPackages (ps: [ ps.pykeepass ps.argcomplete ]))
+            (pkgs.python3.withPackages
+              (ps: [ ps.pykeepass ps.argcomplete ps.python-lsp-server ]))
           ];
         };
         # Additional development shells
