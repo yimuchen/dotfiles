@@ -180,7 +180,7 @@ end
 local run_rsync = function(dry_run, auto_trigger)
   local config = get_rsync_config()
   if config == nil then
-    vim.notify_once('Cannot find valid configurations file', vim.log.levels.INFO)
+    -- vim.notify_once('Cannot find valid configurations file', vim.log.levels.INFO)
     return
   end
   for _, remote_config in ipairs(config.remote_hosts) do

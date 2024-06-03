@@ -1,8 +1,13 @@
--- pylsp will be used for context aware language server
-require('lspconfig').pylsp.setup {}
--- Using ruff-lsp as a the primary language server for linting. This should be made
--- available in your language configurations.
-require('lspconfig').ruff.setup {}
+if vim.fn.executable 'pylsp' then
+  -- pylsp will be used for context aware language server
+  require('lspconfig').pylsp.setup {}
+end
+
+if vim.fn.executable 'ruff' then
+  -- Using ruff-lsp as a the primary language server for linting. This should
+  -- be made available in your language configurations.
+  require('lspconfig').ruff.setup {}
+end
 
 -- Formatting methods
 require('conform').formatters_by_ft.python = { 'ruff_format', 'ruff_organize_imports' }

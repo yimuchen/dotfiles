@@ -1,4 +1,4 @@
-return { -- LSP zero and language related plugins
+return { -- LSP configurations and language related plugins
   {
     'neovim/nvim-lspconfig',
     dependencies = {
@@ -8,7 +8,6 @@ return { -- LSP zero and language related plugins
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-nvim-lsp',
       'saadparwaiz1/cmp_luasnip',
-      'lspcontainers/lspcontainers.nvim', -- For environments that are place in containers
       { -- Snippet engine for writing custom snippets
         'L3MON4D3/LuaSnip',
         version = 'v2.*',
@@ -120,8 +119,9 @@ return { -- LSP zero and language related plugins
         end,
       })
 
-      -- Additional wrapping, as formatter should not (by default) try to modify
-      -- wrapping since this can potentially break the meaning of strings
+      -- Additional wrapping, as formatter should not (by default) try to
+      -- modify wrapping since this can potentially break the meaning of
+      -- strings
       vim.keymap.set('n', '<leader>fp', 'gwap', { desc = '[F]ormat [P]aragraph (wrapping)' })
 
       -- Because of how mini.ai works. we need to trigger the keystrokes in
