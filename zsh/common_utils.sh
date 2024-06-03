@@ -41,7 +41,6 @@ function show_term_color() {
   done
 }
 
-
 function pdf2sixel() {
    gs -sDEVICE=pngalpha -o %stdout -r144 -dBATCH -dNOPAUSE -dQUIET ${1} |
    img2sixel --width=1200 -
