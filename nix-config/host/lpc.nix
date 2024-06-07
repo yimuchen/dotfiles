@@ -10,6 +10,7 @@
   # Miscellaneous one-off packages on LPC machines
   home.packages = [
     pkgs.cacert # Required for newer versions of git
+    pkgs.clang-tools # For CMSSW development!
   ];
 
   home.sessionVariables = {

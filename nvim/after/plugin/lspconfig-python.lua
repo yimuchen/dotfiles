@@ -1,9 +1,9 @@
-if vim.fn.executable 'pylsp' then
+if vim.fn.executable 'pylsp' ~= 0 then
   -- pylsp will be used for context aware language server
   require('lspconfig').pylsp.setup {}
 end
 
-if vim.fn.executable 'ruff' then
+if vim.fn.executable 'ruff' ~= 0 then
   -- Using ruff-lsp as a the primary language server for linting. This should
   -- be made available in your language configurations.
   require('lspconfig').ruff.setup {}
