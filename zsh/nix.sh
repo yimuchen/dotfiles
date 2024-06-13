@@ -10,4 +10,5 @@ export PATH=$HOME/.nix-profile/bin/:$PATH
 alias nshell-py="nix develop $(realpath $DEFAULT_DEVSHELL_STORE)#python -c $SHELL"
 alias nshell-lua="nix develop $(realpath $DEFAULT_DEVSHELL_STORE)#lua -c $SHELL"
 alias nshell-tex="nix develop $(realpath $DEFAULT_DEVSHELL_STORE)#tex -c $SHELL"
+alias update-hm-flake="nix flake update --flake $(realpath ~/.config/home-manager)"
 

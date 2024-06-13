@@ -17,7 +17,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Which plugins would you like to load?
 plugins=(git vi-mode conda-zsh-completion)
-autoload -U compinit && compinit
+autoload -U compinit && compinit -u
 source $ZSH/oh-my-zsh.sh
 
 # User configurations - main items will be split into other files
@@ -47,6 +47,7 @@ elif [[ $HOST == "cmslpc"*".fnal.gov" ]] ; then
 elif [[ $HOST == "login-el"*".uscms.org" ]]; then
   source $HOME/.zsh/cmssw_tools.sh
 elif [[ $HOST == "lxplus"*".cern.ch" ]] ; then
+  source $HOME/.zsh/nix.sh
   source $HOME/.zsh/cmssw_tools.sh
   typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=19  # DEEPBLUE
   typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=7
@@ -61,6 +62,3 @@ else
   typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=1   # RED
   typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=232 # BLACK
 fi
-
-
-
