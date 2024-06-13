@@ -26,6 +26,12 @@
           inherit pkgs;
           modules = [ ./nix-config/host/lpc.nix ];
         };
+      # Configuration for lxplus systems
+      homeConfigurations."yichen" =
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./nix-config/host/lxplus.nix ];
+        };
       # We need to treat this as a package,
       defaultPackage.${system} = pkgs.zsh;
 
