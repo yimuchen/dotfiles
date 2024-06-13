@@ -9,6 +9,7 @@
     ../modules/neovim.nix
     ../modules/shell-helper.nix
     ../modules/zsh.nix
+    ../modules/tmux.nix
     ../modules/kitty.nix
     ../modules/misc.nix # Common one-off packages
     # ../modules/graphical/misc.nix

@@ -5,7 +5,12 @@
   home.stateVersion = "23.11"; # DO NOT EDIT!!
 
   # Importing the other modules
-  imports = [ ../modules/neovim.nix ../modules/zsh.nix ../modules/misc.nix ];
+  imports = [
+    ../modules/neovim.nix
+    ../modules/zsh.nix
+    ../modules/tmux.nix
+    ../modules/misc.nix
+  ];
 
   # Miscellaneous one-off packages on LPC machines
   home.packages = [
