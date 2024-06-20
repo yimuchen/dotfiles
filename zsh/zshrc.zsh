@@ -16,16 +16,30 @@ zstyle ':omz:update' mode disabled  # disable automatic updates
 # Uncomment the following line to change how often to auto-update (in days).
 # zstyle ':omz:update' frequency 13
 
+# Additional packages that we should make sure to install
+if [ ! -d ${ZSH} ] ; then
+  mkdir -p ${ZSH}
+  git clone https://github.com/ohmyzsh/ohmyzsh.git ${ZSH}
+fi
+if [ ! -d ${ZSH_CUSTOM}/themes/powerlevel10k ] ; then
+  mkdir -p ${ZSH_CUSTOM}/themes
+  git clone https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM}/themes/powerlevel10k
+fi
+if [ ! -d ${ZSH_CUSTOM}/plugins/conda-zsh-completion ] ; then
+  mkdir -p ${ZSH_CUSTOM}/plugins
+  git clone https://github.com/conda-incubator/conda-zsh-completion.git ${ZSH_CUSTOM}/plugins/conda-zsh-completion
+fi
+
 # Which plugins would you like to load?
 plugins=(git vi-mode conda-zsh-completion)
 autoload -U compinit && compinit -u
-source $ZSH/oh-my-zsh.sh
 
-# User configurations - main items will be split into other files
-export EDITOR='nvim'
+# Loading in the plugins
+source $ZSH/oh-my-zsh.sh
 
 # Additional utility functions that will be provided in separate files
 source $HOME/.zsh/common_utils.sh
+
 # Additional theme settings is stored in p10k.zsh
 [[ ! -f ~/.zsh/p10k.zsh ]] || source ~/.zsh/p10k.zsh
 

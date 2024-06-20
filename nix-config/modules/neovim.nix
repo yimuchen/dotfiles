@@ -59,6 +59,8 @@
   home.file.".config/nvim".source = config.lib.file.mkOutOfStoreSymlink
     "${config.home.homeDirectory}/.config/home-manager/nvim";
 
+  home.sessionVariables."EDITOR" = "nvim";
+
   # Additional packages that are related to neovim usage
   home.packages = [ pkgs.git ];
 }
