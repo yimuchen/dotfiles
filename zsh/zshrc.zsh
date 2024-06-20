@@ -6,10 +6,11 @@ fi
 # Path to your oh-my-zsh installation. And some additional variable to handle
 # oh-my-zsh settings. Do not attempt to change the order
 export ZSH="$HOME/.oh-my-zsh"
+export ZSH_CUSTOM="$HOME/.omz-custom/"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Oh-my-zsh auto update settings
-# zstyle ':omz:update' mode disabled  # disable automatic updates
+zstyle ':omz:update' mode disabled  # disable automatic updates
 # zstyle ':omz:update' mode auto      # update automatically without asking
 # zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 # Uncomment the following line to change how often to auto-update (in days).
@@ -26,7 +27,7 @@ export EDITOR='nvim'
 # Additional utility functions that will be provided in separate files
 source $HOME/.zsh/common_utils.sh
 # Additional theme settings is stored in p10k.zsh
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f ~/.zsh/p10k.zsh ]] || source ~/.zsh/p10k.zsh
 
 if [[ ${HOST} == "ensc"* ]]; then # Personal machine
   export EDITOR='nvim'
