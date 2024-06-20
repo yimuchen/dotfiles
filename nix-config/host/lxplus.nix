@@ -3,6 +3,7 @@
   home.username = "yichen";
   home.homeDirectory = "/afs/cern.ch/user/y/yichen";
   home.stateVersion = "23.11"; # DO NOT EDIT!!
+  programs.home-manager.enable = true; # Let home-manager handle itself
 
   # Importing the other modules
   imports = [
@@ -23,11 +24,9 @@
     DEFAULT_DEVSHELL_STORE =
       "${config.home.homeDirectory}/.config/home-manager/devshells";
     # Resetting the cert file - required for the new files of nix
-    SSL_CERT_FILE = "${config.home.homeDirectory}/etc/ssl/certs/ca-bundle.crt";
+    SSL_CERT_FILE =
+      "${config.home.homeDirectory}/.nix-profile/etc/ssl/certs/ca-bundle.crt";
   };
-
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
 
   # Soft linking in AFS currently does not work... defining as path instead.
   # This means that hot reloading of files doesn't work, unfortunately : (

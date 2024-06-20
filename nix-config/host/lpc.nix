@@ -1,8 +1,9 @@
-# Configurations for the personal machine setups
+# Configurations for LPC related setup
 { config, pkgs, ... }: {
   home.username = "yimuchen";
   home.homeDirectory = "/uscms/homes/y/yimuchen";
   home.stateVersion = "23.11"; # DO NOT EDIT!!
+  programs.home-manager.enable = true; # Let home-manager handle itself
 
   # Importing the other modules
   imports = [
@@ -11,6 +12,9 @@
     ../modules/tmux.nix
     ../modules/misc.nix
   ];
+
+  # Addition settings for each machine
+  programs.tmux.shell = "${pkgs.zsh}/bin/zsh";
 
   # Miscellaneous one-off packages on LPC machines
   home.packages = [
@@ -23,11 +27,9 @@
     DEFAULT_DEVSHELL_STORE =
       "${config.home.homeDirectory}/.config/home-manager/devshells";
     # Resetting the cert file - required for the new files of nix
-    SSL_CERT_FILE = "${config.home.homeDirectory}/etc/ssl/certs/ca-bundle.crt";
+    SSL_CERT_FILE =
+      "${config.home.homeDirectory}/.nix-profile/etc/ssl/certs/ca-bundle.crt";
   };
-
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
 
   # Additional directory soft links to ensure that large files of custom
   # packages are placed in
