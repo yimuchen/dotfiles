@@ -1,5 +1,5 @@
 # Required for ltex-ls
-export LD_LIBRARY_PATH=/usr/lib/jvm/$(archlinux-java get)/lib/:$LD_LIBRARY_PATH
+# export LD_LIBRARY_PATH=/usr/lib/jvm/$(archlinux-java get)/lib/:$LD_LIBRARY_PATH
 
 # For changing system theme when opening GUI program from command line
 export XDG_CONFIG_HOME=$HOME/.config # KDE command line application theming

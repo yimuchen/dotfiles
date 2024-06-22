@@ -12,10 +12,12 @@
     ../modules/zsh.nix
     ../modules/tmux.nix
     ../modules/kitty.nix
+    ../modules/git.nix
     ../modules/misc.nix # Common one-off packages
 
     # Graphical items
     ../modules/graphical/fonts.nix
+    ../modules/graphical/inputs.nix
     # ../modules/graphical/misc.nix
     # ../modules/graphical/firefox.nix
   ];

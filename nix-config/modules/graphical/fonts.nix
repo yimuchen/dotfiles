@@ -1,5 +1,14 @@
 { config, pkgs, ... }: {
-  home.packages = [ ]; # Font still being centrally managed right now..
+  home.packages = [
+    # Terminal fonts to install
+    pkgs.fira-code-nerdfont
+    # Fonts to be used by system display
+    pkgs.noto-fonts
+    pkgs.noto-fonts-cjk-sans
+    pkgs.noto-fonts-cjk-serif
+    # Fonts commonly used for typesettings
+    pkgs.libertine
+  ];
 
   fonts.fontconfig = {
     enable = true;
