@@ -18,8 +18,8 @@
     # Graphical items
     ../modules/graphical/fonts.nix
     ../modules/graphical/inputs.nix
-    # ../modules/graphical/misc.nix
-    # ../modules/graphical/firefox.nix
+    ../modules/graphical/misc.nix
+    ../modules/graphical/firefox.nix
   ];
 
   # Miscellaneous one-off packages to install on personal machines
@@ -30,6 +30,15 @@
     MAMBA_ROOT_PREFIX = "${config.home.homeDirectory}/.mamba";
     DEFAULT_DEVSHELL_STORE =
       "${config.home.homeDirectory}/.config/home-manager/devshells";
+    KPXC_DATABASE = "${config.home.homeDirectory}/.ssh/credentials.kdbx";
+    KRB5CCNAME = "DIR:${config.home.homeDirectory}/.temp.persist";
   };
+
+  # Pulling additional settings from the untracked sensitive configurations
+  # directory.
+  home.file.".ssh/config".source = config.lib.file.mkOutOfStoreSymlink
+    "${config.home.homeDirectory}/configurations/sensitive/sshconfig";
+  home.file.".ssh/credentials.kdbx".source = config.lib.file.mkOutOfStoreSymlink
+    "${config.home.homeDirectory}/configurations/sensitive/credentials.kdbx";
 }
 

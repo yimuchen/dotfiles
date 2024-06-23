@@ -43,7 +43,7 @@
       pkgs.stylua
 
       # Markdown tool
-      # pkgs.ltex-ls # Currently not working with hybrid setup??
+      pkgs.ltex-ls # Currently not working with hybrid setup??
       pkgs.marksman
       pkgs.mdformat
 

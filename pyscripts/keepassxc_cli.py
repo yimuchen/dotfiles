@@ -60,7 +60,7 @@ def run_kinit(db: PyKeePass, sites: List[str]):
         # Running the kinit command
         identity = "{}@{}".format(cred.username, domain)
         subprocess.run(
-            ["/usr/bin/kinit", "-r", "7d", identity],
+            ["kinit", "-r", "7d", identity],
             input=cred.password,
             encoding="ascii",
             stdout=subprocess.DEVNULL,

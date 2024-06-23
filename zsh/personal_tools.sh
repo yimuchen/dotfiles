@@ -17,14 +17,6 @@ export XMODIFIERS=@im=fcitx
 export LIBVA_DRIVERS_PATH=/usr/lib/dri/
 export LIBVA_DRIVER_NAME=vdpau
 
-# Kerberose for multiple credential settings
-export KRB5CCNAME=DIR:$HOME/ArchConfig/long_tmp
-
-# SYSTEM ROOT installation
-export ROOTSYS=/usr
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib
-export PATH=$PATH:$ROOTSYS/bin
-
 # Geant4 system compilation
 export G4ENSDFSTATEDATA=/usr/share/geant4-ensdfstatedata/G4ENSDFSTATE2.2/
 export G4REALSURFACEDATA=/usr/share/geant4-realsurfacedata/RealSurface2.1.1/
@@ -43,7 +35,6 @@ if [ -d $HOME/.pyscripts ]; then
       eval "$(register-python-argcomplete ${SCRIPT_FILE})"
    done
 fi
-export KPXC_DATABASE=$HOME/.ssh/Database.kdbx
 
 # Package management helper functions
 alias pacsize="expac -H M '%m\t%n' | sort -h"
