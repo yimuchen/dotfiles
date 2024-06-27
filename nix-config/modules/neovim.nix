@@ -51,7 +51,7 @@
       pkgs.ripgrep # For telescope
       pkgs.ueberzugpp # For image display
       pkgs.imagemagick
-
+      pkgs.libgcc # Compiler required for tree-sitter and luarocks
     ];
   };
 

@@ -1,0 +1,11 @@
+[Animation]
+Frames=10
+
+[Appearance]
+Skin=arc-dark
+
+[Dialogs]
+FirstRun=false
+
+[Window]
+Height=90

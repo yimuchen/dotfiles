@@ -6,6 +6,9 @@
     # placed in the plasma.nix configurations 
     pkgs.kdePackages.yakuake
     pkgs.kdePackages.konsole
+    # KDE theming
+    pkgs.arc-kde-theme
+    pkgs.papirus-icon-theme
     # For interacting with key data base
     pkgs.keepassxc
     # For video and audio playback
@@ -21,9 +24,14 @@
     pkgs.gimp
     pkgs.obs-studio
     pkgs.digikam
+    pkgs.inkscape
+    # Document editing 
+    pkgs.libreoffice-qt6-fresh
     # Work related
     pkgs.kicad
     pkgs.freecad
     pkgs.virt-manager
+    pkgs.freerdp3
+    pkgs.thunderbird # Not migrating to NIX management for now.
   ];
 }

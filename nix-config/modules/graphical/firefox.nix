@@ -33,6 +33,7 @@
       name = "Firefox - work";
       genericName = "Web Browser";
       exec = "firefox -P work %U";
+      icon = "firefox-nightly";
       terminal = false;
       categories = [ "Application" "Network" "WebBrowser" ];
       mimeType = [ "text/html" "text/xml" ];
@@ -41,6 +42,7 @@
       name = "Firefox - default";
       genericName = "Web Browser";
       exec = "firefox -P casual %U";
+      icon = "firefox";
       terminal = false;
       categories = [ "Application" "Network" "WebBrowser" ];
       mimeType = [ "text/html" "text/xml" ];

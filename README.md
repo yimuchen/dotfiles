@@ -36,6 +36,8 @@ use. The rule of thumb would be:
   configuration language (like language specific tools for `neovim`), these
   should be handled as nix dependencies. This is mainly to help ensure that
   consistent development session can be configured with nix flake files.
+- All setting up of symbolic links for various configurations that are not
+  easily handled by existing home manager.
 
 ## Shell (ZSH)
 
@@ -45,22 +47,9 @@ machines, as well as additional settings for the plugins will be added to the
 contents of the [`zsh`](zsh) folder. A simple parsing is done on the main
 `zshrc` script to determine the machine type and load in the required methods.
 
-Assuming that you already have `zsh` installed, the settings can be loaded in
-with the following commands:
-
-```bash
-# First time setup for oh-my-zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-# First time setup for powerlevel10k zsh theme and conda zsh completion
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-git clone https://github.com/esc/conda-zsh-completion ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/conda-zsh-completion
-
-# Linking the various files
-ln -sf $PWD/zsh             $HOME/.zsh
-ln -sf $HOME/.zsh/zshrc.zsh $HOME/.zshrc
-ln -sf $HOME/.zsh/p10k.zsh  $HOME/.p10k.zsh
-```
+Assuming that you already have `zsh` and `git` installed, the required
+repositories will automatically be loaded on the first time starting up a `zsh`
+shell.
 
 ## Python helper scripts
 
@@ -91,20 +80,6 @@ also runs into external dependency management, this should always be coupled
 with the other session configurations (see the `README.md` file in the
 [`nvim`](nvim) directory for more information).
 
-To install the required plugins using [`lazy.nvim`][lazy.nvim] after installing
-the case neovim, first link the configuration files to the common configuration
-location:
-
-```bash
-## In case you want to make sure you start with a clean state. Be care that you
-## backup your own configuration!!
-
-# rm $HOME/.config/nvim
-# rm $HOME/.local/share/nvim
-
-ln -sf $PWD/nvim $HOME/.config/nvim
-```
-
 On the initial start up the lazy package manager should automatically start
 pulling the required packages. For how the neovim configuration is done, see
 the documentation in [`nvim/README.md`](nvim) file.
@@ -116,13 +91,6 @@ documents generate without minimum document format restrictions and _not_
 publication ready. For any serious publications, it would be better to directly
 create a separate copy to ensure the object styles are properly frozen.
 
-The usage of this should simply be the linking the `texmf` directory to your
-home directory:
-
-```bash
-ln -sf $PWD/texmf $HOME/texmf
-```
-
 The packages here expected most of the common [`texlive`][texlive] packages for
 math writing are installed in the system (which should be the case after
 installing the more common `texlive-*` packages from the official Arch
@@ -130,24 +98,16 @@ repository) Some external dependencies might be needed for the font
 configuration to function. For additional details, see the
 [`texmf/tex/latex/README`](texmf/tex/latex).
 
-## Conda
+## Plasma configurations
 
-For setting up python virtual environment for python code development, we
-expect the user the use [`conda`][conda] to create the virtual environment,
-then use `pip install -e ./<package>` to include the developing package in edit
-mode. For all `conda` environments, the default python linter (flake8) and
-formatters (`black` and `isort`) to be always available to the virtual environment.
-(TODO: check how flake8 interacts with the LSP settings). To use this setting
-simply link `condarc` to the home folder.
+Currently, plasma configurations are not easily performed by nix, we will be
+keeping track of the required `rc` files in the plasma directory. The file
+structure in the `plasma` should follow how the files are structured in the
+`~/.config` directory. The construction of the symlink as well as why certain
+items are required to kept will be handled by `nix` home-manager.
 
-```bash
-ln -sf $PWD/condarc $HOME/.condarc
-```
 
-[conda]: https://docs.conda.io/en/latest/
 [homemanager]: https://nix-community.github.io/home-manager/
-[lazy.nvim]: https://github.com/folke/lazy.nvim
-[mason]: https://github.com/williamboman/mason.nvim
 [nix]: https://nixos.org/
 [oh-my-zsh]: https://github.com/ohmyzsh/ohmyzsh/tree/master
 [primetut]: https://www.youtube.com/watch?v=w7i4amO_zaE

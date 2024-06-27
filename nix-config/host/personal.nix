@@ -16,10 +16,10 @@
     ../modules/misc.nix # Common one-off packages
 
     # Graphical items
-    ../modules/graphical/fonts.nix
-    ../modules/graphical/inputs.nix
-    ../modules/graphical/misc.nix
     ../modules/graphical/firefox.nix
+    ../modules/graphical/plasma.nix
+    ../modules/graphical/fonts.nix
+    ../modules/graphical/misc.nix
   ];
 
   # Miscellaneous one-off packages to install on personal machines
@@ -40,5 +40,13 @@
     "${config.home.homeDirectory}/configurations/sensitive/sshconfig";
   home.file.".ssh/credentials.kdbx".source = config.lib.file.mkOutOfStoreSymlink
     "${config.home.homeDirectory}/configurations/sensitive/credentials.kdbx";
+
+  # Additional user-level services that I want to use
+  services.syncthing = {
+    enable = true;
+    extraOptions = [
+      "--gui-address=127.0.0.1:8000" # Using port 8000
+    ];
+  };
 }
 
