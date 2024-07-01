@@ -3,6 +3,15 @@ let
   makeln = config.lib.file.mkOutOfStoreSymlink;
   plasmadir = "${config.home.homeDirectory}/.config/home-manager/plasma";
 in {
+  # Additional packages to install for themeing configurations
+  home.packages = [
+    pkgs.kdePackages.breeze-gtk
+    pkgs.kdePackages.qt6gtk2
+    pkgs.arc-theme
+    pkgs.arc-kde-theme
+    pkgs.papirus-icon-theme
+  ];
+
   # For workspace setup
   home.file.".local/plasma-org.kde.plasma.desktop-appletsrc".source =
     makeln "${plasmadir}/plasma-org.kde.plasma.desktop-appletsrc";

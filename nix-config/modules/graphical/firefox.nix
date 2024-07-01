@@ -1,4 +1,7 @@
 { config, pkgs, ... }: {
+  # Additional requirements for KDE integrations
+  home.packages = [ pkgs.kdePackages.plasma-browser-integration ];
+
   programs.firefox = {
     enable = true;
     policies = {

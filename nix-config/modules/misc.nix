@@ -8,6 +8,9 @@
     pkgs.htop # For monitoring
     pkgs.freerdp3 # For remote desktop (xrdp)
     pkgs.tree # For directory structure dumps
+
+    # For bundling files
+    pkgs.zip
   ];
 }
 

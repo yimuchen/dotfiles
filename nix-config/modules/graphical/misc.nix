@@ -3,12 +3,9 @@
   # additional configurations
   home.packages = [
     # Terminal interaction Notice that KDE specific configurations will be
-    # placed in the plasma.nix configurations 
+    # placed in the plasma.nix configurations
     pkgs.kdePackages.yakuake
     pkgs.kdePackages.konsole
-    # KDE theming
-    pkgs.arc-kde-theme
-    pkgs.papirus-icon-theme
     # For interacting with key data base
     pkgs.keepassxc
     # For video and audio playback
@@ -25,7 +22,7 @@
     pkgs.obs-studio
     pkgs.digikam
     pkgs.inkscape
-    # Document editing 
+    # Document editing
     pkgs.libreoffice-qt6-fresh
     # Work related
     pkgs.kicad
