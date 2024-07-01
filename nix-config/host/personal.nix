@@ -14,6 +14,7 @@
     ../modules/kitty.nix
     ../modules/git.nix
     ../modules/misc.nix # Common one-off packages
+    ../modules/misc-personal.nix # One-off packages for personal
 
     # Graphical items
     ../modules/graphical/firefox.nix
