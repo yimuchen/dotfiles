@@ -13,11 +13,11 @@ in {
   ];
 
   # For workspace setup
-  home.file.".local/plasma-org.kde.plasma.desktop-appletsrc".source =
+  home.file.".config/plasma-org.kde.plasma.desktop-appletsrc".source =
     makeln "${plasmadir}/plasma-org.kde.plasma.desktop-appletsrc";
 
   # For global behavior
-  home.file.".local/kglobalshortcutsrc".source =
+  home.file.".config/kglobalshortcutsrc".source =
     makeln "${plasmadir}/kglobalshortcutsrc";
 
   # Terminal applications
