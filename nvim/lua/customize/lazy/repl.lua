@@ -4,7 +4,7 @@ return {
     'benlubas/molten-nvim',
     version = '<2.0.0', -- Pinning this version for now
     dependencies = {
-      '3rd/image.nvim', -- For image display
+      -- '3rd/image.nvim', -- For image display
       'quarto-dev/quarto-nvim', -- Slicing markdown files into cells and allow molten to use execute
       'jmbuhr/otter.nvim', -- Enabling LSP in markdown
       'GCBallesteros/jupytext.nvim', -- Automatic conversion of buffers on open and close
@@ -54,16 +54,19 @@ return {
       vim.keymap.set('v', '<leader>mr', runner.run_range, { desc = '[M]olten [R]un visual', silent = true })
     end,
   },
-  {
-    '3rd/image.nvim', -- For image display
-    -- dir = '/home/ensc/Homework/Personal/image.nvim',
-    opts = {
-      backend = 'kitty',
-      max_width = 100,
-      max_height_window_percentage = math.huge,
-      max_width_window_percentage = math.huge,
-      window_overlap_clear_enabled = true, -- toggles images when windows are overlapped
-      window_overlap_clear_ft_ignore = { 'cmp_menu', 'cmp_docs', '' },
-    },
-  },
+  -- {
+  --   '3rd/image.nvim', -- For image display
+  --   -- dir = '/home/ensc/Homework/Personal/image.nvim',
+  --   opts = {
+  --     backend = 'kitty',
+  --     rocks = {
+  --       enable = false,
+  --     },
+  --     max_width = 100,
+  --     max_height_window_percentage = math.huge,
+  --     max_width_window_percentage = math.huge,
+  --     window_overlap_clear_enabled = true, -- toggles images when windows are overlapped
+  --     window_overlap_clear_ft_ignore = { 'cmp_menu', 'cmp_docs', '' },
+  --   },
+  -- },
 }

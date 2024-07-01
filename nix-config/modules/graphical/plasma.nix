@@ -10,6 +10,7 @@ in {
     pkgs.arc-theme
     pkgs.arc-kde-theme
     pkgs.papirus-icon-theme
+    pkgs.kdePackages.partitionmanager
   ];
 
   # For workspace setup

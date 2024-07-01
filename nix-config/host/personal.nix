@@ -21,6 +21,7 @@
     ../modules/graphical/plasma.nix
     ../modules/graphical/fonts.nix
     ../modules/graphical/misc.nix
+    ../modules/graphical/steam.nix
   ];
 
   # Miscellaneous one-off packages to install on personal machines
