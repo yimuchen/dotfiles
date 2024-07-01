@@ -4,18 +4,6 @@ RightButton;NoModifier=org.kde.contextmenu
 [ActionPlugins][1]
 RightButton;NoModifier=org.kde.contextmenu
 
-[Containments][1]
-ItemGeometries-1504x1003=
-ItemGeometries-1805x1203=
-ItemGeometriesHorizontal=
-activityId=0357de1f-ed8a-43c0-ab27-35497497acdf
-formfactor=0
-immutability=1
-lastScreen=0
-location=0
-plugin=org.kde.plasma.folder
-wallpaperplugin=org.kde.image
-
 [Containments][2]
 activityId=
 formfactor=2
@@ -87,8 +75,19 @@ SystrayContainmentId=8
 [Containments][2][General]
 AppletOrder=3;5;6;7;19;20
 
-[Containments][21]
-activityId=0357de1f-ed8a-43c0-ab27-35497497acdf
+[Containments][22]
+ItemGeometries-2560x1440=
+ItemGeometriesHorizontal=
+activityId=98d961c4-75a5-45ac-b263-578cc19dd34c
+formfactor=0
+immutability=1
+lastScreen=0
+location=0
+plugin=org.kde.plasma.folder
+wallpaperplugin=org.kde.image
+
+[Containments][23]
+activityId=98d961c4-75a5-45ac-b263-578cc19dd34c
 formfactor=0
 immutability=1
 lastScreen=1
