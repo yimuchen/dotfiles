@@ -21,15 +21,22 @@
     # Interactions with PDF
     (pkgs.writeScriptBin "keepassxc_cli.py"
       (builtins.readFile ../../pyscripts/keepassxc_cli.py))
+    # Method for calling the obtaining package version informations 
+    (pkgs.writeScriptBin "nix-check-update.py"
+      (builtins.readFile ../../pyscripts/nix-check-update.py))
   ];
 
   # Additional helper to keep track of home-manager packages
-  home.file.".local/state/hm-packages".text =
-  let
+  home.file.".local/state/hm-packages".text = let
     packages = builtins.map (p: "${p.name}") config.home.packages;
-    sortedUnique = builtins.sort builtins.lessThan (pkgs.lib.lists.unique packages);
+    sortedUnique =
+      builtins.sort builtins.lessThan (pkgs.lib.lists.unique packages);
     formatted = builtins.concatStringsSep "\n" sortedUnique;
-  in
-    formatted;
+  in formatted;
+
+  home.sessionVariables = {
+    NIXCUSTOM_HM_PACKAGES =
+      "${config.home.homeDirectory}/.local/state/hm-packages";
+  };
 }
 

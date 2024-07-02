@@ -11,6 +11,10 @@
 
     # For bundling files
     pkgs.zip
+
+    # For common configuration file parsing
+    pkgs.jq # For JSON
+    pkgs.yq-go # For YAML
   ];
 }
 

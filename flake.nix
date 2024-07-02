@@ -10,7 +10,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, lib, ... }:
+  outputs = { self, nixpkgs, home-manager, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -50,7 +50,7 @@
             pkgs.shfmt
 
             # Python language tools
-            pkgs.ruff-lsp
+            pkgs.ruff
             (pkgs.python3.withPackages
               (ps: [ ps.pykeepass ps.argcomplete ps.python-lsp-server ]))
           ];
