@@ -10,7 +10,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, lib, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -27,11 +27,10 @@
           modules = [ ./nix-config/host/lpc.nix ];
         };
       # Configuration for lxplus systems
-      homeConfigurations."yichen" =
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [ ./nix-config/host/lxplus.nix ];
-        };
+      homeConfigurations."yichen" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [ ./nix-config/host/lxplus.nix ];
+      };
       # We need to treat this as a package,
       defaultPackage.${system} = pkgs.zsh;
 

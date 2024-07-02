@@ -5,7 +5,7 @@
   programs.firefox = {
     enable = true;
     policies = {
-      BlockAboutConfig = true; # Setting about configurations to
+      BlockAboutConfig = false; # Setting about configurations to
     };
     profiles = {
       # Creating the profile and defining the start conditions. The main

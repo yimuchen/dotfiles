@@ -10,12 +10,7 @@ in {
     pkgs.arc-theme
     pkgs.arc-kde-theme
     pkgs.papirus-icon-theme
-    pkgs.kdePackages.partitionmanager
   ];
-
-  # For workspace setup
-  home.file.".config/plasma-org.kde.plasma.desktop-appletsrc".source =
-    makeln "${plasmadir}/plasma-org.kde.plasma.desktop-appletsrc";
 
   # For global behavior
   home.file.".config/kglobalshortcutsrc".source =
