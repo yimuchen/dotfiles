@@ -71,6 +71,9 @@ def get_nix_store(list_file: str) -> Dict[str, Any]:
                 print(
                     f"Warning! Skipping over package [{key}] without 'env' settings",
                 )
+            if drv["system"] != "x86_64-linux":
+                continue
+
             pname = drv["name"] if "pname" not in drv["env"] else drv["env"]["pname"]
             package_drv[pname] = drv
             package_drv[pname]["drv_path"] = key
@@ -81,33 +84,55 @@ def get_nix_store(list_file: str) -> Dict[str, Any]:
         return {}
 
 
-def get_discrepancies(upstream, local) -> List[Tuple[str, str, str]]:
+"""
+Kernel and drivers will not be listed in the system environment packages, here
+we handle them manually.
+"""
+
+
+def get_linux_drv():
+    _uname = subprocess.Popen(
+        ["uname", "-r"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+    stdout, stderr = _uname.communicate()
+    drv_glob = f"/nix/store/*-linux-{stdout.decode().strip()}.drv"
+    drv_path = glob.glob(drv_glob)[-1]
+    return drv_to_dict(drv_path)
+
+
+def get_nvidia_drv():
+    return {"env": {"version": "2.2.2"}, "system": "x86_64-linux"}
+
+
+def get_discrepancies(upstream, local) -> List[Tuple[str, str, str, str]]:
     updates = []
     for pname, pconfig in local.items():
         # Skipping if no-local version can be determined
         if "version" not in pconfig["env"]:
             continue
-        # Getting upstream keys, ignoring if no upstream package exists
-        ukeys = [
-            k
-            for k in [  # Allow package name varients
-                f'legacyPackages.{pconfig["system"]}.{pname}',
-                f'legacyPackages.{pconfig["system"]}.kdePackages.{pname}'
-            ]
-            if k in upstream.keys()
-        ]
-        if len(ukeys) == 0:
+
+        upsteam_compare = {
+            uname: uconfig
+            for uname, uconfig in upstream.items()
+            if uconfig["pname"] == pname
+        }
+        if len(upsteam_compare) == 0:
             continue
 
-        # Getting all versions available in the upstream version
-        uversions = [
-            (x, upstream[x]["version"])
-            for x in ukeys
-            if "version" in upstream[x]
-            and "git" not in upstream[x]["version"]
-            and "pre" not in upstream[x]["version"]
-            and "unstable" not in upstream[x]["version"]
-        ]
+        uversions = []
+        for uname, uconfig in upsteam_compare.items():
+            # Remove leading "legacyPackages." and post ".package"
+            system = ".".join(uname.split(".")[1:-1])
+            if system not in [  # Allowed package version extensions
+                pconfig["system"],
+                pconfig["system"] + ".kdePackages",
+            ]:
+                continue
+            uv = uconfig["version"].replace("p", ".").replace("-", ".")
+            if any(not x.isdigit() for x in uv.split(".")):
+                continue
+            uversions.append((uname, uconfig["version"]))
+
         # Listing just the latest version for comparison
         if len(uversions) == 0:
             continue  # If there are no valid version to compare
@@ -126,6 +151,20 @@ def get_discrepancies(upstream, local) -> List[Tuple[str, str, str]]:
     return updates
 
 
+def display_updates(updates: List[Tuple[str, str, str, str]]):
+    for entry in updates:
+        package_name = entry[0]
+        local_version = entry[1]
+        up_name = entry[2]
+        up_version = entry[3]
+        if local_version == up_version:
+            continue
+        if ".".join(up_name.split(".")[2:]) != package_name:
+            print(f"{package_name}: {local_version} -> ({up_name}) {up_version}")
+        else:
+            print(f"{package_name}: {local_version} -> {up_version}")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         "nix-check-update.py", "Helper script for checking for upstream updates"
@@ -134,7 +173,7 @@ if __name__ == "__main__":
         "--nixpkgs",
         "-n",
         type=str,
-        help="URL to compare with upstream",
+        help="Argument passed to nix search to define the upstream source",
         default="nixpkgs=channel:nixos-unstable",
     )
     parser.add_argument(
@@ -157,21 +196,38 @@ if __name__ == "__main__":
     upstream = execute_message(f"Getting upstream [{args.nixpkgs}]")(
         get_upstream_full, args.nixpkgs
     )
-    local = {
-        **execute_message(f"Listing system environment packages [{args.env}]")(
-            get_nix_store, args.env
-        ),
-        **execute_message(f"Listing home-manager packages [{args.user}]")(
-            get_nix_store, args.user
-        ),
-    }
-    updates = execute_message("Calculating discrepancies")(
-        get_discrepancies, upstream, local
+
+    system = execute_message(f"Listing system environment packages [{args.env}]")(
+        get_nix_store, args.env
     )
-    if sum([x[1] == x[2] for x in updates]) == 0:
-        print("Everything is up-to-date!")
+    # Additional system packages that will not be listed under in nix
+    system["linux_latest"] = get_linux_drv()
+    system["nvidia_x11"] = get_nvidia_drv()
+
+    user = execute_message(f"Listing home-manager packages [{args.user}]")(
+        get_nix_store, args.user
+    )
+
+    system_updates = get_discrepancies(upstream, system)
+    if sum([x[1] != x[3] for x in system_updates]) == 0:
+        print("System packages is up-to-date!")
+    else:
+        print("Updates available for system packages!")
+        display_updates(system_updates)
+        print("""Update with the following commands:
+              cd /etc/nixos/
+              nix flake update
+              nixos-rebuild switch
+              """)
+
+    user_updates = get_discrepancies(upstream, user)
+    if sum([x[1] != x[3] for x in user_updates]) == 0:
+        print("User packages is up-to-date!")
     else:
         print("Updates available!")
-        for entry in updates:
-            if entry[1] == entry[2]:
-                print(f"{entry[0]}: {entry[1]} -> {entry[2]}")
+        display_updates(user_updates)
+        print("""Update with the following commands:
+              cd ~/.config/home-manager/
+              nix flake update
+              home-manager switch
+              """)
