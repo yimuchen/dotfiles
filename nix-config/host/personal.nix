@@ -13,6 +13,7 @@
     ../modules/tmux.nix
     ../modules/kitty.nix
     ../modules/git.nix
+    ../modules/languagetool.nix
     ../modules/misc.nix # Common one-off packages
 
     # Graphical items
