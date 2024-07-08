@@ -8,6 +8,7 @@
     pkgs.noto-fonts-cjk-serif
     # Fonts commonly used for typesettings
     pkgs.libertine
+    pkgs.libertinus
     pkgs.xits-math
   ];
 
