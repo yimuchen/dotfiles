@@ -1,4 +1,7 @@
-# For keepassxc interaction 
+# This file is only required for non-nix installs. Otherwise, python
+# dependecies should be handled by ../nix-config/modules/shell-helper.nix
+
+# For keepassxc interaction
 pykeepass
 # For command line autocomplete
 argcomplete
