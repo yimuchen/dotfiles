@@ -12,6 +12,7 @@ import argcomplete
 from pykeepass import PyKeePass
 from pykeepass.entry import Entry
 
+_log = logging.getLogger("keepasscx_cli.py")
 
 def get_credentials(db: PyKeePass, protocol: str, url: str) -> Entry:
     """
@@ -66,7 +67,7 @@ def run_kinit(db: PyKeePass, sites: List[str]):
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
-        logging.getLogger().info("Generated for identity [{0}]!".format(identity))
+        _log.info("Generated for identity [{0}]!".format(identity))
 
 
 """
@@ -104,7 +105,7 @@ def run_voms(db: PyKeePass, certificate: str, ssh_servers: List[str]):
     # Looping over
     for server in ssh_servers:
         try:
-            logging.getLogger().info(f"Running voms-proxy-init for {server}")
+            _log.info(f"Running voms-proxy-init for {server}")
             ssh_cmd = ["ssh", server]
             voms_cmd = [
                 "voms-proxy-init",  # Main command
@@ -127,7 +128,7 @@ def run_voms(db: PyKeePass, certificate: str, ssh_servers: List[str]):
             p.communicate(input=str.encode(cred.password + "\n"))
             p.wait()
         except Exception as err:
-            logging.getLogger().error("Error when running voms", err)
+            _log.error("Error when running voms", err)
 
 
 """
@@ -209,7 +210,7 @@ if __name__ == "__main__":
         raise ValueError("Command is required")
 
     logging.basicConfig()
-    logging.getLogger().setLevel(logging.DEBUG)
+    _log.setLevel(logging.DEBUG)
 
     assert (
         "KPXC_DATABASE" in os.environ
