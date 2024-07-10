@@ -18,7 +18,10 @@
       # Configurations for personal systems
       homeConfigurations."ensc" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        modules = [ ./nix-config/host/personal.nix ];
+        modules = [
+          ./nix-config/host/personal.nix
+          { nixpkgs.config.allowUnfree = true; } # Allow unfree in personal
+        ];
       };
       # Configurations for LPC systems
       homeConfigurations."yimuchen" =
