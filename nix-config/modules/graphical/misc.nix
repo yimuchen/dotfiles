@@ -22,14 +22,15 @@
     pkgs.obs-studio
     pkgs.digikam
     pkgs.inkscape
-    # Document editing
-    pkgs.libreoffice # Using the -qt packages has issues! Do not change!
+    # Document editing - NOTE: do not use QT versoin of libreoffice! This
+    # breaks the UI for whatever reason...
+    pkgs.libreoffice
     # Work related
     pkgs.kicad
     pkgs.freecad
     pkgs.virt-manager
     pkgs.freerdp3
     pkgs.thunderbird # Not migrating to NIX management for now.
-    # pkgs.zoom-us
+    pkgs.zoom-us
   ];
 }
