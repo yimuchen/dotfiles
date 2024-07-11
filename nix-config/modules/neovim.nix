@@ -35,7 +35,7 @@
       pkgs.tree-sitter
 
       # Nix tools
-      pkgs.nixfmt
+      pkgs.nixfmt-classic
       pkgs.nixd
 
       # Lua tools

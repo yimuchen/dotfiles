@@ -184,6 +184,13 @@ if __name__ == "__main__":
         default=os.environ["NIXCUSTOM_ENV_PACKAGES"],
     )
     parser.add_argument(
+        "--kernel",
+        "-k",
+        type=str,
+        help="Path to file listing kernal packages",
+        default=os.environ["NIXCUSTOM_SYS_PACKAGES"],
+    )
+    parser.add_argument(
         "--user",
         "-u",
         type=str,
@@ -197,12 +204,14 @@ if __name__ == "__main__":
         get_upstream_full, args.nixpkgs
     )
 
-    system = execute_message(f"Listing system environment packages [{args.env}]")(
-        get_nix_store, args.env
-    )
-    # Additional system packages that will not be listed under in nix
-    system["linux_latest"] = get_linux_drv()
-    system["nvidia_x11"] = get_nvidia_drv()
+    system = {
+        **execute_message(f"Listing system environment packages [{args.env}]")(
+            get_nix_store, args.env
+        ),
+        **execute_message(f"Listing system kernel packages [{args.kernel}]")(
+            get_nix_store, args.kernel
+        ),
+    }
 
     user = execute_message(f"Listing home-manager packages [{args.user}]")(
         get_nix_store, args.user
