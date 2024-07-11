@@ -16,21 +16,24 @@
     pkgs.kdePackages.gwenview
     # For image/audio/video editing
     pkgs.kdePackages.kdenlive
+    pkgs.yt-dlp
     pkgs.audacity
     pkgs.musescore
     pkgs.gimp
     pkgs.obs-studio
     pkgs.digikam
     pkgs.inkscape
-    # Document editing - NOTE: do not use QT versoin of libreoffice! This
+    # Document editing - NOTE: do not use QT version of libreoffice! This
     # breaks the UI for whatever reason...
     pkgs.libreoffice
     # Work related
-    pkgs.kicad
-    pkgs.freecad
+    pkgs.kicad # Has issue upgrading to python3.12?
+    pkgs.freecad # Has issue with QT python binding?
     pkgs.virt-manager
     pkgs.freerdp3
     pkgs.thunderbird # Not migrating to NIX management for now.
     pkgs.zoom-us
+
+    # Package that require additional settings to avoid odd package versioning issue
   ];
 }

@@ -25,7 +25,9 @@
   ];
 
   # Miscellaneous one-off packages to install on personal machines
-  home.packages = [ ];
+  home.packages = [
+    pkgs.apptainer # All non-personal machines should use the system apptainer instance!
+  ];
 
   # Additional session variable to est on local machine
   home.sessionVariables = {
