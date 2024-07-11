@@ -69,6 +69,7 @@ elif [[ $HOST == "lxplus"*".cern.ch" ]] ; then
   typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=19  # DEEPBLUE
   typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=7
 elif [[ $HOST == "hepcms"*".umd.edu" ]] ; then
+  source $HOME/.zsh/nix.sh
   source $HOME/.zsh/cmssw_tools.sh
 else
   ## HOSTNAME NOT LISTED!!
