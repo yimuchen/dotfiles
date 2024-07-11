@@ -34,6 +34,13 @@
         inherit pkgs;
         modules = [ ./nix-config/host/lxplus.nix ];
       };
+      # Configuration for lxplus systems
+      homeConfigurations."yichen@hepcms-rubin" =
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./nix-config/host/umdcms.nix ];
+        };
+
       # We need to treat this as a package,
       defaultPackage.${system} = pkgs.zsh;
 
