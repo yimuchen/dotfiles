@@ -13,10 +13,6 @@ export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 
-# LIBVA
-export LIBVA_DRIVERS_PATH=/usr/lib/dri/
-export LIBVA_DRIVER_NAME=vdpau
-
 # Geant4 system compilation
 export G4ENSDFSTATEDATA=/usr/share/geant4-ensdfstatedata/G4ENSDFSTATE2.2/
 export G4REALSURFACEDATA=/usr/share/geant4-realsurfacedata/RealSurface2.1.1/
