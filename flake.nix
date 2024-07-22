@@ -34,11 +34,17 @@
         inherit pkgs;
         modules = [ ./nix-config/host/lxplus.nix ];
       };
-      # Configuration for lxplus systems
+      # Configuration for UMD clusters
       homeConfigurations."yichen@hepcms-rubin" =
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [ ./nix-config/host/umdcms.nix ];
+        };
+      # Configuration for Gantry control system
+      homeConfigurations."yimuchen@PHYSLXPSC2264" =
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./nix-config/host/umdgantry.nix ];
         };
 
       # We need to treat this as a package,
