@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:{
   # Miscelleneous packages that needs to be installed but does not require
   # additional configurations
   home.packages = [
@@ -27,13 +27,15 @@
     # breaks the UI for whatever reason...
     pkgs.libreoffice
     # Work related
-    pkgs.kicad # Has issue upgrading to python3.12?
-    pkgs.freecad # Has issue with QT python binding?
+    # (pkgs.callPackage ../../pkgs/kicad.nix { })
+    pkgs.kicad # Circuit/PCB design. NOTE: Has issue upgrading to python3.12?
+    # pkgs.kikit # Additional PCB panneling
+    pkgs.freecad # 3D object modelling NOTE: Has issue with QT python binding?
     pkgs.virt-manager
-    pkgs.freerdp3
+    pkgs.freerdp3 # Remote desktop - RDP
+    pkgs.tigervnc # Remote desktop - VNC
     pkgs.thunderbird # Not migrating to NIX management for now.
     pkgs.zoom-us
 
-    # Package that require additional settings to avoid odd package versioning issue
   ];
 }

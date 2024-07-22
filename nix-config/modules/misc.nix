@@ -11,6 +11,7 @@
 
     # For bundling files
     pkgs.zip
+    pkgs.unzip
 
     # For common configuration file parsing
     pkgs.jq # For JSON
