@@ -42,17 +42,18 @@ source $HOME/.zsh/common_utils.sh
 
 # Additional theme settings is stored in p10k.zsh
 [[ ! -f ~/.zsh/p10k.zsh ]] || source ~/.zsh/p10k.zsh
+  
+# If using zsh, I'm assuming that nix will be available
+source $HOME/.zsh/nix.sh
 
 if [[ ${HOST} == "ensc"* ]]; then # Personal machine
   export EDITOR='nvim'
-  source $HOME/.zsh/nix.sh
   source $HOME/.zsh/personal_tools.sh
   typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=7   # White
   typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=232 # BLACK
   typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=235 # DARK GRAY
   typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=3   # Orange
 elif [[ $HOST == "cmslpc"*".fnal.gov" ]] ; then
-  source $HOME/.zsh/nix.sh
   source $HOME/.zsh/cmssw_tools.sh
   # Setting color
   typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=3  # ORANGE
@@ -62,19 +63,17 @@ elif [[ $HOST == "cmslpc"*".fnal.gov" ]] ; then
 elif [[ $HOST == "login-el"*".uscms.org" ]]; then
   source $HOME/.zsh/cmssw_tools.sh
 elif [[ $HOST == "lxplus"*".cern.ch" ]] ; then
-  source $HOME/.zsh/nix.sh
   source $HOME/.zsh/cmssw_tools.sh
   typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=19  # DEEPBLUE
   typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=7
   typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=19  # DEEPBLUE
   typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=7
 elif [[ $HOST == "hepcms"*".umd.edu" ]] ; then
-  source $HOME/.zsh/nix.sh
   source $HOME/.zsh/cmssw_tools.sh
 else
   ## HOSTNAME NOT LISTED!!
   typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=1   # RED
   typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=232 # BLACK
-  typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=1   # RED
-  typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=232 # BLACK
+  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=1   # RED
+  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=232 # BLACK
 fi
