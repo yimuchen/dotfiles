@@ -10,6 +10,12 @@
       ps.argcomplete
       # For extracting data in keepassxc database
       ps.pykeepass
+      # Smaller packages probably need these setup modes
+      ps.setuptools
+      # For progress bars
+      ps.tqdm
+      # For imagemagik python bindings
+      ps.wand
     ]))
 
     # For PDF conversion
@@ -21,7 +27,7 @@
     # Interactions with PDF
     (pkgs.writeScriptBin "keepassxc_cli.py"
       (builtins.readFile ../../pyscripts/keepassxc_cli.py))
-    # Method for calling the obtaining package version informations 
+    # Method for calling the obtaining package version informations
     (pkgs.writeScriptBin "nix-check-update.py"
       (builtins.readFile ../../pyscripts/nix-check-update.py))
   ];
