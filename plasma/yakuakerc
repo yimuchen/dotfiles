@@ -7,6 +7,9 @@ Skin=arc-dark
 [Dialogs]
 FirstRun=false
 
+[KFileDialog Settings]
+listViewIconSize=16
+
 [Window]
 Height=90
 Width=80
