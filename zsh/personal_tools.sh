@@ -112,3 +112,6 @@ function docker_clear_all() {
    docker_clear_container
    docker_clear_image
 }
+
+# Method for quickly starting the xfreerdp session (with typical settings)
+alias fwd_xrdp="xfreerdp /w:1920 /h:1080 /v:localhost:9900"
