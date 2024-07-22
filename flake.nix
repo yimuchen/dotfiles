@@ -67,8 +67,13 @@
 
             # Python language tools
             pkgs.ruff
-            (pkgs.python3.withPackages
-              (ps: [ ps.pykeepass ps.argcomplete ps.python-lsp-server ]))
+            (pkgs.python3.withPackages (ps: [
+              ps.pykeepass
+              ps.argcomplete
+              ps.python-lsp-server
+              ps.wand
+              ps.tqdm
+            ]))
           ];
         };
         # Additional development shells
