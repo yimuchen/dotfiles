@@ -25,4 +25,17 @@
   home.file.".config/fontconfig/conf.d/99-alias.conf".source =
     config.lib.file.mkOutOfStoreSymlink
     "${config.home.homeDirectory}/.config/home-manager/fontconfig/alias.conf";
+
+  # Moving the input method here:
+  i18n.inputMethod = {
+    enabled = "fcitx5";
+    fcitx5.addons = with pkgs; [
+      fcitx5-gtk
+      fcitx5-chewing
+      fcitx5-anthy
+      fcitx5-chinese-addons
+      kdePackages.fcitx5-qt
+      kdePackages.fcitx5-configtool
+    ];
+  };
 }
