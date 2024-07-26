@@ -22,6 +22,7 @@
     ../modules/graphical/fonts.nix
     ../modules/graphical/misc.nix
     ../modules/graphical/steam.nix
+    ../modules/graphical/vscode.nix
   ];
 
   # Miscellaneous one-off packages to install on personal machines
