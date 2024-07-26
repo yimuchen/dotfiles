@@ -49,8 +49,7 @@ return {
             context_start_underline = false,
           },
         },
-        ---@param c Colorscheme
-        override = function(c) end,
+        override = function(_) end,
       }
 
       vim.cmd [[colorscheme monokai-pro]]

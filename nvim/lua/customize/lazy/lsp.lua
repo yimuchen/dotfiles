@@ -2,7 +2,6 @@ return { -- LSP configurations and language related plugins
   {
     'neovim/nvim-lspconfig',
     dependencies = {
-      'stevearc/conform.nvim', -- Formatting engine
       'hrsh7th/nvim-cmp', -- Autocompletion engine
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
@@ -15,38 +14,35 @@ return { -- LSP configurations and language related plugins
       },
     },
     config = function()
-      local tbuiltin = require 'telescope.builtin'
+      local ts_builtin = require 'telescope.builtin'
+      local wk = require 'which-key'
 
       -- LSP related mappings definitions
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
-          local nmap = function(keys, func, desc)
-            vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
-          end
-
-          local imap = function(keys, func, desc)
-            vim.keymap.set('i', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
-          end
-
-          -- Navigation based on vim diagnostics
-          nmap('[d', vim.diagnostic.goto_next, 'Go to previous [d]iagnostic')
-          nmap(']d', vim.diagnostic.goto_prev, 'Go to next [d]iagnostic')
-          nmap('<leader>e', vim.diagnostic.open_float, 'Show diagnostic [E]rror messages')
-          nmap('<leader>q', vim.diagnostic.setloclist, 'Open diagnostic [Q]uickfix list')
-          nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-          nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-
           -- Navigation based on lsp related functions. For multiple items, we will be
           -- using telescope
-          nmap('gd', tbuiltin.lsp_definitions, '[G]o to [d]efinition')
-          nmap('gb', ':e#<CR>', '[G]o [b]ack to previous')
-          nmap('gr', tbuiltin.lsp_references, '[G]oto [R]eferences')
-          nmap('gI', tbuiltin.lsp_implementations, '[G]oto [I]mplementation')
-          nmap('<leader>ds', tbuiltin.lsp_document_symbols, '[D]ocument [S]ymbols')
-          nmap('<leader>ws', tbuiltin.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-          nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-          imap('<C-h>', vim.lsp.buf.signature_help, 'Signature [H]elp')
+          wk.add {
+            -- Additional navigation keybind
+            { '[d', vim.diagnostic.goto_next, desc = 'Go to previous [d]iagnostic' },
+            { ']d', vim.diagnostic.goto_prev, desc = 'Go to next [d]iagnostic' },
+            { 'gd', ts_builtin.lsp_definitions, desc = '[G]oto definition' },
+            { 'gb', ':e#<CR>', desc = '[G]o [b]ack to previous' },
+            { 'gr', ts_builtin.lsp_references, desc = '[G]oto [R]eferences' },
+            { 'gI', ts_builtin.lsp_implementations, desc = '[G]oto [I]mplementation' },
+            -- Additional search items
+            { '<leader>ssd', ts_builtin.lsp_document_symbols, desc = '[S]search [S]ymbols in [D]ocument' },
+            { '<leader>ssw', ts_builtin.lsp_dynamic_workspace_symbols, desc = '[S]earch [S]ymbols in [W]orkspace' },
+            { '<leader>sd', ts_builtin.diagnostics, desc = '[S]earch [D]iagnostics' },
+            -- Opening preview buffers - Use CTRL as modifier!
+            { '<C-h>', vim.lsp.buf.hover, desc = '[H]over Documentation', mode = 'ni' },
+            { '<C-e>', vim.diagnostic.open_float, desc = 'Show diagnostic [E]rror messages', mode = 'ni' },
+            -- Actions that will directly modify the text buffer
+            { '<leader>a', group = 'Alter' },
+            { '<leader>ar', vim.lsp.buf.rename, desc = '[A]ction [R]ename' },
+            { '<leader>af', vim.lsp.buf.code_action, desc = '[A]ction LSP [F]ix' },
+          }
 
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
@@ -65,79 +61,7 @@ return { -- LSP configurations and language related plugins
         end,
       })
 
-      -- Common formatting options
-      local conform = require 'conform'
-      conform.setup {
-        formatters_by_ft = {
-          ['_'] = { 'trim_whitespace' },
-          -- ['*'] = { 'injected' }, -- Try to allow injected formatter for all items
-        },
-      }
-      vim.api.nvim_create_autocmd('FileType', {
-        pattern = { '*' },
-        callback = function(opts)
-          local ft = vim.bo[opts.buf].filetype
-          -- Special file types to exclude from injected formats
-          local exclude_inject = { svelte = true }
-          if not exclude_inject[ft] then
-            conform.formatters_by_ft['*'] = { 'injected' }
-          end
-        end,
-      })
-
-      -- Setting up keybindings for formatting
-      vim.keymap.set('n', '<leader>fb', function()
-        conform.format { async = true, lsp_fallback = false }
-      end, { desc = '[F]ormat selected [b]uffer' })
-      vim.keymap.set('n', '<leader>fw', function() -- In case there is trailing white spaces in multiline strings
-        conform.format { formatters = { 'trim_whitespace' } }
-      end, { desc = '[F]ormat [W]hitespaces' })
-
-      vim.api.nvim_create_user_command('ConformFormat', function(opt) -- Running a custom formatter directly by name
-        conform.format { formatters = { opt.fargs[1] } }
-      end, {
-        nargs = 1,
-        complete = function(arglead, cmdline, cursorpos)
-          local all_formatters = {}
-          -- First loop is for modified conformers
-          for name, _ in pairs(conform.formatters) do
-            if string.sub(name, 0, #arglead) == arglead then
-              all_formatters[name] = true
-            end
-          end
-          for name, _ in pairs(require('conform.formatters').list_all_formatters()) do
-            if string.sub(name, 0, #arglead) == arglead and all_formatters[name] == nil then
-              all_formatters[name] = true
-            end
-          end
-
-          local ret_list = {}
-          for name, _ in pairs(all_formatters) do
-            table.insert(ret_list, name)
-          end
-          return ret_list
-        end,
-      })
-
-      -- Additional wrapping, as formatter should not (by default) try to
-      -- modify wrapping since this can potentially break the meaning of
-      -- strings
-      vim.keymap.set('n', '<leader>fp', 'gwap', { desc = '[F]ormat [P]aragraph (wrapping)' })
-
-      -- Because of how mini.ai works. we need to trigger the keystrokes in
-      -- normal mode ('n'), but the commands technically work in visual mode
-      -- ('x'). See the mini.lua file to see the definition of custom scopes
-      local call_mini = function(cmd)
-        return function()
-          vim.api.nvim_feedkeys(cmd, 'x', false)
-        end
-      end
-      vim.keymap.set('n', '<leader>fm', call_mini 'gwiM', { desc = '[F]ormat [M]ultiline string (wrap)' })
-      vim.keymap.set('n', '<leader>fc', call_mini 'gwgc', { desc = '[F]ormat [C]omment' })
-      vim.keymap.set('n', '<leader>/', call_mini 'gcc', { desc = 'Toggle comment' })
-      vim.keymap.set('x', '<leader>/', call_mini 'gc', { desc = 'Toggle comment' })
-
-      -- Main package to configure
+      -- Autocomplete configuration
       local cmp = require 'cmp'
       local cmp_select = { behavior = cmp.SelectBehavior.Select }
       local luasnip = require 'luasnip'
@@ -182,12 +106,8 @@ return { -- LSP configurations and language related plugins
   {
     'hedyhli/outline.nvim',
     config = function()
-      -- Example mapping to toggle outline
-      vim.keymap.set('n', '<leader>o', '<cmd>Outline<CR>', { desc = 'Toggle Outline' })
-
-      require('outline').setup {
-        -- Your setup opts here (leave empty to use defaults)
-      }
+      vim.keymap.set('n', '<leader>o', '<cmd>Outline<CR>', { desc = 'Toggle [O]utline' })
+      require('outline').setup {}
     end,
   },
 }

@@ -30,8 +30,8 @@ return {
         },
       }
 
-      -- Common settings for all REPL related functions
-      vim.keymap.set('n', '<leader>mi', function()
+      -- Helper function to initialize molten
+      local molten_init = function()
         local conda_env = os.getenv 'CONDA_DEFAULT_ENV'
         if conda_env == nil then
           vim.cmd 'MoltenInit'
@@ -39,19 +39,30 @@ return {
         else
           vim.cmd('MoltenInit ' .. conda_env)
         end
-      end, { silent = true, desc = '[M]olten [I]nitialize' })
-      vim.keymap.set('n', '<leader>mel', ':MoltenEvaluateLine<CR>', { silent = true, desc = '[M]olten [E]valuate [L]ine' })
-      vim.keymap.set('v', '<leader>mev', ':<C-u>MoltenEvaluateVisual<CR>gv', { silent = true, desc = '[M]olten [E]valuate [V]isual' })
-      vim.keymap.set('n', '<leader>moh', ':MoltenHideOutput<CR>', { silent = true, desc = '[M]olten [O]utput [H]ide' })
-      vim.keymap.set('n', '<leader>moe', ':noautocmd MoltenEnterOutput<CR>', { silent = true, desc = '[M]olten [O]utput [E]nter' })
+      end
+
+      -- Common settings for all REPL related functions
+      local wk = require 'which-key'
+      local runner = require 'quarto.runner'
+      wk.add {
+        { '<leader>m', group = '[M]olten REPL processing' },
+        { '<leader>mi', molten_init, desc = '[M]olten [I]nitialize', silent = true },
+        { '<leader>me', ':MoltenEvaluateLine<CR>', desc = '[M]olten [E]valuate', mode = 'n', silent = true },
+        { '<leader>me', ':<C-u>MoltenEvaluateVisual<CR>gv', desc = '[M]olten [E]valuate', mode = 'x', silent = true },
+
+        { '<leader>mo', group = '[M]olten [O]utput' },
+        { '<leader>moh', ':MoltenHideOutput<CR>', silent = true, desc = '[M]olten [O]utput [H]ide' },
+        { '<leader>moe', ':noautocmd MoltenEnterOutput<CR>', silent = true, desc = '[M]olten [O]utput [E]nter' },
+
+        { '<leader>mr', group = '[M]olten [R]un (with quarto)' },
+        { '<leader>mrc', runner.run_cell, desc = '[M]olten [R]un [C]ell', silent = true },
+        { '<leader>mra', runner.run_above, desc = '[M]olten [R]un [a]bove', silent = true },
+        { '<leader>mrA', runner.run_all, desc = '[M]olten [R]un [A]ll', silent = true },
+        { '<leader>mrl', runner.run_line, desc = '[M]olten [R]un [l]ine', silent = true },
+        { '<leader>mr', runner.run_range, desc = '[M]olten [R]un visual', silent = true, mode = 'v' },
+      }
 
       -- Additional settings for quarto cell splitting results
-      local runner = require 'quarto.runner'
-      vim.keymap.set('n', '<leader>mrc', runner.run_cell, { desc = '[M]olten [R]un [C]ell', silent = true })
-      vim.keymap.set('n', '<leader>mra', runner.run_above, { desc = '[M]olten [R]un [a]bove', silent = true })
-      vim.keymap.set('n', '<leader>mrA', runner.run_all, { desc = '[M]olten [R]un [A]ll', silent = true })
-      vim.keymap.set('n', '<leader>mrl', runner.run_line, { desc = '[M]olten [R]un [l]ine', silent = true })
-      vim.keymap.set('v', '<leader>mr', runner.run_range, { desc = '[M]olten [R]un visual', silent = true })
     end,
   },
   -- {
