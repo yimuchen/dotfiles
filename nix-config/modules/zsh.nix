@@ -5,8 +5,14 @@
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    autosuggestions.enable = true;
-    syntaxHighlighting.enable = true;
+    autosuggestion = {
+      enable = true;
+      # Additional theming?
+    };
+    syntaxHighlighting = {
+      enable = true;
+      # Additional theming??
+    };
     antidote = {
       enable = true;
       plugins = [
