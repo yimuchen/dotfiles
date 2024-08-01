@@ -21,9 +21,14 @@
         "conda-incubator/conda-zsh-completion.git" # For conda autocomplete
       ];
     };
-    dotDir = ".config/zsh";
+    # Effectively Superceding the role of zshrc
+    envExtra = ''
+      # Additional theme settings is stored in p10k.zsh
+      source $HOME/.config/zsh/p10k.zsh
+      # Additional machine-specific settings
+      source $HOME/.config/zsh/machine.sh
+    '';
   };
-  # Package management is mainly handled by a automatic pull of oh-my-zsh
 
   home.file = {
     # My configuration files
