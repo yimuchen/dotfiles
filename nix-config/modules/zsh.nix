@@ -14,19 +14,21 @@
       # Additional theming??
     };
     antidote = {
+      # Primary plugin manager (as this doesn't require version pinning)
       enable = true;
       plugins = [
         "romkatv/powerlevel10k" # For the theming
         "conda-incubator/conda-zsh-completion.git" # For conda autocomplete
       ];
     };
+    dotDir = "${config.home.homeDirectory}/.config/zsh";
   };
   # Package management is mainly handled by a automatic pull of oh-my-zsh
 
   home.file = {
     # My configuration files
-    #".zshrc".source = config.lib.file.mkOutOfStoreSymlink
-    #  "${config.home.homeDirectory}/.config/home-manager/zsh/zshrc.zsh";
+    ".config/zsh".source = config.lib.file.mkOutOfStoreSymlink
+      "${config.home.homeDirectory}/.config/home-manager/zsh";
     #".zsh".source = config.lib.file.mkOutOfStoreSymlink
     #  "${config.home.homeDirectory}/.config/home-manager/zsh";
   };
