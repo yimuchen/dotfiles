@@ -6,6 +6,7 @@
   # Because zsh should be considered a system package, do *not* put zsh here.
 
   # Package management is mainly handled by a automatic pull of oh-my-zsh
+
   home.file = {
     # My configuration files
     ".zshrc".source = config.lib.file.mkOutOfStoreSymlink
