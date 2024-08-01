@@ -4,7 +4,6 @@ import os
 from typing import List
 
 import tqdm
-import wand
 from wand.image import Image
 
 
