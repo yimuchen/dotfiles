@@ -1,0 +1,5 @@
+ruff-lsp
+python-lsp-server
+ipython
+ipykernel
+pip
