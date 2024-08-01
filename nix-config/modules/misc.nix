@@ -1,8 +1,6 @@
 { pkgs, config, ... }: {
   # Miscellaneous command line packages with no additional configurations.
   home.packages = [
-    pkgs.libsixel # For in-terminal image display
-    pkgs.ghostscript
     pkgs.micromamba # For python development
     pkgs.htop # For monitoring
     pkgs.tree # For directory structure dumps

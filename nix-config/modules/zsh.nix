@@ -27,6 +27,10 @@
       source $HOME/.config/zsh/p10k.zsh
       # Additional machine-specific settings
       source $HOME/.config/zsh/machine.sh
+      # Addtional command-line tools that uses common gnu-coreutils tools
+      source $HOME/.config/zsh/common_utils.sh
+      # Additional command line tools, this file will be dynamically created by nix
+      source $HOME/.zsh_tools
     '';
     shellAliases = {
       # Simple aliases of in-built shell functions
@@ -39,8 +43,23 @@
       "dir_size" = "du --max-depth=1 --human-readable --all | sort -h";
       "less" = "less --raw-control-chars";
       "wget" = "wget --continue";
+
+      # Additional tools with nix shell
+      "nshell" = "nix develop -c $SHELL";
+      "nshell-py3p10" =
+        "nix develop $(realpath $DEFAULT_DEVSHELL_STORE)#python-3p10";
+      "nshell-py3p11" =
+        "nix develop $(realpath $DEFAULT_DEVSHELL_STORE)#python-3p11";
+      "nshell-py3p12" =
+        "nix develop $(realpath $DEFAULT_DEVSHELL_STORE)#python-3p12";
+      "nshell-lua" =
+        "nix develop $(realpath $DEFAULT_DEVSHELL_STORE)#lua -c $SHELL";
+      "nshell-tex" =
+        "nix develop $(realpath $DEFAULT_DEVSHELL_STORE)#tex -c $SHELL";
+
       # Additional aliases with package methods
       "root" = "${pkgs.root}/bin/root -l"; # CERN ROOT
+      "img2sixel" = "${pkgs.libsixel}/bin/img2sixel --height=800px";
     };
   };
 
@@ -48,5 +67,14 @@
     # Additional configuration files requires shell scripting
     ".config/zsh".source = config.lib.file.mkOutOfStoreSymlink
       "${config.home.homeDirectory}/.config/home-manager/zsh";
+
+    ".zsh_tools".text = ''
+      # Function to convert PDF to sixel output
+      function pdf2sixel() {
+         ${pkgs.ghostscript}/bin/gs -sDEVICE=pngalpha -o %stdout -r144 -dBATCH -dNOPAUSE -dQUIET $1 |
+         ${pkgs.libsixel}/bin/img2sixel --width=1200 -
+      }
+    '';
   };
+
 }
