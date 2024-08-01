@@ -158,17 +158,28 @@ local _joinstr = function(list, delim)
 end
 
 local make_rsync_upload_commands = function(local_root, remote_config)
-  --- For a given remote host configuration, return the rsync command to be ran
+  -- For a given remote host configuration, return the rsync command to be ran
   --as a list of strings
-  return {
+
+  local exclude_tokens = {}
+  for _, pattern in ipairs(remote_config.exclude) do
+    table.insert(exclude_tokens, '--exclude=' .. pattern)
+  end
+
+  local cmd = {
     'rsync',
     '-a', -- # rsync in archive mode
     '-r', -- # Recrusive,
-    '--exclude=' .. _joinstr(remote_config.exclude, ','),
+  }
+
+  vim.list_extend(cmd, exclude_tokens)
+  vim.list_extend(cmd, {
     '--exclude-from=' .. _joinstr(remote_config.exclude_file, ','),
     local_root .. '/',
     remote_config.host .. ':' .. remote_config.basedir,
-  }
+  })
+
+  return cmd
 end
 
 --- Summary
