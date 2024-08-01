@@ -72,7 +72,7 @@
       # Function to convert PDF to sixel output
       function pdf2sixel() {
          ${pkgs.ghostscript}/bin/gs -sDEVICE=pngalpha -o %stdout -r144 -dBATCH -dNOPAUSE -dQUIET $1 |
-         ${pkgs.libsixel}/bin/img2sixel --width=1200 -
+         ${pkgs.libsixel}/bin/img2sixel --height=800px -
       }
     '';
   };
