@@ -13,6 +13,7 @@
     pkgs.kdePackages.elisa
     # For image display
     pkgs.kdePackages.okular
+    pkgs.evince
     pkgs.kdePackages.gwenview
     # For image/audio/video editing
     pkgs.kdePackages.kdenlive
@@ -26,6 +27,8 @@
     # Document editing - NOTE: do not use QT version of libreoffice! This
     # breaks the UI for whatever reason...
     pkgs.libreoffice
+    # pkgs.onlyoffice-bin
+    pkgs.wpsoffice
     # Work related
     # (pkgs.callPackage ../../pkgs/kicad.nix { })
     pkgs.kicad # Circuit/PCB design. NOTE: Has issue upgrading to python3.12?
@@ -36,6 +39,6 @@
     pkgs.tigervnc # Remote desktop - VNC
     pkgs.thunderbird # Not migrating to NIX management for now.
     pkgs.zoom-us
-
+    pkgs.chromium
   ];
 }
