@@ -10,6 +10,13 @@
     pkgs.libertine
     pkgs.libertinus
     pkgs.xits-math
+    # Fonts from MS
+    pkgs.corefonts
+    # Fonts from TW-MoE definitions
+    # pkgs.edusong
+    # pkgs.eduli
+    # pkgs.edukai
+    pkgs.ttf-tw-moe
   ];
 
   fonts.fontconfig = {
@@ -26,16 +33,4 @@
     config.lib.file.mkOutOfStoreSymlink
     "${config.home.homeDirectory}/.config/home-manager/fontconfig/alias.conf";
 
-  # Moving the input method here:
-  i18n.inputMethod = {
-    enabled = "fcitx5";
-    fcitx5.addons = with pkgs; [
-      fcitx5-gtk
-      fcitx5-chewing
-      fcitx5-anthy
-      fcitx5-chinese-addons
-      kdePackages.fcitx5-qt
-      kdePackages.fcitx5-configtool
-    ];
-  };
 }
