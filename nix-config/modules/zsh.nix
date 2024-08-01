@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ pkgs, config, ... }: {
   # Additional packages that is required to use the various configuration.
   # Because zsh should be considered a system package, do *not* put zsh here.
 
@@ -28,13 +28,25 @@
       # Additional machine-specific settings
       source $HOME/.config/zsh/machine.sh
     '';
+    shellAliases = {
+      # Simple aliases of in-built shell functions
+      "ln" = "ln --symbolic --force";
+      "ls" = "ls --group-directories-first -X --human-readable --color=auto";
+      "grp" = "grep --colour=always";
+      "ping" = "ping -c 7 -i 0.200";
+      "ping-test" = "ping www.google.com";
+      "rm" = "rm -i";
+      "dir_size" = "du --max-depth=1 --human-readable --all | sort -h";
+      "less" = "less --raw-control-chars";
+      "wget" = "wget --continue";
+      # Additional aliases with package methods
+      "root" = "${pkgs.root}/bin/root -l"; # CERN ROOT
+    };
   };
 
   home.file = {
-    # My configuration files
+    # Additional configuration files requires shell scripting
     ".config/zsh".source = config.lib.file.mkOutOfStoreSymlink
       "${config.home.homeDirectory}/.config/home-manager/zsh";
-    #".zsh".source = config.lib.file.mkOutOfStoreSymlink
-    #  "${config.home.homeDirectory}/.config/home-manager/zsh";
   };
 }

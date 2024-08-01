@@ -4,8 +4,6 @@
     pkgs.libsixel # For in-terminal image display
     pkgs.ghostscript
     pkgs.micromamba # For python development
-    pkgs.root # For opening CERN root files
-    # pkgs.pdftk # For pdf manipulation, JAVA run time requires system nix management
     pkgs.htop # For monitoring
     pkgs.tree # For directory structure dumps
     pkgs.speedtest-cli # To validate connection speeds
