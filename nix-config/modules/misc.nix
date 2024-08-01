@@ -2,6 +2,7 @@
   # Miscellaneous command line packages with no additional configurations.
   home.packages = [
     pkgs.libsixel # For in-terminal image display
+    pkgs.ghostscript
     pkgs.micromamba # For python development
     pkgs.root # For opening CERN root files
     # pkgs.pdftk # For pdf manipulation, JAVA run time requires system nix management
@@ -20,5 +21,6 @@
     # For security file manipulation
     pkgs.openssl
   ];
+
 }
 
