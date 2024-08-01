@@ -1,6 +1,6 @@
 return {
   --
-  -- A bunch of nice eye candy! Plugins
+  -- A bunch of nice eye candy!
   --
   {
     -- Monokai color scheme
@@ -29,24 +29,16 @@ return {
         },
         inc_search = 'background', -- underline | background
         background_clear = {
-          -- "float_win",
           'toggleterm',
           'telescope',
-          -- "which-key",
+          'which-key',
           'renamer',
           'notify',
-          -- "nvim-tree",
-          -- "neo-tree",
-          -- "bufferline", -- better used if background of `neo-tree` or `nvim-tree` is cleared
-        }, -- "float_win", "toggleterm", "telescope", "which-key", "renamer", "neo-tree", "nvim-tree", "bufferline"
+        },
         plugins = {
-          bufferline = {
-            underline_selected = false,
-            underline_visible = false,
-          },
           indent_blankline = {
-            context_highlight = 'default', -- default | pro
-            context_start_underline = false,
+            context_highlight = 'default',
+            context_start_underline = true,
           },
         },
         override = function(_) end,
@@ -61,20 +53,18 @@ return {
     opts = {},
     config = function()
       local highlight = {
-        'IndentHighlight',
-        'IndentGrey',
+        'indent_guide_nonhl',
       }
-
       local hooks = require 'ibl.hooks'
-      ---- create the highlight groups in the highlight setup hook, so they are reset
-      ---- every time the colorscheme changes
+      -- create the highlight groups in the highlight setup hook, so they are reset
+      -- every time the colorscheme changes
       hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-        vim.api.nvim_set_hl(0, 'IndentHighlight', { fg = '#555555' })
-        vim.api.nvim_set_hl(0, 'IndentGrey', { fg = '#888888' })
+        vim.api.nvim_set_hl(0, 'indent_guide_nonhl', { fg = '#333333' })
       end)
       require('ibl').setup {
+        enabled = true,
+        scope = { enabled = true },
         indent = { highlight = highlight },
-        -- scope = { enabled = true, highlight = {  } },
       }
     end,
   },
@@ -90,7 +80,7 @@ return {
     config = function()
       require('lualine').setup {
         options = {
-          theme = 'onedark',
+          theme = 'monokai-pro',
         },
         sections = {
           lualine_a = { 'mode' },
@@ -108,6 +98,10 @@ return {
     name = 'barbecue',
     version = '*',
     dependencies = { 'SmiteshP/nvim-navic', 'nvim-tree/nvim-web-devicons' },
-    opts = {},
+    config = function()
+      require('barbecue').setup {
+        theme = 'monokai-pro',
+      }
+    end,
   },
 }
