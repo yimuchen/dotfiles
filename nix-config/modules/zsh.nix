@@ -21,7 +21,7 @@
         "conda-incubator/conda-zsh-completion.git" # For conda autocomplete
       ];
     };
-    dotDir = "${config.home.homeDirectory}/.config/zsh";
+    dotDir = ".config/zsh";
   };
   # Package management is mainly handled by a automatic pull of oh-my-zsh
 
