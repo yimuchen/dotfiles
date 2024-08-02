@@ -24,6 +24,7 @@ in {
   ];
   # Additional set-up to allow for autocompletion
   programs.zsh.envExtra = ''
+    fpath=( ${pkgs.python3}/lib/python3.12/site-packages/argcomplete/bash_completion.d "$fpath[@]" )
     activate-global-python-argcomplete
     eval "$(register-python-argcomplete ${pdftopng}/bin/pdftopng.py)"
     eval "$(register-python-argcomplete ${keepassxc_cli}/bin/keepassxc_cli.py)"
