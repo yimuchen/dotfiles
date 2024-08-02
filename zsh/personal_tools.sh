@@ -13,24 +13,7 @@ export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 
-# Geant4 system compilation
-export G4ENSDFSTATEDATA=/usr/share/geant4-ensdfstatedata/G4ENSDFSTATE2.2/
-export G4REALSURFACEDATA=/usr/share/geant4-realsurfacedata/RealSurface2.1.1/
-export G4LEDATA=/usr/share/geant4-ledata/G4EMLOW7.9/
-export G4LEVELGAMMADATA=/usr/share/geant4-levelgammadata/PhotonEvaporation5.5/
-export G4PARTICLEXSDATA=/usr/share/geant4-particlexsdata/G4PARTICLEXS2.1/
-export G4INSTALL=/usr/share/Geant4-10.6.0/geant4make/
-export G4TMP=/tmp/
-export G4TMPDIR=/tmp/
 
-
-# Custom python scripts with auto-completion
-if [ -d $HOME/.pyscripts ]; then
-   export PATH=$PATH:$HOME/.pyscripts
-   for SCRIPT_FILE in $(ls $HOME/.pyscripts); do
-      eval "$(register-python-argcomplete ${SCRIPT_FILE})"
-   done
-fi
 
 # Package management helper functions
 alias pacsize="expac -H M '%m\t%n' | sort -h"
