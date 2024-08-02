@@ -26,9 +26,9 @@ in {
   # Additional set-up to allow for autocompletion
   programs.zsh.initExtra = ''
     fpath=(${envpython}/lib/python3.12/site-packages/argcomplete/bash_completion.d "$fpath[@]")
-    eval "$(register-python-argcomplete ${pdftopng}/bin/pdftopng.py -s zsh)"
-    eval "$(register-python-argcomplete ${keepassxc_cli}/bin/keepassxc_cli.py -s zsh)"
-    eval "$(register-python-argcomplete ${nix_check_update}/bin/nix-check-update.py -s zsh)"
+    eval "$(cd ${pdftopng}/bin         && register-python-argcomplete pdftopng.py -s zsh)"
+    eval "$(cd ${keepassxc_cli}/bin    && register-python-argcomplete keepassxc_cli.py -s zsh)"
+    eval "$(cd ${nix_check_update}/bin && register-python-argcomplete nix-check-update.py -s zsh)"
   '';
 
   # Additional helper to keep track of home-manager packages
