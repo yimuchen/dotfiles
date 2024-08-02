@@ -5,10 +5,6 @@
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    autosuggestion = {
-      enable = true;
-      # Additional theming?
-    };
     syntaxHighlighting = {
       enable = true;
       # Additional theming??
@@ -21,8 +17,15 @@
         "conda-incubator/conda-zsh-completion.git" # For conda autocomplete
       ];
     };
-    # Effectively Superceding the role of zshrc
-    envExtra = ''
+    # Adding to the front of zshrc for instant prompting
+    initExtraFirst = ''
+      # Instant prompt for powerlevel10k
+      if [[ -r "\${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-\${(%):-%n}.zsh" ]]; then
+        source "\${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-\${(%):-%n}.zsh"
+      fi
+    '';
+    # Adding to the end of zshrc
+    initExtra = ''
       # Additional theme settings is stored in p10k.zsh
       source $HOME/.config/zsh/p10k.zsh
       # Additional machine-specific settings

@@ -24,9 +24,8 @@ in {
     nix_check_update # Checking for nix updates upstream
   ];
   # Additional set-up to allow for autocompletion
-  programs.zsh.envExtra = ''
-    fpath=( ${envpython}/lib/python3.12/site-packages/argcomplete/bash_completion.d "$fpath[@]" )
-    # activate-global-python-argcomplete not needed?
+  programs.zsh.initExtra = ''
+    fpath=(${envpython}/lib/python3.12/site-packages/argcomplete/bash_completion.d "$fpath[@]")
     eval "$(register-python-argcomplete ${pdftopng}/bin/pdftopng.py -s zsh)"
     eval "$(register-python-argcomplete ${keepassxc_cli}/bin/keepassxc_cli.py -s zsh)"
     eval "$(register-python-argcomplete ${nix_check_update}/bin/nix-check-update.py -s zsh)"
