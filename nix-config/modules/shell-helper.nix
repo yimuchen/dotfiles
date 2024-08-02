@@ -1,5 +1,14 @@
 { pkgs, config, ... }:
 let
+  # Setting up the python with various dependencies
+  envpython = pkgs.python3.withPackages (ps: [
+    ps.argcomplete # Autocompletion of scripts
+    ps.pykeepass # Extracting data in keepassxc database
+    ps.setuptools # Nonstandard packages needs setup modules
+    ps.tqdm # For progress bars
+    ps.wand # For imagemagick python bindings
+  ]);
+
   pdftopng = pkgs.writeScriptBin "pdftopng.py"
     (builtins.readFile ../../pyscripts/pdftopng.py);
   keepassxc_cli = pkgs.writeScriptBin "keepassxc_cli.py"
@@ -9,26 +18,18 @@ let
 in {
   # Configurations for adding system helper scripts
   home.packages = [
-    # Our main packages all require python
-    (pkgs.python3.withPackages (ps: [
-      ps.argcomplete # Autocompletion of scripts
-      ps.pykeepass # Extracting data in keepassxc database
-      ps.setuptools # Nonstandard packages needs setup modules
-      ps.tqdm # For progress bars
-      ps.wand # For imagemagick python bindings
-    ]))
-
+    envpython # The system python environment
     pdftopng # PDF to PNG batch conversion script
     keepassxc_cli # Interacting with keepassxc for CLI credential interactions
     nix_check_update # Checking for nix updates upstream
   ];
   # Additional set-up to allow for autocompletion
   programs.zsh.envExtra = ''
-    fpath=( ${pkgs.python3}/lib/python3.12/site-packages/argcomplete/bash_completion.d "$fpath[@]" )
+    fpath=( ${envpython}/lib/python3.12/site-packages/argcomplete/bash_completion.d "$fpath[@]" )
     activate-global-python-argcomplete
-    eval "$(register-python-argcomplete ${pdftopng}/bin/pdftopng.py)"
-    eval "$(register-python-argcomplete ${keepassxc_cli}/bin/keepassxc_cli.py)"
-    eval "$(register-python-argcomplete ${nix_check_update}/bin/nix-check-update.py)"
+    eval "$(register-python-argcomplete ${pdftopng}/bin/pdftopng.py -s zsh)"
+    eval "$(register-python-argcomplete ${keepassxc_cli}/bin/keepassxc_cli.py -s zsh)"
+    eval "$(register-python-argcomplete ${nix_check_update}/bin/nix-check-update.py -s zsh)"
   '';
 
   # Additional helper to keep track of home-manager packages
