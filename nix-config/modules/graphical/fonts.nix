@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 let
   dotfile_dir = "${config.home.homeDirectory}/.config/home-manager";
-  rime_dir = "~/.local/share/fcitx5/rime";
+  rime_dir = ".local/share/fcitx5/rime";
 in {
   home.packages = [
     # Terminal fonts to install
