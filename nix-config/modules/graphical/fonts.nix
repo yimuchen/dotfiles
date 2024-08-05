@@ -39,10 +39,10 @@ in {
   # Input method configurationsi (fcitx with rime) will be consider a part of
   # "font" configurations.
   home.file."${rime_dir}/default.custom.yaml".source =
-    config.lib.file.mkOutofStoreSymlink
+    config.lib.file.mkOutOfStoreSymlink
     "${dotfile_dir}/fontconfig/default.custom.yaml";
   home.file."${rime_dir}/bopomofo_tw.custom.yaml".source =
-    config.lib.file.mkOutofStoreSymlink
+    config.lib.file.mkOutOfStoreSymlink
     "${dotfile_dir}/fontconfig/bopomofo_tw.custom.yaml";
 
 }
