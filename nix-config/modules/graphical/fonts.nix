@@ -1,4 +1,8 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+let
+  dotfile_dir = "${config.home.homeDirectory}/.config/home-manager";
+  rime_dir = "~/.local/share/fcitx5/rime";
+in {
   home.packages = [
     # Terminal fonts to install
     pkgs.fira-code-nerdfont
@@ -30,7 +34,15 @@
 
   # Adding additional aliases (Not supported by HM yet...)
   home.file.".config/fontconfig/conf.d/99-alias.conf".source =
-    config.lib.file.mkOutOfStoreSymlink
-    "${config.home.homeDirectory}/.config/home-manager/fontconfig/alias.conf";
+    config.lib.file.mkOutOfStoreSymlink "${dotfile_dir}/fontconfig/alias.conf";
+
+  # Input method configurationsi (fcitx with rime) will be consider a part of
+  # "font" configurations.
+  home.file."${rime_dir}/default.custom.yaml".source =
+    config.lib.file.mkOutofStoreSymlink
+    "${dotfile_dir}/fontconfig/default.custom.yaml";
+  home.file."${rime_dir}/bopomofo_tw.custom.yaml".source =
+    config.lib.file.mkOutofStoreSymlink
+    "${dotfile_dir}/fontconfig/bopomofo_tw.custom.yaml";
 
 }
