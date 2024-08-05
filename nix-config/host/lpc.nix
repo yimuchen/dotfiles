@@ -11,10 +11,9 @@
     ../modules/zsh.nix
     ../modules/tmux.nix
     ../modules/misc.nix
+    ../modules/hm-paths.nix
   ];
 
-  # Addition settings for each machine
-  programs.tmux.shell = "${pkgs.zsh}/bin/zsh";
 
   # Miscellaneous one-off packages on LPC machines
   home.packages = [
