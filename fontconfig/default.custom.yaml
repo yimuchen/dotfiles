@@ -1,0 +1,7 @@
+patch:
+  menu:
+    page_size: 9
+    alternative_select_keys: "ASDFGHJKL"
+  schema_list:
+    - schema: bopomofo_tw
+    - schema: terra_pinyin

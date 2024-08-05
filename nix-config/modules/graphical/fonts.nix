@@ -44,5 +44,7 @@ in {
   home.file."${rime_dir}/bopomofo_tw.custom.yaml".source =
     config.lib.file.mkOutOfStoreSymlink
     "${dotfile_dir}/fontconfig/bopomofo_tw.custom.yaml";
-
+  home.file."${rime_dir}/bopomofo.custom.dict.yaml".source = # Custom phrases are considered sensitive
+    config.lib.file.mkOutOfStoreSymlink
+    "${config.home.homeDirectory}/configurations/sensitive/rime/bopomofo.custom.dict.yaml";
 }
