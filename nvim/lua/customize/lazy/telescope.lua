@@ -10,7 +10,14 @@ return { -- Fuzzy finder telescope
   config = function()
     local telescope = require 'telescope'
     local ts_builtin = require 'telescope.builtin'
-    telescope.setup {}
+    telescope.setup {
+      defaults = { file_ignore_patterns = {
+        'node_modules/*',
+        -- Python related directories
+        '__pycache__/*',
+        'site%-packages/*'
+      } },
+    }
 
     -- Adding additional telescope plugins
     pcall(telescope.load_extension, 'fzf')

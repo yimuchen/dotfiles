@@ -14,7 +14,6 @@
     ../modules/hm-paths.nix
   ];
 
-
   # Miscellaneous one-off packages on LPC machines
   home.packages = [
     pkgs.cacert # Required for newer versions of git
