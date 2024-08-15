@@ -28,12 +28,12 @@
     # Adding to the end of zshrc
     initExtra = # bash
       ''
-        # Additional theme settings is stored in p10k.zsh
-        source $HOME/.config/zsh/p10k.zsh
-        # Additional machine-specific settings
-        source $HOME/.config/zsh/machine.sh
+        # Additional settings for specific machines
+        source "$HOME/.config/zsh/machine.sh"
+        # Additional theme settings for in p10k.zsh
+        source "$HOME/.config/zsh/p10k.zsh"
         # Additional command-line tools that uses common gnu-coreutils tools
-        source $HOME/.config/zsh/common_utils.sh
+        source "$HOME/.config/zsh/common_utils.sh"
       '';
     shellAliases = {
       # Simple aliases of in-built shell functions
