@@ -6,7 +6,7 @@ let
     text = # bash
       ''
         for file_path in $@; do
-          gs -sDEVICE=pngalpha -o %stdout -r144 -dBATCH -dNOPAUSE -dQUIET $file_path |
+          gs -sDEVICE=pngalpha -o %stdout -r144 -dBATCH -dNOPAUSE -dQUIET "$file_path" |
           img2sixel --height=800px -
         done
       '';
