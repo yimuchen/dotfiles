@@ -9,7 +9,7 @@ from wand.image import Image
 
 def _should_skip(file: str):
     """
-    Skipping files that is incompabile with convert command, returns reason as
+    Skipping files that is incompatible with convert command, returns reason as
     a string
     """
     if not os.path.isfile(file):

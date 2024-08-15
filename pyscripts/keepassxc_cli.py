@@ -16,7 +16,7 @@ _log = logging.getLogger("keepasscx_cli.py")
 
 def get_credentials(db: PyKeePass, protocol: str, url: str) -> Entry:
     """
-    Multiple URLs can be defined in the keepassxc "browser intergration"
+    Multiple URLs can be defined in the keepassxc "browser integration"
     session. This will be stored in the  Entry.custom_properties and should be
     stored with the keys that starts with "KP2A_URL".
     """
@@ -168,7 +168,7 @@ def run_rdp(
     args: Optional[List[str]] = None,
     port: Optional[int] = None,
 ):
-    """Starting the an RDP session using given credentials"""
+    """Starting an RDP session using given credentials"""
     cred = get_credentials(db, "rdp", host)
     if port is None:
         host_token = f"/v:{host}"
