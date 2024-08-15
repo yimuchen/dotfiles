@@ -14,7 +14,7 @@ vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 
--- Displaying problematic whitespace characters
+-- Displaying problematic white space characters
 vim.opt.list = true
 vim.opt.listchars = { tab = '▷ ', trail = '▨', extends = '>', precedes = '<' }
 
@@ -42,11 +42,11 @@ vim.opt.updatetime = 50
 vim.opt.colorcolumn = '120'
 
 -- Setting the folding expression
-vim.opt.foldmethod = 'expr' -- Folding using treesitter syntax parser
+vim.opt.foldmethod = 'expr' -- Folding using tree-sitter syntax parser
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.opt.foldlevel = 20 -- Expand everything by default
 
--- Adding some additonal key mappings for vim in-built functions
+-- Adding some additional key mappings for vim in-built functions
 vim.g.mapleader = ' ' -- leader key for custom mapping
 
 -- Highlighting text on yank
@@ -57,3 +57,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
+
+-- Setting the spelling checking for single words
+vim.opt.spelllang = 'en_us'
+vim.opt.spell = true
+vim.opt.spelloptions = 'camel'
