@@ -11,22 +11,23 @@ let
 
     targetPkgs = _: [ pkgs.micromamba ];
 
-    profile = ''
-      set -e
-      eval "$(micromamba shell hook --shell=posix)"
-      ENV_NAME="$(basename $PWD)"-py${pyversion}
+    profile = # bash
+      ''
+        set -e
+        eval "$(micromamba shell hook --shell=posix)"
+        ENV_NAME="$(basename $PWD)"-py${pyversion}
 
-      if [[ ! -d $MAMBA_ROOT_PREFIX/envs/$ENV_NAME ]] ;  then
-        echo "Creating conda (micromamba) environment"
-        micromamba create  --yes -q --name $ENV_NAME -c conda-forge python=${pyversion}
-        micromamba activate $ENV_NAME
-        python -m pip install -r $DEFAULT_DEVSHELL_STORE/dev_conda.txt
-        python -m pip install -r $DEFAULT_DEVSHELL_STORE/dev_pip.txt
-      else
-        micromamba activate $ENV_NAME
-      fi
-      set +e
-    '';
+        if [[ ! -d $MAMBA_ROOT_PREFIX/envs/$ENV_NAME ]] ;  then
+          echo "Creating conda (micromamba) environment"
+          micromamba create  --yes -q --name $ENV_NAME -c conda-forge python=${pyversion}
+          micromamba activate $ENV_NAME
+          python -m pip install -r $DEFAULT_DEVSHELL_STORE/dev_conda.txt
+          python -m pip install -r $DEFAULT_DEVSHELL_STORE/dev_pip.txt
+        else
+          micromamba activate $ENV_NAME
+        fi
+        set +e
+      '';
     runScript = "zsh";
   };
 in python_fhs.env
