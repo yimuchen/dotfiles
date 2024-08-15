@@ -13,28 +13,28 @@
       # Primary plugin manager (as this doesn't require version pinning)
       enable = true;
       plugins = [
-        "romkatv/powerlevel10k" # For the theming
+        "romkatv/powerlevel10k" # For the GUI theme
         "conda-incubator/conda-zsh-completion.git" # For conda autocomplete
       ];
     };
     # Adding to the front of zshrc for instant prompting
-    initExtraFirst = ''
-      # Instant prompt for powerlevel10k
-      if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-        source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-      fi
-    '';
+    initExtraFirst = # bash
+      ''
+        # Instant prompt for powerlevel10k
+        if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+          source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+        fi
+      '';
     # Adding to the end of zshrc
-    initExtra = ''
-      # Additional theme settings is stored in p10k.zsh
-      source $HOME/.config/zsh/p10k.zsh
-      # Additional machine-specific settings
-      source $HOME/.config/zsh/machine.sh
-      # Addtional command-line tools that uses common gnu-coreutils tools
-      source $HOME/.config/zsh/common_utils.sh
-      # Additional command line tools, this file will be dynamically created by nix
-      source $HOME/.zsh_tools
-    '';
+    initExtra = # bash
+      ''
+        # Additional theme settings is stored in p10k.zsh
+        source $HOME/.config/zsh/p10k.zsh
+        # Additional machine-specific settings
+        source $HOME/.config/zsh/machine.sh
+        # Additional command-line tools that uses common gnu-coreutils tools
+        source $HOME/.config/zsh/common_utils.sh
+      '';
     shellAliases = {
       # Simple aliases of in-built shell functions
       "ln" = "ln --symbolic --force";

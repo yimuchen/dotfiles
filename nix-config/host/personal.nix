@@ -10,6 +10,7 @@
     ../modules/neovim.nix
     ../modules/shell-helper.nix
     ../modules/zsh.nix
+    ../modules/termgraphics.nix # For handling graphics in terminals
     ../modules/tmux.nix
     ../modules/kitty.nix
     ../modules/git.nix
