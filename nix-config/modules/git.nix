@@ -1,5 +1,5 @@
 { config, ... }: {
-  # Configurations for git 
+  # Configurations for git
   programs.git = {
     enable = true;
     ignores = [ "*~" "*.swp" "*.so" "__pycache__" "*.o" ];
