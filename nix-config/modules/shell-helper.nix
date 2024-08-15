@@ -23,7 +23,7 @@ in {
     keepassxc_cli # Interacting with keepassxc for CLI credential interactions
     nix_check_update # Checking for nix updates upstream
   ];
-  # Additional set-up to allow for autocompletion
+  # Additional set-up to allow for auto-completion
   programs.zsh.initExtra = ''
     fpath=(${envpython}/lib/python3.12/site-packages/argcomplete/bash_completion.d "$fpath[@]")
     eval "$(cd ${pdftopng}/bin         && register-python-argcomplete pdftopng.py -s zsh)"
