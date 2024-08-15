@@ -5,6 +5,7 @@
     # pkgs.stream # Steam requires a global setup as it requires networking
     pkgs.r2modman # For dyson sphere program!
     pkgs.lutris # For other launchers
+    # This is an update test
   ];
 
   # Find a way to automatically install and update proton-ge?
