@@ -9,14 +9,6 @@ function get_jupyter_url() {
    echo "http://localhost:${port}/?token=${token}"
 }
 
-function cert_gen_cmd() {
-   ## Printing the command to generate certificate generation on screen
-   echo "You can get your certificate at: https://ca.cern.ch/ca/user/Request.aspx?template=EE2User"
-   echo "Below are the commands using the certificate:"
-   echo ">> openssl pkcs12 -in <MyCert.p12> -clcerts -nokeys -out \$HOME/.globus/usercert.pem"
-   echo ">> openssl pkcs12 -in <MyCert.p12> -nocerts -out \$HOME/.globus/userkey.pem"
-}
-
 function show_term_color() {
   for i in {0..255}; do
     print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'};

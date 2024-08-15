@@ -14,7 +14,7 @@
       enable = true;
       plugins = [
         "romkatv/powerlevel10k" # For the GUI theme
-        "conda-incubator/conda-zsh-completion.git" # For conda autocomplete
+        "conda-incubator/conda-zsh-completion.git" # For conda auto-complete
       ];
     };
     # Adding to the front of zshrc for instant prompting
@@ -62,22 +62,18 @@
 
       # Additional aliases with package methods
       "root" = "${pkgs.root}/bin/root -l"; # CERN ROOT
-      "img2sixel" = "${pkgs.libsixel}/bin/img2sixel --height=800px";
     };
   };
 
+  # Additional configuration files requires shell scripting
   home.file = {
-    # Additional configuration files requires shell scripting
     ".config/zsh".source = config.lib.file.mkOutOfStoreSymlink
       "${config.home.homeDirectory}/.config/home-manager/zsh";
-
-    ".zsh_tools".text = ''
-      # Function to convert PDF to sixel output
-      function pdf2sixel() {
-         ${pkgs.ghostscript}/bin/gs -sDEVICE=pngalpha -o %stdout -r144 -dBATCH -dNOPAUSE -dQUIET $1 |
-         ${pkgs.libsixel}/bin/img2sixel --height=800px -
-      }
-    '';
   };
 
+  # Additional variables required for the aliases
+  home.sessionVariables = {
+    DEFAULT_DEVSHELL_STORE =
+      "${config.home.homeDirectory}/.config/home-manager/devshells";
+  };
 }

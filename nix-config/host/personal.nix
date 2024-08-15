@@ -10,10 +10,11 @@
     ../modules/neovim.nix
     ../modules/shell-helper.nix
     ../modules/zsh.nix
-    ../modules/termgraphics.nix # For handling graphics in terminals
     ../modules/tmux.nix
     ../modules/git.nix
     ../modules/languagetool.nix
+    ../modules/termgraphics.nix # For handling graphics in terminals
+    ../modules/system-manage.nix # System management commands
     ../modules/misc.nix # Common one-off packages
 
     # Graphical items

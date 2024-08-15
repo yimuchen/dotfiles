@@ -10,18 +10,15 @@
     ../modules/neovim.nix
     ../modules/zsh.nix
     ../modules/tmux.nix
+    ../modules/termgraphics.nix # For handling graphics in terminals
     ../modules/misc.nix
+    ../modules/hm-paths.nix
   ];
-
-  # Addition settings for each machine
-  programs.tmux.shell = "${pkgs.zsh}/bin/zsh";
 
   # Miscellaneous one-off packages.
   home.packages = [ ];
 
   home.sessionVariables = {
     MAMBA_ROOT_PREFIX = "${config.home.homeDirectory}/.mamba";
-    DEFAULT_DEVSHELL_STORE =
-      "${config.home.homeDirectory}/.config/home-manager/devshells";
   };
 }

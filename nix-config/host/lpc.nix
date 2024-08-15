@@ -11,6 +11,7 @@
     ../modules/zsh.nix
     ../modules/tmux.nix
     ../modules/misc.nix
+    ../modules/termgraphics.nix # For handling graphics in terminals
     ../modules/hm-paths.nix
   ];
 
@@ -22,11 +23,6 @@
 
   home.sessionVariables = {
     MAMBA_ROOT_PREFIX = "${config.home.homeDirectory}/.mamba";
-    DEFAULT_DEVSHELL_STORE =
-      "${config.home.homeDirectory}/.config/home-manager/devshells";
-    # Resetting the cert file - required for the new files of nix
-    SSL_CERT_FILE =
-      "${config.home.homeDirectory}/.nix-profile/etc/ssl/certs/ca-bundle.crt";
   };
 
   # Additional directory soft links to ensure that large files of custom

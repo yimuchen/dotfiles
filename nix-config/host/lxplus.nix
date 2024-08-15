@@ -10,7 +10,9 @@
     ../modules/neovim.nix
     ../modules/zsh.nix
     ../modules/tmux.nix
+    ../modules/termgraphics.nix # For handling graphics in terminals
     ../modules/misc.nix
+    ../modules/hm-paths.nix
   ];
 
   # Miscellaneous one-off packages on LPC machines
@@ -21,11 +23,6 @@
 
   home.sessionVariables = {
     MAMBA_ROOT_PREFIX = "${config.home.homeDirectory}/.mamba";
-    DEFAULT_DEVSHELL_STORE =
-      "${config.home.homeDirectory}/.config/home-manager/devshells";
-    # Resetting the cert file - required for the new files of nix
-    SSL_CERT_FILE =
-      "${config.home.homeDirectory}/.nix-profile/etc/ssl/certs/ca-bundle.crt";
   };
 
   # Soft linking in AFS currently does not work... defining as path instead.
