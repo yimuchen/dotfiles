@@ -12,7 +12,6 @@
     ../modules/zsh.nix
     ../modules/termgraphics.nix # For handling graphics in terminals
     ../modules/tmux.nix
-    ../modules/kitty.nix
     ../modules/git.nix
     ../modules/languagetool.nix
     ../modules/misc.nix # Common one-off packages
@@ -40,7 +39,7 @@
     KRB5CCNAME = "DIR:${config.home.homeDirectory}/.temp.persist";
   };
 
-  # Pulling additional settings from the untracked sensitive configurations
+  # Pulling additional settings from the un-tracked sensitive configurations
   # directory.
   home.file.".ssh/config".source = config.lib.file.mkOutOfStoreSymlink
     "${config.home.homeDirectory}/configurations/sensitive/sshconfig";
