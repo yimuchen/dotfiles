@@ -61,7 +61,7 @@
         "nix develop $(realpath $DEFAULT_DEVSHELL_STORE)#tex -c $SHELL";
 
       # Additional aliases with package methods
-      "root" = "${pkgs.root}/bin/root -l"; # CERN ROOT
+      "root" = "root -l"; # CERN ROOT
     };
   };
 
