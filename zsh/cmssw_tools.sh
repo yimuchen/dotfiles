@@ -14,7 +14,6 @@ alias wget='wget --no-check-certificate'
 
 # CMSSW tool chain helper function
 alias usecrab='source /cvmfs/cms.cern.ch/crab3/crab.sh'
-alias usecms='source /cvmfs/cms.cern.ch/cmsset_default.sh'
 
 # Loading the cmssw settings if not already loaded
 if [[ -z "${SCRAM_ARCH}" ]]; then
@@ -46,7 +45,6 @@ function dev_tmux() {
    else
       local session_name=$1
    fi
-   echo $(which tmux)
    tmux has-session -t $session_name 2>/dev/null
    if [ $? != 0 ]; then
       # If a tmux session doesn't already exist, set up a default session!
@@ -56,19 +54,16 @@ function dev_tmux() {
       tmux rename-window -t ${session_name}:0 "Editor"
       tmux respawn-pane -t ${session_name}:0.0 -k "zsh -c 'nvim .'"
 
-      # Secondary window for browsing the file system
-      tmux new-window -n "Browse" "zsh -l"
-
       # Executing the command
       tmux new-window -n "Run/Monitor"
-      tmux select-window -t ${session_name}:2 # Monitor tab
-      tmux split-window -t ${session_name}:2
-      tmux split-window -t ${session_name}:2
-      tmux resize-pane -t ${session_name}:2.0 -y "25%"
-      tmux resize-pane -t ${session_name}:2.1 -y "25%"
-      tmux respawn-pane -t ${session_name}:2.0 -k "htop --user $USER"
-      tmux respawn-pane -t ${session_name}:2.1 -k "watch -n 3 \"condor_q -total | grep $USER && condor_q -total | grep 'all user'\""
-      tmux respawn-pane -t ${session_name}:2.2 -k "zsh -l" # For running commands
+      tmux select-window -t ${session_name}:1 # Monitor tab
+      tmux split-window -t ${session_name}:1
+      tmux split-window -t ${session_name}:1
+      tmux resize-pane -t ${session_name}:1.0 -y "25%"
+      tmux resize-pane -t ${session_name}:1.1 -y "25%"
+      tmux respawn-pane -t ${session_name}:1.0 -k "htop --user $USER"
+      tmux respawn-pane -t ${session_name}:1.1 -k "watch -n 3 \"condor_q -total | grep $USER && condor_q -total | grep 'all user'\""
+      tmux respawn-pane -t ${session_name}:1.2 -k "zsh -l" # For running commands
 
       # Switching the to the editor window by default
       tmux select-window -t ${session_name}:0
