@@ -11,8 +11,7 @@
     ../modules/zsh.nix
     ../modules/tmux.nix
     ../modules/termgraphics.nix # For handling graphics in terminals
-    ../modules/misc.nix
-    ../modules/hm-paths.nix
+    ../modules/remote_misc.nix
   ];
 
   # Miscellaneous one-off packages on LPC machines

@@ -15,7 +15,6 @@
     ../modules/languagetool.nix
     ../modules/termgraphics.nix # For handling graphics in terminals
     ../modules/system-manage.nix # System management commands
-    ../modules/misc.nix # Common one-off packages
 
     # Graphical items
     ../modules/graphical/firefox.nix
@@ -29,6 +28,13 @@
   # Miscellaneous one-off packages to install on personal machines
   home.packages = [
     pkgs.apptainer # All non-personal machines should use the system apptainer instance!
+    pkgs.htop # For monitoring
+    pkgs.tree # For directory structure dumps
+    pkgs.speedtest-cli # To validate connection speeds
+    pkgs.zip
+    pkgs.unzip
+    pkgs.jq # For JSON
+    pkgs.yq-go # For YAML
   ];
 
   # Additional session variable to est on local machine

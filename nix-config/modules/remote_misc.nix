@@ -17,7 +17,7 @@ let
       '';
   };
 in {
-  # Miscellaneous command line packages with no additional configurations.
+  # Miscellaneous command line packages with no additional/minimal configurations.
   home.packages = [
     pkgs.htop # For monitoring
     pkgs.tree # For directory structure dumps
@@ -40,5 +40,12 @@ in {
     SSL_CERT_FILE =
       "${config.home.homeDirectory}/.nix-profile/etc/ssl/certs/ca-bundle.crt";
   };
+
+  # Additional paths for fixing the certain executable paths for system still
+  # using stand-alone home-manager instances
+  programs.tmux.shell = "${pkgs.zsh}/bin/zsh";
+  programs.zsh.initExtra = ''
+    export PATH=$PATH:$HOME/.nix-profile/bin/
+  '';
 }
 

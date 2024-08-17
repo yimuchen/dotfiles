@@ -10,9 +10,8 @@
     ../modules/neovim.nix
     ../modules/zsh.nix
     ../modules/tmux.nix
-    ../modules/misc.nix
+    ../modules/remote_misc.nix
     ../modules/termgraphics.nix # For handling graphics in terminals
-    ../modules/hm-paths.nix
   ];
 
   # Miscellaneous one-off packages on LPC machines
