@@ -15,13 +15,10 @@ elif [[ $HOST == "cmslpc"*".fnal.gov" ]]; then
   typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=3 # ORANGE
   typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=232
 elif [[ $HOST == "lxplus"*".cern.ch" ]]; then
-  source $HOME/.config/zsh/cmssw_tools.sh
   typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=19 # DEEP BLUE
   typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=7
   typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=19 # DEEP BLUE
   typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=7
-elif [[ $HOST == "hepcms"*".umd.edu" ]]; then
-  source $HOME/.config/zsh/cmssw_tools.sh
 else
   ## HOSTNAME NOT LISTED!!
   typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=1          # RED

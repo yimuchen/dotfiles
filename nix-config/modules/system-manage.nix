@@ -6,5 +6,4 @@
     "reboot" = "systemctl reboot";
     "efireboot" = "systemctl reboot --firmware-setup";
   };
-
 }
