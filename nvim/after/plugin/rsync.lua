@@ -229,7 +229,7 @@ local run_rsync = function(dry_run, auto_trigger)
             else
               vim.notify(table.concat(stdout, '\n'), vim.log.levels.INFO, {
                 timeout = 10000,
-                title = 'Complete rsync',
+                title = 'Complete rsync to [' .. remote_config.host .. ']',
                 icon = 'V ',
               })
             end
