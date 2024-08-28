@@ -35,5 +35,8 @@ let
   };
 
 in {
-  home.packages = [ img2sixel ];
+  home.packages = [
+    img2sixel # Overwritten version of img2sixel
+    pkgs.pdftk # For PDF image manipulation
+  ];
 }
