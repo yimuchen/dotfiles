@@ -11,12 +11,14 @@ return { -- Fuzzy finder telescope
     local telescope = require 'telescope'
     local ts_builtin = require 'telescope.builtin'
     telescope.setup {
-      defaults = { file_ignore_patterns = {
-        'node_modules/*',
-        -- Python related directories
-        '__pycache__/*',
-        'site%-packages/*'
-      } },
+      defaults = {
+        file_ignore_patterns = {
+          'node_modules/*',
+          -- Python related directories
+          '__pycache__/*',
+          'site%-packages/*',
+        },
+      },
     }
 
     -- Adding additional telescope plugins
@@ -35,8 +37,10 @@ return { -- Fuzzy finder telescope
       { '<leader>sr', ts_builtin.resume, desc = '[S]earch [R]esume' },
       { '<leader>s.', ts_builtin.oldfiles, desc = '[S]earch Recent Files ("." for repeat)' },
       { '<leader>sb', ts_builtin.buffers, desc = '[S]earch [B]uffers' },
-      -- Search keymaps is handled by telescope for all descriptions
+      -- Search key maps is handled by telescope (for all key maps without explicit description )
       { '<leader>sk', ts_builtin.keymaps, desc = '[S]earch [K]eymaps', icon = '' },
+      -- Spell checking is considered a code actions
+      { '<leader>as', ts_builtin.spell_suggest, desc= '[A]ction [S]pell sugggestion', icon=""}
     }
   end,
 }

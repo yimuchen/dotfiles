@@ -1,4 +1,4 @@
--- Additional file type association for files that are don't follow the standard extension convensions
+-- Additional file type association for files that are don't follow the standard extension conventions
 vim.filetype.add {
   extension = {
     service = 'cfg',

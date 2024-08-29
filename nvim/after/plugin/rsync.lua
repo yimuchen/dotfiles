@@ -184,7 +184,7 @@ end
 
 --- Summary
 --  @param dry_run: If set to true, it will only print the rsync command that
---  will be execuded
+--  will be excluded
 --
 --  @param auto_trigger: If set to true, only the entries with 'run_on_save'
 --  set to true will be run (both dry_run and none dry_run will be disabled)

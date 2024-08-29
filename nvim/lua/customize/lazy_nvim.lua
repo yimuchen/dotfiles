@@ -1,4 +1,4 @@
--- Boot strapwith without lazy.nvim being explciitly installed
+-- Bootstrap with without lazy.nvim being explicitly installed
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system {

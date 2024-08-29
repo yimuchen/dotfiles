@@ -30,7 +30,7 @@ return {
         conform.format { formatters = { 'trim_whitespace' } }
       end
 
-      -- Because of how mini.ai works. we need to trigger the keystrokes in
+      -- Because of how mini.ai works, we need to trigger the keystrokes in
       -- normal mode ('n'), but the commands technically work in visual mode
       -- ('x'). See the mini.lua file to see the definition of custom scopes
       local call_mini = function(cmd)
