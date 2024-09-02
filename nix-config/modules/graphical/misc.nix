@@ -1,11 +1,12 @@
-{ config, pkgs, ... }:{
-  # Miscelleneous packages that needs to be installed but does not require
+{ config, pkgs, ... }: {
+  # Miscellaneous packages that needs to be installed but does not require
   # additional configurations
   home.packages = [
     # Terminal interaction Notice that KDE specific configurations will be
     # placed in the plasma.nix configurations
     pkgs.kdePackages.yakuake
     pkgs.kdePackages.konsole
+    pkgs.wl-clipboard # For getting the command line output into wayland clipboard
     # For interacting with key data base
     pkgs.keepassxc
     # For video and audio playback
