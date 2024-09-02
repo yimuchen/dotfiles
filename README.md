@@ -106,6 +106,13 @@ structure in the `plasma` should follow how the files are structured in the
 `~/.config` directory. The construction of the symlink as well as why certain
 items are required to kept will be handled by `nix` home-manager.
 
+## Miscellaneous
+
+Miscellaneous configuration that we will be using for the commonly used
+"vanilla" unix system, such as vim instead of neovim, bash instead of zsh and
+so on. These files will **not** be managed by nix/home-manager, and should be
+directly modified/copied to the target file.
+
 
 [homemanager]: https://nix-community.github.io/home-manager/
 [nix]: https://nixos.org/
