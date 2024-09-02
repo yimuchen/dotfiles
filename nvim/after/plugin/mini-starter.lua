@@ -58,6 +58,11 @@ local start_git_dirs = (function()
     })
   end
 
+  -- Stop immediately if not running a mini-starter page
+  if vim.bo.filetype ~= 'ministarter' then
+    return list
+  end
+
   vim.schedule(function()
     local homedir = os.getenv 'HOME'
     local git_dir_list = find_git_dirs()
