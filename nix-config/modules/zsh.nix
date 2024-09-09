@@ -74,6 +74,6 @@
   # Additional variables required for the aliases
   home.sessionVariables = {
     DEFAULT_DEVSHELL_STORE =
-      "${config.home.homeDirectory}/.config/home-manager/devshells";
+      "${config.home.homeDirectory}/.config/home-manager/nix-config/devshells";
   };
 }

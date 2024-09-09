@@ -21,8 +21,7 @@ let
           echo "Creating conda (micromamba) environment"
           micromamba create  --yes -q --name $ENV_NAME -c conda-forge python=${pyversion}
           micromamba activate $ENV_NAME
-          python -m pip install -r $DEFAULT_DEVSHELL_STORE/dev_conda.txt
-          python -m pip install -r $DEFAULT_DEVSHELL_STORE/dev_pip.txt
+          python -m pip install -r $DEFAULT_DEVSHELL_STORE/dev_python_requirements.txt
         else
           micromamba activate $ENV_NAME
         fi
