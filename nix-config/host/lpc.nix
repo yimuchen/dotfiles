@@ -10,14 +10,19 @@
     ../modules/neovim.nix
     ../modules/zsh.nix
     ../modules/tmux.nix
+    ../modules/git.nix
     ../modules/remote_misc.nix
     ../modules/termgraphics.nix # For handling graphics in terminals
+    # Additional patches
+    ../modules/cluster_patches/zsh.nix
+    ../modules/cluster_patches/git.nix
   ];
 
   # Miscellaneous one-off packages on LPC machines
   home.packages = [
     pkgs.cacert # Required for newer versions of git
     pkgs.clang-tools # For CMSSW development!
+    pkgs.openssh # Required for using bundled git
   ];
 
   home.sessionVariables = {
