@@ -70,20 +70,20 @@
           ];
         };
         # Additional development shells
-        python-3p10 = (import ./devshells/python.nix {
+        python-3p10 = (import ./nix-config/devshells/python.nix {
           pkgs = pkgs;
           pyversion = "3.10";
         });
-        python-3p11 = (import ./devshells/python.nix {
+        python-3p11 = (import ./nix-config/devshells/python.nix {
           pkgs = pkgs;
           pyversion = "3.11";
         });
-        python-3p12 = (import ./devshells/python.nix {
+        python-3p12 = (import ./nix-config/devshells/python.nix {
           pkgs = pkgs;
           pyversion = "3.12";
         });
-        lua = (import ./devshells/lua.nix pkgs);
-        tex = (import ./devshells/tex.nix pkgs);
+        lua = (import ./nix-config/devshells/lua.nix pkgs);
+        tex = (import ./nix-config/devshells/tex.nix pkgs);
       };
     };
 }
