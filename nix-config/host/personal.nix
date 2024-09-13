@@ -40,8 +40,6 @@
   # Additional session variable to est on local machine
   home.sessionVariables = {
     MAMBA_ROOT_PREFIX = "${config.home.homeDirectory}/.mamba";
-    DEFAULT_DEVSHELL_STORE =
-      "${config.home.homeDirectory}/.config/home-manager/devshells";
     KPXC_DATABASE = "${config.home.homeDirectory}/.ssh/credentials.kdbx";
     KRB5CCNAME = "DIR:${config.home.homeDirectory}/.temp.persist";
   };
