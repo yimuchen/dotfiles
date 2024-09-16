@@ -1,4 +1,15 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, lib, ... }:
+let
+  # Solution taken from:
+  # https://github.com/NixOS/nixpkgs/issues/149812#issuecomment-1144285380
+  missing-gsettings-schemas-fix = builtins.readFile
+    "${pkgs.stdenv.mkDerivation {
+      name = "missing-gsettings-schemas-fix";
+      dontUnpack = true; # Make it buildable without “src” attribute
+      buildInputs = [ pkgs.gtk3 ];
+      installPhase = ''printf %s "$GSETTINGS_SCHEMAS_PATH" > "$out" '';
+    }}";
+in {
   # Miscellaneous packages that needs to be installed but does not require
   # additional configurations
   home.packages = [
@@ -31,7 +42,6 @@
     # pkgs.onlyoffice-bin
     pkgs.wpsoffice
     # Work related
-    # (pkgs.callPackage ../../pkgs/kicad.nix { })
     pkgs.kicad # Circuit/PCB design. NOTE: Has issue upgrading to python3.12?
     # pkgs.kikit # Additional PCB panneling
     pkgs.freecad # 3D object modelling NOTE: Has issue with QT python binding?
@@ -40,6 +50,11 @@
     pkgs.tigervnc # Remote desktop - VNC
     pkgs.thunderbird # Not migrating to NIX management for now.
     pkgs.zoom-us
+    # Alternate browser
     pkgs.chromium
+    pkgs.ladybird
   ];
+  # Fixing some QT-GTK interaction oddities?
+  home.sessionVariables.XDG_DATA_DIRS =
+    "$XDG_DATA_DIRS:${missing-gsettings-schemas-fix}";
 }
