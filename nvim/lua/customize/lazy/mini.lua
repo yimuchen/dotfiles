@@ -11,7 +11,10 @@ return {
     local spec_treesitter = require('mini.ai').gen_spec.treesitter
     require('mini.ai').setup {
       custom_textobjects = {
-        ['F'] = spec_treesitter { a = '@function.outer', i = '@function.inner' },
+        -- Typical code objects
+        ['f'] = spec_treesitter { a = '@function.outer', i = '@function.inner' },
+        ['c'] = spec_treesitter { a = '@class.outer', i = '@class.inner' },
+        -- Additional items for REPL interaction
         ['C'] = spec_treesitter { a = '@code_cell.outer', i = '@code_cell.inner' },
       },
     }
@@ -27,4 +30,4 @@ return {
     -- As this requires custom function, this will be setup in the plugins directory
     -- require('mini.starter').setup({})
   end,
-} -- Collection of modules in the minis collection
+}
