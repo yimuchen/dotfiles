@@ -29,8 +29,7 @@ end
 local wk = require 'which-key'
 
 wk.add {
-  { '<leader>t', ':lua TermToggle(80)<CR>', mode = 'n', desc = 'Toggle terminal' },
-  { '<leader>t', '<Esc>:lua TermToggle(80)<CR>', mode = 'i', desc = 'Toggle terminal' },
-  { '<leader>t', '<C-\\><C-n>:lua TermToggle(80)<CR>', mode = 't', desc = 'Toggle terminal' },
+  { '<leader>tt', ':lua TermToggle(80)<CR>', mode = 'n', desc = 'Toggle terminal' },
+  { '<leader>tt', '<C-\\><C-n>:lua TermToggle(80)<CR>', mode = 't', desc = 'Toggle terminal' },
   { '<Esc>', '<C-\\><C-n>', mode = 't', desc = 'Exit terminal mode' },
 }
