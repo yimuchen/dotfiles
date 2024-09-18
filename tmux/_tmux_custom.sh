@@ -85,18 +85,18 @@ dev_tmux() {
     # Cache file exists
     local cached_host=$(cat ${session_file})
     if [ "$HOSTNAME" == "${cached_host}" ]; then
-      echo "Reattching to local session"
-      echo tmux attach -t ${session_name}
+      # "Reattaching to local session"
+      tmux attach-session -t ${session_name}
     else
-      echo "Reattaching over ssh session at machine ${cached_host}"
+      # "Reattaching over ssh session at machine
       local nix_cmd="nix-portable nix shell --offline 'nixpkgs#nix' 'nixpkgs#tmux' --command"
-      local tmux_cmd="zsh -c tmux attach -t ${session_name}"
+      local tmux_cmd="zsh -c \"tmux attach-session -t ${session_name}\""
       local ssh_cmd="ssh -F $HOME/.ssh/config -o RequestTTY=yes ${cached_host}"
-      echo $ssh_cmd $nix_cmd $tmux_cmd
+      $ssh_cmd $nix_cmd $tmux_cmd
     fi
   else
-    echo "Creating new session ${session_name}"
-    echo tmux new -s ${session_name}
+    # Creating new session
+    tmux new -s ${session_name}
   fi
 }
 
