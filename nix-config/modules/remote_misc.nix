@@ -48,7 +48,7 @@ in {
   # Additional fixes for ZSH to remove system-level configurations
   programs.zsh = {
     # Fixing the paths of the home-manager profile to be properly exposed
-    programs.zsh.initExtra = # bash
+    initExtra = # bash
       ''
         export PATH=$HOME/.nix-profile/bin/:$PATH
       '';

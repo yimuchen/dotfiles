@@ -1,5 +1,7 @@
 # Configurations for LPC related setup
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+let large_storage_dir = "/uscms_data/d3/yimuchen";
+in {
   home.username = "yimuchen";
   home.homeDirectory = "/uscms/homes/y/yimuchen";
   home.stateVersion = "23.11"; # DO NOT EDIT!!
@@ -23,13 +25,9 @@
 
   home.sessionVariables = {
     MAMBA_ROOT_PREFIX = "${config.home.homeDirectory}/.mamba";
+    LARGE_STORAGE_DIR = large_storage_dir;
+    # Management of large storage should be handled outside of home-manager, as
+    # other tools might be started outside of nix shell sessions.
   };
-
-  # Additional directory soft links to ensure that large files of custom
-  # packages are placed in
-  home.file.".mamba".source =
-    config.lib.file.mkOutOfStoreSymlink "/uscms_data/d3/yimuchen/mamba";
-  home.file.".conda".source =
-    config.lib.file.mkOutOfStoreSymlink "/uscms_data/d3/yimuchen/conda";
 }
 

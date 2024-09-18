@@ -1,5 +1,7 @@
 # Configurations for the personal machine setups
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, ... }:
+let large_storage_dir = "/afs/cern.ch/work/y/yichen";
+in {
   home.username = "yichen";
   home.homeDirectory = "/afs/cern.ch/user/y/yichen";
   home.stateVersion = "23.11"; # DO NOT EDIT!!
@@ -21,20 +23,13 @@
 
   home.sessionVariables = {
     MAMBA_ROOT_PREFIX = "${config.home.homeDirectory}/.mamba";
+    LARGE_STORAGE_DIR = large_storage_dir;
   };
 
-  # Soft linking in AFS currently does not work... defining as path instead.
-  # This means that hot reloading of files doesn't work, unfortunately : (
+  # Soft linking in AFS currently does not work... using mkForce as path
+  # instead. This means that hot reloading of files doesn't work, unfortunately
+  # : (
   home.file.".zsh".source = lib.mkForce ../../zsh;
-  home.file.".zshrc".source = lib.mkForce ../../zsh/zshrc.zsh;
-  home.file.".p10k.zsh".source = lib.mkForce ../../zsh/p10k.zsh;
   home.file.".config/nvim".source = lib.mkForce ../../nvim;
-  home.file.".tmux.conf".source = lib.mkForce ../../tmux.conf;
-
-  # Softlinking doesn't work sell in AFS.... requires custom settings
-  #home.file.".mamba".source =
-  #  config.lib.file.mkOutOfStoreSymlink "/afs/cern.ch/work/y/yichen/mamba";
-  #home.file.".conda".source =
-  #  config.lib.file.mkOutOfStoreSymlink "/afs/cern.ch/work/y/yichen/conda";
 }
 
