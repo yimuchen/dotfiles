@@ -10,6 +10,9 @@ _cache_file() {
 
 _log() {
   echo "$(date --iso-8601=seconds) | ${@}" >>${_log_file}
+  # Truncate to at most 1000 lines
+  tail -n 1000 ${_log_file} > ${_log_file}.tmp
+  mv -f ${_log_file}.tmp  ${_log_file}
 }
 
 # Operation - starting a session
@@ -56,18 +59,20 @@ editor_window() {
 monitor_window() {
   local session_name=$1
   _log "Checking monitor window @ $session_name"
-  if ! tmux has-session -t "${session_name}:2" 2>/dev/null; then
+  if ! tmux has-session -t "${session_name}:2" &>/dev/null; then
     tmux new-window -n "Monitor"
     tmux move-window -t ${session_name}:2 # Move to second position
   fi
   # Always attempt to respawn the panes
-  if ! command -v "condor_q" 2>/dev/null; then
+  if ! command -v "condor_q" &>/dev/null; then
     # No condor related command, spawning simple monitor of htop
     tmux respawn-pane -t ${session_name}:2.0 -k "htop"
   else
-    # Assuming local machine
-    tmux respawn-pane -t ${session_name}:2.0 -k "htop --user $USER"
-    tmux respawn-pane -t ${session_name}:2.1 -k "watch -n 3 \"condor_q -total | grep $USER && condor_q -total | grep 'all user'\""
+    if ! tmux has-session -t "${session_name}:2.1" &> /dev/null ; then
+      tmux split-window -t ${session_name}:2
+    fi
+    tmux respawn-pane -t ${session_name}:2.0 -k "watch -n 3 \"condor_q -total | grep $USER && condor_q -total | grep 'all user'\""
+    tmux respawn-pane -t ${session_name}:2.1 -k "htop"
   fi
 }
 
@@ -80,14 +85,16 @@ dev_tmux() {
     local session_name=$1
   fi
 
-  local session_file=$(_cache_file $1)
-  if [ -f "${session_file}" ]; then
+  local session_file=$(_cache_file $session_name)
+  if [[ -f "${session_file}" ]]; then
     # Cache file exists
     local cached_host=$(cat ${session_file})
     if [ "$HOSTNAME" == "${cached_host}" ]; then
       # "Reattaching to local session"
+      _log "[DEV_TMUX] Attaching to session ${session_name}"
       tmux attach-session -t ${session_name}
     else
+      _log "[DEV_TMUX] Attaching to session ${session_name}@${cached_host}}"
       # "Reattaching over ssh session at machine
       local nix_cmd="nix-portable nix shell --offline 'nixpkgs#nix' 'nixpkgs#tmux' --command"
       local tmux_cmd="zsh -c \"tmux attach-session -t ${session_name}\""
@@ -96,6 +103,7 @@ dev_tmux() {
     fi
   else
     # Creating new session
+    _log "[DEV_TMUX] create new session ${session_name}"
     tmux new -s ${session_name}
   fi
 }
