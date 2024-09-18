@@ -1,7 +1,10 @@
 -- LSP related setups
-require('lspconfig').svelte.setup {}
-require('lspconfig').cssls.setup {}
-
+if vim.fn.executable 'svelteserver' then
+  require('lspconfig').svelte.setup {}
+end
+if vim.fn.executable 'vscode-css-language-server' then
+  require('lspconfig').cssls.setup {}
+end
 -- Formatting set
 local conform = require 'conform'
 
