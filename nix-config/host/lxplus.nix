@@ -14,9 +14,8 @@
     ../modules/remote_misc.nix
   ];
 
-  # Miscellaneous one-off packages on LPC machines
+  # Miscellaneous one-off packages on lxplus machines
   home.packages = [
-    pkgs.cacert # Required for newer versions of git
     pkgs.clang-tools # For CMSSW development, currently home DIR is too small
   ];
 

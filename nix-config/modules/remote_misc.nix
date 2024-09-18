@@ -31,8 +31,8 @@ in {
     pkgs.jq # For JSON
     pkgs.yq-go # For YAML
 
-    # For security file manipulation
-    pkgs.openssl
+    # For handling certificate generation
+    pkgs.cacert
     cert_cern_gen
   ];
 
@@ -41,11 +41,27 @@ in {
       "${config.home.homeDirectory}/.nix-profile/etc/ssl/certs/ca-bundle.crt";
   };
 
-  # Additional paths for fixing the certain executable paths for system still
-  # using stand-alone home-manager instances
+  # Have tmux start the shell with the custom zsh shell. We are assuming that
+  # tmux will only be used within a nix shell
   programs.tmux.shell = "${pkgs.zsh}/bin/zsh";
-  programs.zsh.initExtra = ''
-    export PATH=$PATH:$HOME/.nix-profile/bin/
-  '';
-}
 
+  # Additional fixes for ZSH to remove system-level configurations
+  programs.zsh = {
+    # Fixing the paths of the home-manager profile to be properly exposed
+    programs.zsh.initExtra = # bash
+      ''
+        export PATH=$HOME/.nix-profile/bin/:$PATH
+      '';
+    # Ensuring system autocomplete paths to be removed
+    initExtraBeforeCompInit = # bash
+      ''
+        fpath=()
+        for profile in $HOME/.nix-profile; do
+          fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
+        done
+      '';
+  };
+  # Additional fixes for ssh to ensure git does not use system-level ssh
+  # configurations
+  programs.git.extraConfig = { core = { sshComm = "ssh -F ~/.ssh/config"; }; };
+}

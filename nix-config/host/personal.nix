@@ -1,5 +1,7 @@
 # Configurations for the personal machine setups
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+let sensitive_dir = "${config.home.homeDirectory}/configurations/sensitive";
+in {
   home.username = "ensc";
   home.homeDirectory = "/home/ensc";
   home.stateVersion = "23.11"; # DO NOT EDIT!!
@@ -46,10 +48,10 @@
 
   # Pulling additional settings from the un-tracked sensitive configurations
   # directory.
-  home.file.".ssh/config".source = config.lib.file.mkOutOfStoreSymlink
-    "${config.home.homeDirectory}/configurations/sensitive/sshconfig";
-  home.file.".ssh/credentials.kdbx".source = config.lib.file.mkOutOfStoreSymlink
-    "${config.home.homeDirectory}/configurations/sensitive/credentials.kdbx";
+  home.file.".ssh/config".source =
+    config.lib.file.mkOutOfStoreSymlink "${sensitive_dir}/sshconfig";
+  home.file.".ssh/credentials.kdbx".source =
+    config.lib.file.mkOutOfStoreSymlink "${sensitive_dir}/credentials.kdbx";
 
   # Additional user-level services that I want to use
   services.syncthing = {
