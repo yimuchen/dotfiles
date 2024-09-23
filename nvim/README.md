@@ -10,7 +10,8 @@ All configurations are written in `lua`.
   `lua/customize/lazy` directory.
 - Language specific configuration should be defined in each of their
   `after/plugin/lspconfig-<language>.lua` file. Additional plugin
-  configurations should also be placed here.
+  configurations should also be done in a `after/plugin/myconfig.lua` file or
+  similar.
 
 ## Decision on external dependencies
 

@@ -33,23 +33,24 @@ use. The rule of thumb would be:
   configuration method rather than using nix. Nix in this case will be used to
   set up links to the configuration.
 - If the configurations dependencies packages that uses is not native to the
-  configuration language (like language specific tools for `neovim`), these
-  should be handled as nix dependencies. This is mainly to help ensure that
-  consistent development session can be configured with nix flake files.
+  configuration language (like language specific tools for `neovim`, or
+  wrappers to make certain CLI tools easier to use), these should be handled as
+  nix dependencies. This is mainly to help ensure that consistent development
+  session can be configured with nix flake files.
 - All setting up of symbolic links for various configurations that are not
   easily handled by existing home manager.
 
 ## Shell (ZSH)
 
-The manager system [`oh-my-zsh`][oh-my-zsh] will be used to handle the primary
-tools. Additional configuration that helps with day-to-day tasks on specific
-machines, as well as additional settings for the plugins will be added to the
-contents of the [`zsh`](zsh) folder. A simple parsing is done on the main
-`zshrc` script to determine the machine type and load in the required methods.
+The additional plugin system used will be [antidote], while the downloading of
+packages defined by antidote will be handled by nix. This ensures that the
+built system will have a fully functioning zsh, and you will not be prompted
+with a message when first logging into the shell.
 
-Assuming that you already have `zsh` and `git` installed, the required
-repositories will automatically be loaded on the first time starting up a `zsh`
-shell.
+Aliases for standard coreutils tools, and some non-trivial combination of such
+tools will be defined in the nix configurations. Programmable configurations
+should be defined in the separate `zsh/*.sh` files, such that they can be
+quickly updated when running into a bug without having to rebuild the system.
 
 ## Python helper scripts
 
@@ -113,9 +114,8 @@ Miscellaneous configuration that we will be using for the commonly used
 so on. These files will **not** be managed by nix/home-manager, and should be
 directly modified/copied to the target file.
 
-
+[antidote]: https://github.com/mattmc3/antidote
 [homemanager]: https://nix-community.github.io/home-manager/
 [nix]: https://nixos.org/
-[oh-my-zsh]: https://github.com/ohmyzsh/ohmyzsh/tree/master
 [primetut]: https://www.youtube.com/watch?v=w7i4amO_zaE
 [texlive]: https://www.tug.org/texlive/
