@@ -1,5 +1,9 @@
 { pkgs, config, ... }:
 let
+  # Additional configurations that is required for remote nix installations.
+  # This is typically to ensure that my useful set of helper utilities are
+  # properly installed, and will properly function when running nix as a
+  # non-privileged users.
   cert_cern_gen = pkgs.writeShellApplication {
     name = "cert_cern_gen";
     runtimeInputs = [ pkgs.openssl ];
@@ -37,6 +41,7 @@ in {
   ];
 
   home.sessionVariables = {
+    # Additional variables to use
     SSL_CERT_FILE =
       "${config.home.homeDirectory}/.nix-profile/etc/ssl/certs/ca-bundle.crt";
   };
@@ -60,6 +65,10 @@ in {
           fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
         done
       '';
+    # Additional aliases for slightly nicer monitoring on multi user systems
+    shellAliases = {
+      "htop" = "htop --user";
+    };
   };
   # Additional fixes for ssh to ensure git does not use system-level ssh
   # configurations
