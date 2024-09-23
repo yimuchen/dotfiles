@@ -62,3 +62,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.opt.spelllang = 'en_us'
 vim.opt.spell = true
 vim.opt.spelloptions = 'camel'
+
+-- Stop generating diagnostic updates when inserting (ltex-ls)
+vim.diagnostic.config { update_in_insert = false }
