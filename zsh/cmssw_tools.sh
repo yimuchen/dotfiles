@@ -8,10 +8,6 @@ unset SSH_ASKPASS
 export X509_USER_PROXY=${HOME}/x509up_u${UID}
 alias init-voms='voms-proxy-init -voms cms --valid 192:00 --out ${X509_USER_PROXY}'
 
-# Modifications to common command line tools
-alias htop='htop --user ${USER}'
-alias wget='wget --no-check-certificate'
-
 # CMSSW tool chain helper function
 alias usecrab='source /cvmfs/cms.cern.ch/crab3/crab.sh'
 
