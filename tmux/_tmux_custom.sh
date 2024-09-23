@@ -40,6 +40,18 @@ session_rename_post() {
   _log "renaming session (post) $1"
 }
 
+# Operation - opening the explore window, this is just a default shell window
+# the we will always either keep open, or reopen if accidentally closed
+explore_window() {
+  local session_name=$1
+  _log "Checking editor window @ $session_name"
+  if ! tmux has-session -t "${session_name}:0" 2>/dev/null; then
+    tmux new-window -n "Explore"
+    tmux move-window -t ${session_name}:0
+  fi
+  tmux rename-window -t ${session_name}:0 "Explore"
+}
+
 # Operation - opening the editor window. The editor window Will always be
 # placed in window 1 of the session, and should close immediately if the window
 # is closed

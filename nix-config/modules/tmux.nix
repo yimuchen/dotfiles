@@ -33,20 +33,13 @@ in {
     # custom .sh file in the tmux directory
     extraConfig = # bash
       ''
-        # Hooks for handling cluster tmux
-        set-hook -g session-created      "run-shell \"$HOME/.config/tmux/_tmux_custom.sh session_start       #{hook_session_name}\""
-        set-hook -g session-closed       "run-shell \"$HOME/.config/tmux/_tmux_custom.sh session_close       #{hook_session_name}\""
-        set-hook -g session-renamed      "run-shell \"$HOME/.config/tmux/_tmux_custom.sh session_rename      #{hook_session_name}\""
-        set-hook -g after-rename-session "run-shell \"$HOME/.config/tmux/_tmux_custom.sh session_rename_post #{hook_session_name}\""
-        # Spawning "standard windows"
-        bind-key 1 "run-shell \"$HOME/.config/tmux/_tmux_custom.sh editor_window  #{session_name}\"\; select-window -t 1"
-        bind-key e "run-shell \"$HOME/.config/tmux/_tmux_custom.sh editor_window  #{session_name}\"\; select-window -t 1"
-        bind-key 2 "run-shell \"$HOME/.config/tmux/_tmux_custom.sh monitor_window #{session_name}\"\; select-window -t 2"
-        bind-key m "run-shell \"$HOME/.config/tmux/_tmux_custom.sh monitor_window #{session_name}\"\; select-window -t 2"
+        source-file ${config.home.homeDirectory}/.config/tmux/config_extra.conf
       '';
   };
   home.file.".config/tmux/_tmux_custom.sh".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfile_dir}/tmux/_tmux_custom.sh";
+  home.file.".config/tmux/config_extra.conf".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfile_dir}/tmux/config_extra.conf";
   home.packages = [ dev-tmux ];
 }
 
