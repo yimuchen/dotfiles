@@ -12,10 +12,10 @@ return {
     require('mini.ai').setup {
       custom_textobjects = {
         -- Typical code objects
-        ['f'] = spec_treesitter { a = '@function.outer', i = '@function.inner' },
-        ['c'] = spec_treesitter { a = '@class.outer', i = '@class.inner' },
+        ['F'] = spec_treesitter { a = '@function.outer', i = '@function.inner' },
+        ['C'] = spec_treesitter { a = '@class.outer', i = '@class.inner' },
         -- Additional items for REPL interaction
-        ['C'] = spec_treesitter { a = '@code_cell.outer', i = '@code_cell.inner' },
+        ['X'] = spec_treesitter { a = '@code_cell.outer', i = '@code_cell.inner' },
       },
     }
 
