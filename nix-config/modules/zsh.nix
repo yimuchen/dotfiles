@@ -1,13 +1,14 @@
 { pkgs, config, ... }: {
-  # Additional packages that is required to use the various configuration.
-  # Because zsh should be considered a system package, do *not* put zsh here.
-
+  # Configuration of ZSH environment. Here we most of the configurations here
+  # should be either simple signal lines augmentation of standard coreutils
+  # items. For items for complicated, it should either be placed in the
+  # shell-helper modules if the helper uses non-coreutils packages; or in the
+  # zsh/common_utils.sh file for standard zsh tools
   programs.zsh = {
     enable = true;
     enableCompletion = true;
     syntaxHighlighting = {
       enable = true;
-      # Additional theming??
     };
     antidote = {
       # Primary plugin manager (as this doesn't require version pinning)
@@ -28,10 +29,10 @@
     # Adding to the end of zshrc
     initExtra = # bash
       ''
-        # Additional settings for specific machines
-        source "$HOME/.config/zsh/machine.sh"
         # Additional theme settings for in p10k.zsh
         source "$HOME/.config/zsh/p10k.zsh"
+        # Additional settings for specific machines (must be loaded after the p10k configuration)
+        source "$HOME/.config/zsh/machine.sh"
         # Additional command-line tools that uses common gnu-coreutils tools
         source "$HOME/.config/zsh/common_utils.sh"
       '';
@@ -43,7 +44,7 @@
       "ping" = "ping -c 7 -i 0.200";
       "ping-test" = "ping www.google.com";
       "rm" = "rm -i";
-      "dir_size" = "du --max-depth=1 --human-readable --all | sort -h";
+      "dir_size" = "du --max-depth=1 --human-readable --all | sort --human-numeric-sort";
       "less" = "less --raw-control-chars";
       "wget" = "wget --continue";
 
@@ -60,7 +61,8 @@
       "nshell-tex" =
         "nix develop $(realpath $DEFAULT_DEVSHELL_STORE)#tex -c $SHELL";
 
-      # Additional aliases with package methods
+      # Additional aliases with package methods (the root package should be
+      # handled by the environment of interest and not by nix
       "root" = "root -l"; # CERN ROOT
     };
   };
