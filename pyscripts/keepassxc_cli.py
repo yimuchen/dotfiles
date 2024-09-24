@@ -6,13 +6,14 @@ import getpass
 import logging
 import os
 import subprocess
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 import argcomplete
 from pykeepass import PyKeePass
 from pykeepass.entry import Entry
 
 _log = logging.getLogger("keepasscx_cli.py")
+
 
 def get_credentials(db: PyKeePass, protocol: str, url: str) -> Entry:
     """
@@ -35,6 +36,33 @@ def get_credentials(db: PyKeePass, protocol: str, url: str) -> Entry:
     assert len(logins) != 0, "No entries not found"
     assert len(logins) <= 1, "Multiple values found for URL!"
     return logins[0]
+
+
+def get_ssh_credentials(
+    db: PyKeePass, protocol: str, url: str
+) -> List[Tuple[Entry, List[str]]]:
+    def find_targets(x: Entry) -> List[str]:
+        ssh_targets = []
+        if (
+            isinstance(x.url, str)
+            and x.url.startswith(f"{protocol}://")
+            and x.url.endswith(f"/{url}")
+        ):
+            ssh_targets.append(
+                x.url.replace(f"{protocol://}", "").replace(f"/{url}", "")
+            )
+        for key, val in x.custom_properties.items():
+            if not key.startswith("KP2A_URL"):
+                continue
+            if val.startswith(f"{protocol}://") and val.endswith(f"/{url}"):
+                ssh_targets.append(
+                    val.replace(f"{protocol}://", "").replace(f"/{url}", "")
+                )
+        return ssh_targets
+
+    logins = [(x, find_targets(x)) for x in db.entries]
+    logins = [val for val in logins if len(val[1]) > 0]
+    return logins
 
 
 """
@@ -67,7 +95,27 @@ def run_kinit(db: PyKeePass, sites: List[str]):
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
-        _log.info("Generated for identity [{0}]!".format(identity))
+        _log.info("Generated local ticket for identity [{0}]!".format(identity))
+
+    """Running kinit command for items over ssh, credentials should be stored as ssh_kerberos://<ssh_addr>/SITE.URL"""
+    for domain in sites:
+        cred_list = get_ssh_credentials(db, "ssh_kerberos", domain)
+        for cred, target_list in cred_list:
+            # Running the kinit command
+            identity = "{}@{}".format(cred.username, domain)
+            for ssh in target_list:
+                subprocess.run(
+                    ["ssh", ssh, "kinit", "-r", "7d", identity],
+                    input=cred.password,
+                    encoding="ascii",
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+            _log.info(
+                "Generated remote ticket for host [{0}] with identity [{1}]!".format(
+                    ssh, identity
+                )
+            )
 
 
 """
