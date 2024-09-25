@@ -29,7 +29,11 @@ in {
   # Soft linking in AFS currently does not work... using mkForce as path
   # instead. This means that hot reloading of files doesn't work, unfortunately
   # : (
-  home.file.".zsh".source = lib.mkForce ../../zsh;
+  home.file.".config/zsh".source = lib.mkForce ../../zsh;
   home.file.".config/nvim".source = lib.mkForce ../../nvim;
+  home.file.".config/tmux/_tmux_custom.sh".source =
+    lib.mkForce ../../tmux/_tmux_custom.sh;
+  home.file.".config/tmux/config_extra.conf".source =
+    lib.mkForce ../../tmux/config_extra.conf;
 }
 

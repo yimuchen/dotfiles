@@ -68,6 +68,7 @@ in {
     # Additional aliases for slightly nicer monitoring on multi user systems
     shellAliases = {
       "htop" = "htop --user";
+      "ssh" = "ssh -F ~/.ssh/config";
     };
   };
   # Additional fixes for ssh to ensure git does not use system-level ssh
