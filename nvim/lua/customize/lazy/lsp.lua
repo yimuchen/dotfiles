@@ -12,6 +12,9 @@ return { -- LSP configurations and language related plugins
         version = 'v2.*',
         build = 'make install_jsregexp',
       },
+      -- For LSP support in embedded documents
+      'jmbuhr/otter.nvim',
+      'nvim-treesitter/nvim-treesitter',
     },
     config = function()
       local ts_builtin = require 'telescope.builtin'
