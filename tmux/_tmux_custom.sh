@@ -44,36 +44,118 @@ session_rename_post() {
 # the we will always either keep open, or reopen if accidentally closed
 explore_window() {
   local session_name=$1
-  _log "Checking editor window @ $session_name"
-  if ! tmux has-session -t "${session_name}:0" 2>/dev/null; then
-    tmux new-window -n "Explore"
-    tmux move-window -t ${session_name}:0
+  local window_index=${session_name}:0
+  _log "Checking explore window @ ${window_index}"
+
+  if ! tmux has-session -t "${window_index}" 2>/dev/null; then
+    tmux new-window -n "Explore" -t ${window_index}
   fi
-  tmux rename-window -t ${session_name}:0 "Explore"
+  tmux rename-window -t ${window_index} "Explore"
 }
 
 # Operation - opening the editor window. The editor window Will always be
 # placed in window 1 of the session, and should close immediately if the window
 # is closed
+_editor_idx() {
+  echo "${1}:1"
+}
+
 editor_window() {
-  local session_name=$1
-  _log "Checking editor window @ $session_name"
-  if ! tmux has-session -t "${session_name}:1" 2>/dev/null; then
-    tmux new-window -n "Editor"
-    tmux move-window -t ${session_name}:1
-    tmux respawn-pane -t ${session_name}:1.0 -k "nvim ."
+  local editor_idx=$(_editor_idx $1)
+  _log "Checking editor window @ ${editor_idx}"
+  if ! tmux has-session -t "${editor_idx}" 2>/dev/null; then
+    tmux new-window -n "Editor" -t "${editor_idx}"
+    # When closing the editor, always try to close the repl pane to ensure the
+    # editor is always pane 0
+    tmux respawn-pane -t ${editor_idx}.0 -k "nvim . && ~/.config/tmux/_tmux_custom.sh _close_repl_pane $1"
   fi
 }
 
-# Operation - opening the editor window. The editor window Will always be
+# Operation - spawning a REPL interaction terminal with the same window as the
+# editor window - 1.1, or in the case that it is sent to the background, it
+# will be sent to window 9.0. As this window can be toggled on or off,
+# additional helper function is needed.
+_repl_active_idx() {
+  echo "$(_editor_idx $1).1"
+}
+_repl_bkg_win() {
+  echo "${1}:9"
+}
+_repl_bkg_pane() {
+  echo "$(_repl_bkg_win).0"
+}
+
+_open_repl_pane() {
+  _log "Checking if the editor window does has a REPL session"
+  # Always open the editor_window first
+  editor_window
+
+  local editor_idx=$(_editor_idx $1)
+  local repl_active=$(_repl_active_idx $1)
+  local repl_bkg=$(_repl_bkg_pane $1)
+
+  if ! tmux has-session -t ${repl_active} 2> /dev/null ; then
+    if tmux has-session -t ${repl_bkg} 2> /dev/null ; then
+      _log "Moving background window to session"
+      tmux join-pane -s ${repl_bkg} -t "${editor_idx}" -h -l 80
+    else
+      _log "Creating the new pane directly in the pane"
+      tmux split-window -t ${editor_idx} -h -l 80
+      # Forcing the 
+      tmux resize-pane -t "${repl_active}" -x 80 
+      _log "Respawn pane with repl script ${PWD}/.repl.sh"
+      if [[ -f "$PWD/.repl.sh" ]]; then
+        echo "Launching repl interactive script ${PWD}/.repl.sh"
+        tmux respawn-pane -t ${repl_active} -k "${PWD}/.repl.sh"
+      else
+        echo "Did not find repl interactive script ${PWD}/.repl.sh"
+      fi
+    fi
+  fi
+  # Resizing horizontal width
+  # Keep focus on primary editor window
+  tmux select-pane -t ${editor_idx}.0
+}
+
+_close_repl_pane() {
+  _log "Sending REPL pane to background if it already exists"
+  editor_window
+
+  local repl_active=$(_repl_active_idx $1)
+  local repl_bkg=$(_repl_bkg_win $1)
+
+  if tmux has-session -t ${repl_active} 2>/dev/null ; then
+    # -d To not focus on this this new pane
+    _log "Moving pane back background window"
+    tmux break-pane -d -s "${repl_active}" -t "${repl_bkg}"
+    tmux rename-window -t "${repl_bkg}" "(repl-bkg)"
+  fi
+}
+
+_toggle_repl_pane() {
+  _log "Toggling repl window relative to the editor window"
+  if ! tmux has-session -t "$(_repl_active_idx $1)" 2> /dev/null ; then
+    _open_repl_pane "${1}"
+  else
+    _close_repl_pane "${1}"
+  fi
+}
+
+_guard_repl_bkg() {
+  if ! tmux has-session -t "$(_repl_bkg_win $1)" 2> /dev/null ; then
+    tmux display-message -p "Window 9 is reserved for the REPL terminal instance"
+  fi
+}
+
+
+# Operation - opening the monitor window. The monitor window will always be
 # placed in window 1 of the session, and should close immediately if the window
 # is closed
 monitor_window() {
   local session_name=$1
   _log "Checking monitor window @ $session_name"
   if ! tmux has-session -t "${session_name}:2" &>/dev/null; then
-    tmux new-window -n "Monitor"
-    tmux move-window -t ${session_name}:2 # Move to second position
+    tmux new-window -n "Monitor" -t ${session_name}:2
   fi
   # Always attempt to respawn the panes
   if ! command -v "condor_q" &>/dev/null; then
@@ -82,9 +164,10 @@ monitor_window() {
   else
     if ! tmux has-session -t "${session_name}:2.1" &> /dev/null ; then
       tmux split-window -t ${session_name}:2
+      tmux resize-pane -t ${session}:2.0 -y 10
     fi
     tmux respawn-pane -t ${session_name}:2.0 -k "watch -n 3 \"condor_q -total | grep $USER && condor_q -total | grep 'all user'\""
-    tmux respawn-pane -t ${session_name}:2.1 -k "htop"
+    tmux respawn-pane -t ${session_name}:2.1 -k "htop --user"
   fi
 }
 
