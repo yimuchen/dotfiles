@@ -73,5 +73,7 @@ in {
   };
   # Additional fixes for ssh to ensure git does not use system-level ssh
   # configurations
-  programs.git.extraConfig = { core = { sshComm = "ssh -F ~/.ssh/config"; }; };
+  programs.git.extraConfig = {
+    core = { sshCommand = "ssh -F ~/.ssh/config"; };
+  };
 }
