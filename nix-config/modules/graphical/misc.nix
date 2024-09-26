@@ -18,6 +18,7 @@ in {
     pkgs.kdePackages.yakuake
     pkgs.kdePackages.konsole
     pkgs.wl-clipboard # For getting the command line output into wayland clipboard
+    pkgs.showmethekey # For screen casting
     # For interacting with key data base
     pkgs.keepassxc
     # For video and audio playback
