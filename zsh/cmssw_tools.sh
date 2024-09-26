@@ -13,33 +13,33 @@ alias usecrab='source /cvmfs/cms.cern.ch/crab3/crab.sh'
 
 # Loading the cmssw settings if not already loaded
 if [[ -z "${SCRAM_ARCH}" ]]; then
-   source /cvmfs/cms.cern.ch/cmsset_default.sh
+  source /cvmfs/cms.cern.ch/cmsset_default.sh
 fi
 
 function smake() {
-   # Function for running scram b on half the cores available
-   if [ -z "$CMSSW_BASE" ]; then
-      echo "\$CMSSW_BASE is not defined, make sure you are in a CMSSW environment"
-      return 1
-   fi
+  # Function for running scram b on half the cores available
+  if [ -z "$CMSSW_BASE" ]; then
+    echo "\$CMSSW_BASE is not defined, make sure you are in a CMSSW environment"
+    return 1
+  fi
 
-   local num_core=$(nproc)
-   local run_core=$((num_core / 2))
-   echo "Running on $run_core(out of $num_core) threads.."
-   cd ${CMSSW_BASE}/src
-   scram b -j $run_core
-   cd -
+  local num_core=$(nproc)
+  local run_core=$((num_core / 2))
+  echo "Running on $run_core(out of $num_core) threads.."
+  cd ${CMSSW_BASE}/src
+  scram b -j $run_core
+  cd -
 }
 
 function condor_q_brief() {
-   condor_q -total | grep $USER && condor_q -total | grep 'all user'
+  condor_q -total | grep $USER && condor_q -total | grep 'all user'
 }
 
 function create_bashrc() {
   # Function for creating the default ~/.bashrc file for the cluster side. By
   # default this will only dump the contents to STDOUT to avoid automatically
   # breaking the default login session.
-  cat << EOF
+  cat <<EOF
 # .bashrc (Auto generated)
 
 # Source global definitions handled by the system administrators
@@ -52,6 +52,7 @@ export NP_RUNTIME=bwrap
 export NP_LOCATION=${LARGE_STORAGE_DIR}/nix-setup/
 export PATH=\$NP_LOCATION:\$PATH
 alias nix-zsh-shell="nix-portable nix shell --offline 'nixpkgs#nix' 'nixpkgs#zsh' 'nixpkgs#tmux' --command zsh -l"
+alias nix-rebuild="nix-portable nix shell 'nixpkgs#nix' 'nixpkgs#zsh' 'nixpkgs#tmux' --command zsh -l"
 EOF
 }
 
@@ -65,3 +66,11 @@ function manage_cache() {
   done
 }
 
+function clean_nix() {
+  # Function to help with running nix garbage collection
+  if [[ "$HOST" == "lxplus"* ]]; then
+    nix-collect-garbage -d
+  else
+    nix-collect-garbage -d
+  fi
+}
