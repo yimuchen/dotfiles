@@ -13,17 +13,6 @@
 { pkgs, config, ... }: {
   programs.neovim = {
     enable = true;
-    withNodeJs = true;
-    # Required for REPL notebook like interaction with image preview
-    extraLuaPackages = ps: [ ps.magick ];
-    extraPython3Packages = ps: [
-      ps.pynvim
-      ps.jupyter-client
-      # cairosvg # for image rendering
-      ps.ipython
-      # nbformat
-      # ... other python packages
-    ];
 
     # Additional package for "global" languages
     #
@@ -43,15 +32,13 @@
       pkgs.stylua
 
       # Markdown tool
-      pkgs.ltex-ls # Currently not working with hybrid setup??
+      pkgs.ltex-ls
       pkgs.marksman
       pkgs.mdformat
+      pkgs.python312Packages.jupytext # For editing notebooks
 
       # Additional tools used by other plugins
       pkgs.ripgrep # For telescope
-      pkgs.ueberzugpp # For image display
-      pkgs.imagemagick
-      pkgs.luarocks # Required for new items
       pkgs.libgcc # Compiler required for tree-sitter and luarocks
     ];
   };
@@ -61,7 +48,4 @@
     "${config.home.homeDirectory}/.config/home-manager/nvim";
 
   home.sessionVariables."EDITOR" = "nvim";
-
-  # Additional packages that are related to neovim usage
-  home.packages = [ pkgs.git ];
 }
