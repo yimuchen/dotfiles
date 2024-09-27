@@ -10,6 +10,7 @@ return {
     --  - ci'  - [C]hange [I]nside [']quote
     local spec_treesitter = require('mini.ai').gen_spec.treesitter
     require('mini.ai').setup {
+      n_lines = 1000, -- Required for large code blocks
       custom_textobjects = {
         -- Typical code objects
         ['F'] = spec_treesitter { a = '@function.outer', i = '@function.inner' },
@@ -20,7 +21,6 @@ return {
     }
 
     -- Add/delete/replace surroundings (brackets, quotes, etc.)
-    --
     -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
     -- - sd'   - [S]urround [D]elete [']quotes
     -- - sr)'  - [S]urround [R]eplace [)] [']
