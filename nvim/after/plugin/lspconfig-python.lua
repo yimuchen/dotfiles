@@ -35,8 +35,6 @@ vim.api.nvim_create_autocmd('FileType', {
     if string.sub(buffer_name, -6) ~= '.ipynb' then
       return -- Early exit if it is not a notebook file
     end
-    -- Quarto/Molten process interfaces to run cells
-    require('quarto').activate()
 
     -- Embedded language displays
     -- languages / completion / diagnostics / treesitter query
