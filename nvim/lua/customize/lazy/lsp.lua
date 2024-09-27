@@ -113,4 +113,19 @@ return { -- LSP configurations and language related plugins
       require('outline').setup {}
     end,
   },
+  {
+    'GCBallesteros/jupytext.nvim',
+    dependencies = { 'jmbuhr/otter.nvim' },
+    config = function()
+      require('jupytext').setup {
+        custom_language_formatting = { -- Setting notebook files to look like markdown
+          python = {
+            extension = 'md',
+            style = 'markdown',
+            force_ft = 'markdown', -- you can set whatever filetype you want here
+          },
+        },
+      }
+    end,
+  },
 }
