@@ -15,7 +15,8 @@ in {
   # Configuration for tmux for multiplexing and session saving
   programs.tmux = {
     enable = true;
-    newSession = true; # Spawn new session in nothing is running
+    newSession = false; # Spawn new session in nothing is running
+    historyLimit = 1000000; # Expanding the history limit
     terminal = "xterm-256color";
     plugins = [ # Plugins listed in the official nix repository
       {
