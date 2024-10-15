@@ -39,6 +39,11 @@
           inherit pkgs;
           modules = [ ./nix-config/host/umdgantry.nix ];
         };
+      # Configuration for KIT cluster system
+      homeConfigurations."ychen" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [ ./nix-config/host/kit.nix ];
+      };
 
       # We need to treat this as a package,
       defaultPackage.${system} = pkgs.zsh;
