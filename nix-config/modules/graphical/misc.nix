@@ -53,7 +53,7 @@ in {
     pkgs.zoom-us
     # Alternate browser
     pkgs.chromium
-    pkgs.ladybird
+    # pkgs.ladybird
   ];
   # Fixing some QT-GTK interaction oddities?
   home.sessionVariables.XDG_DATA_DIRS =
