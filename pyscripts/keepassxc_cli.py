@@ -138,8 +138,9 @@ def add_voms_args(parsers: argparse.ArgumentParser):
         nargs="+",
         default=[
             "fnal-default",
-            "lxplus7-default",
-            "umdcms-bash",
+            "kit-default",
+            "lxplus8-default",
+            "umdcms-default",
             "cmsconnect-default",
         ],
         type=str,
