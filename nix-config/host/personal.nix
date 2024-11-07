@@ -1,6 +1,9 @@
 # Configurations for the personal machine setups
 { config, pkgs, ... }:
-let sensitive_dir = "${config.home.homeDirectory}/configurations/sensitive";
+let
+  sensitive_dir = "${config.home.homeDirectory}/configurations/sensitive";
+  extern_config_dir =
+    "${config.home.homeDirectory}/configurations/systems/config/";
 in {
   home.username = "ensc";
   home.homeDirectory = "/home/ensc";
@@ -44,6 +47,7 @@ in {
     MAMBA_ROOT_PREFIX = "${config.home.homeDirectory}/.mamba";
     KPXC_DATABASE = "${config.home.homeDirectory}/.ssh/credentials.kdbx";
     KRB5CCNAME = "DIR:${config.home.homeDirectory}/.temp.persist";
+    EXTERN_CONFIG_DIR = "${extern_config_dir}";
   };
 
   # Pulling additional settings from the un-tracked sensitive configurations
