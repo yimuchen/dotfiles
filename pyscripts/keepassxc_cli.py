@@ -6,6 +6,7 @@ import getpass
 import logging
 import os
 import subprocess
+import tempfile
 from typing import List, Optional, Tuple
 
 import argcomplete
@@ -235,6 +236,46 @@ def run_rdp(
     subprocess.run(cmd)
 
 
+"""
+Run OpenVPN
+"""
+
+
+def add_vpn_args(parsers: argparse.ArgumentParser):
+    vpn_parser = parsers.add_parser("vpn", help="Starting a OpenVPN session")
+    vpn_parser.add_argument(
+        "--config",
+        type=str,
+        default="kit",
+        help="""
+        The openvpn setting to use. This will require that the a configuration
+        file existing in `$EXTERN_CONFIG_DIR/openvpn/<config>.ovpn`, and the
+        credentials required have a URL indicated as `openvpn://<config>` in
+        the password database.
+        """,
+    )
+
+
+def run_vpn(db: PyKeePass, config: str):
+    cred = get_credentials(db, "openvpn", config)
+    config_file = os.environ["EXTERN_CONFIG_DIR"] + f"/openvpn/{config}.ovpn"
+    with tempfile.NamedTemporaryFile("w") as passfile:
+        passfile.write(f"{cred.username}\n{cred.password}")
+        passfile.flush()
+        cmd = [
+            "sudo",
+            "openvpn",
+            "--config",
+            config_file,
+            "--auth-user-pass",
+            passfile.name,
+        ]
+        subprocess.run(cmd)
+
+
+"""
+The main processing handling
+"""
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         "keepassxc_cli",
@@ -247,11 +288,8 @@ if __name__ == "__main__":
     add_kinit_args(subparsers)
     add_voms_args(subparsers)
     add_rdp_args(subparsers)
-    __cmd_map__ = {
-        "kinit": run_kinit,
-        "voms": run_voms,
-        "rdp": run_rdp,
-    }
+    add_vpn_args(subparsers)
+    __cmd_map__ = {"kinit": run_kinit, "voms": run_voms, "rdp": run_rdp, "vpn": run_vpn}
     argcomplete.autocomplete(parser)
     args = parser.parse_args()
     if not args.subcmd:
