@@ -44,7 +44,7 @@ in {
     pkgs.wpsoffice
     # Work related
     pkgs.kicad # Circuit/PCB design. NOTE: Has issue upgrading to python3.12?
-    # pkgs.kikit # Additional PCB panneling
+    pkgs.kikit # Additional PCB panneling
     pkgs.freecad # 3D object modelling NOTE: Has issue with QT python binding?
     pkgs.virt-manager
     pkgs.freerdp3 # Remote desktop - RDP
