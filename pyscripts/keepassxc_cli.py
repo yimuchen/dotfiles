@@ -259,18 +259,10 @@ def add_vpn_args(parsers: argparse.ArgumentParser):
 def run_vpn(db: PyKeePass, config: str):
     cred = get_credentials(db, "openvpn", config)
     config_file = os.environ["EXTERN_CONFIG_DIR"] + f"/openvpn/{config}.ovpn"
-    with tempfile.NamedTemporaryFile("w") as passfile:
-        passfile.write(f"{cred.username}\n{cred.password}")
-        passfile.flush()
-        cmd = [
-            "sudo",
-            "openvpn",
-            "--config",
-            config_file,
-            "--auth-user-pass",
-            passfile.name,
-        ]
-        subprocess.run(cmd)
+    pw = cred.password.replace("$", "\\$")
+    bash_cmd = f"openvpn --config '{config_file}' --auth-user-pass <(echo -e '{cred.username}\\n{pw}')"
+    print(bash_cmd)
+    subprocess.run(" ".join(["sudo", "bash", "-c", '"' + bash_cmd + '"']), shell=True)
 
 
 """
