@@ -3,6 +3,10 @@ if [[ -d "/cvmfs/cms.cern.ch" ]] ; then
   source $HOME/.config/zsh/cmssw_tools.sh
 fi
 
+if [[ -z "${DOMAIN_NAME}" ]]; then
+  export DOMAIN_NAME=$(domainname -d)
+fi
+
 # Additional theme based on host name
 if [[ "$HOST" == "ensc"* ]]; then # Personal machine
   typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=7   # White
@@ -14,12 +18,12 @@ elif [[ "$HOST" == "cmslpc"* ]]; then
   typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=232
   typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=3 # ORANGE
   typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=232
-elif [[ "$HOST" == "lxplus"* ]]; then
+elif [[ "$HOST" == "lxplus"* && "$DOMAIN_NAME" == "cern.ch" ]]; then
   typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=19 # DEEP BLUE
   typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=7
   typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=19 # DEEP BLUE
   typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=7
-elif [[ "$HOST" == "bms"* ]]; then  # KIT RELATED MACHINES
+elif [[ "$DOMAIN_NAME" == "etp.kit.edu" ]]; then  # KIT RELATED MACHINES
   typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=22 # DEEP GREEN
   typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=7
   typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=22 # DEEP GREEN
