@@ -15,8 +15,3 @@ function show_term_color() {
   done
 }
 
-function force_ntp_update() {
-  # Solution found here:
-  # https://askubuntu.com/questions/1476532/why-the-timesyncd-client-does-not-receive-any-reply-from-the-ntp-server-time-ou
- sudo date -s "$(curl http://s3.amazonaws.com -v 2>&1 |  grep "Date: " | awk '{ print $3 " " $5 " " $4 " " $7 " " $6 " GMT"}')"
-}
