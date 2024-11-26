@@ -21,6 +21,8 @@ in {
     pkgs.showmethekey # For screen casting
     # For interacting with key data base
     pkgs.keepassxc
+    pkgs.bitwarden-cli
+    pkgs.bitwarden-desktop
     # For video and audio playback
     pkgs.vlc
     pkgs.kdePackages.elisa
@@ -30,6 +32,7 @@ in {
     pkgs.kdePackages.gwenview
     # For image/audio/video editing
     pkgs.kdePackages.kdenlive
+    pkgs.kdePackages.kasts
     pkgs.yt-dlp
     pkgs.audacity
     pkgs.musescore
