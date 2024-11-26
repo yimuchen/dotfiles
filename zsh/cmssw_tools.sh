@@ -16,6 +16,12 @@ if [[ -z "${SCRAM_ARCH}" ]]; then
   source /cvmfs/cms.cern.ch/cmsset_default.sh
 fi
 
+# Additional bind paths for cmssw-elX. Notice that the paths will need to be
+# different for different cluster setups.
+alias cmssw-el7="cmssw-el7 -p  ${CMSSW_APPTAINER_BINDPATH}  -- /bin/bash -l"
+
+
+
 function smake() {
   # Function for running scram b on half the cores available
   if [ -z "$CMSSW_BASE" ]; then
@@ -74,3 +80,5 @@ function clean_nix() {
     nix-collect-garbage -d
   fi
 }
+
+
