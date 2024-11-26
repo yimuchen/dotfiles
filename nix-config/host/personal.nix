@@ -28,6 +28,7 @@ in {
     ../modules/graphical/misc.nix
     ../modules/graphical/steam.nix
     ../modules/graphical/vscode.nix
+    ../modules/graphical/cern-work.nix
   ];
 
   # Miscellaneous one-off packages to install on personal machines
@@ -36,10 +37,12 @@ in {
     pkgs.htop # For monitoring
     pkgs.tree # For directory structure dumps
     pkgs.speedtest-cli # To validate connection speeds
-    pkgs.zip
-    pkgs.unzip
     pkgs.jq # For JSON
     pkgs.yq-go # For YAML
+    # Additional file format handling (probably not used on remote machines) 
+    pkgs.unrar
+    pkgs.zip
+    pkgs.unzip
   ];
 
   # Additional session variable to est on local machine
