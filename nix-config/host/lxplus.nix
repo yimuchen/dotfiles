@@ -17,9 +17,7 @@ in {
   ];
 
   # Miscellaneous one-off packages on lxplus machines
-  home.packages = [
-    pkgs.clang-tools # For CMSSW development, currently home DIR is too small
-  ];
+  home.packages = [ ];
 
   home.sessionVariables = {
     MAMBA_ROOT_PREFIX = "${config.home.homeDirectory}/.mamba";

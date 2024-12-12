@@ -38,6 +38,10 @@ in {
     # For handling certificate generation
     pkgs.cacert
     cert_cern_gen
+
+    # For editing bash scripts
+    pkgs.nodePackages.bash-language-server
+    pkgs.shfmt
   ];
 
   home.sessionVariables = {

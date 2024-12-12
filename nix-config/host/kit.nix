@@ -17,11 +17,8 @@ in {
     ../modules/termgraphics.nix # For handling graphics in terminals
   ];
 
-  # Miscellaneous one-off packages on LPC machines
-  home.packages = [
-    pkgs.cacert # Required for newer versions of git
-    pkgs.clang-tools # For CMSSW development!
-  ];
+  # Miscellaneous one-off packages on KIT machines
+  home.packages = [ ];
 
   home.sessionVariables = {
     MAMBA_ROOT_PREFIX = "${config.home.homeDirectory}/.mamba";
@@ -30,5 +27,4 @@ in {
     # other tools might be started outside of nix shell sessions.
   };
 }
-
 
