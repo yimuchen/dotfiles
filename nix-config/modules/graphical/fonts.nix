@@ -5,7 +5,12 @@ let
 in {
   home.packages = [
     # Terminal fonts to install
-    pkgs.fira-code-nerdfont
+    pkgs.nerd-fonts.fira-code
+    pkgs.nerd-fonts.jetbrains-mono
+    pkgs.nerd-fonts.zed-mono
+    pkgs.fira-code
+    pkgs.fira-code-symbols
+    # pkgs.nerdfonts.fira-code
     # Fonts to be used by system display
     pkgs.noto-fonts
     pkgs.noto-fonts-cjk-sans
