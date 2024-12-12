@@ -18,22 +18,55 @@ fi
 
 # Additional bind paths for cmssw-elX. Notice that the paths will need to be
 # different for different cluster setups.
-alias cmssw-el7="cmssw-el7 -p  ${CMSSW_APPTAINER_BINDPATH}  -- /bin/bash -l"
+alias cmssw-el7-int="cmssw-el7 -p ${CMSSW_APPTAINER_BINDPATH} -- /bin/bash -l"
+alias cmssw-el8-int="cmssw-el8 -p ${CMSSW_APPTAINER_BINDPATH} -- /bin/bash -l"
+alias cmssw-el9-int="cmssw-el9 -p ${CMSSW_APPTAINER_BINDPATH} -- /bin/bash -l"
 
+# Some aliases for running CMSSW related environments
+export _CMSSW_SCRAM_ARCH_CACHE=$HOME/.cache/cmssw_scram_arch.txt
+function _build_cmssw_scram_arch() {
+  echo "" >$_CMSSW_SCRAM_ARCH_CACHE # Wipe the existing file
+  # Adding items into cache file, ensuring that newer architectures are
+  # automatically loaded into the file later
+  ls -1 -d /cvmfs/cms.cern.ch/slc7_amd64_gcc*/cms/cmssw/CMSSW* >>$_CMSSW_SCRAM_ARCH_CACHE
+  ls -1 -d /cvmfs/cms.cern.ch/slc7_amd64_gcc*/cms/cmssw-patch/CMSSW* >>$_CMSSW_SCRAM_ARCH_CACHE
+  ls -1 -d /cvmfs/cms.cern.ch/el8_amd64_gcc*/cms/cmssw/CMSSW* >>$_CMSSW_SCRAM_ARCH_CACHE
+  ls -1 -d /cvmfs/cms.cern.ch/el8_amd64_gcc*/cms/cmssw-patch/CMSSW* >>$_CMSSW_SCRAM_ARCH_CACHE
+  ls -1 -d /cvmfs/cms.cern.ch/el9_amd64_gcc*/cms/cmssw/CMSSW* >>$_CMSSW_SCRAM_ARCH_CACHE
+  ls -1 -d /cvmfs/cms.cern.ch/el9_amd64_gcc*/cms/cmssw-patch/CMSSW* >>$_CMSSW_SCRAM_ARCH_CACHE
+}
 
+# Exposing CMSSW container detection tools. This needs to be isolated to
+# separate scripts in the $PATH environment variable to allow these fundamental
+# tools be also be used in other tools (neovim)
+export PATH="$PATH:$HOME/.config/zsh/cmssw_tools/"
 
-function smake() {
-  # Function for running scram b on half the cores available
-  if [ -z "$CMSSW_BASE" ]; then
-    echo "\$CMSSW_BASE is not defined, make sure you are in a CMSSW environment"
-    return 1
-  fi
+# Simple alias functions to directly call CMSSW methods without having to load in cmsenv
+function cmsRun() {
+  _cmsexec cmsRun $@
+}
+function cms_py3() {
+  _cmsexec python3 $@
+}
 
-  local num_core=$(nproc)
-  local run_core=$((num_core / 2))
-  echo "Running on $run_core(out of $num_core) threads.."
-  cd ${CMSSW_BASE}/src
-  scram b -j $run_core
+function cmssw-clean() {
+  _cmsexec scram b clean
+}
+
+function cmssw-make() {
+  # Standard make methods
+  #
+  # Always move to base path to compile everything
+  cd $(_cmssw_src_path)
+
+  # Compile with half the available cores
+  _cmsexec scram b -j $(($(nproc) / 2))
+
+  # Generate the compile commands and link it to the src base path
+  _cmsexec scram b llvm-ccdb
+  ln -sf ../compile_commands.json ./
+
+  # Moving back to whatever working directory was used
   cd -
 }
 
@@ -80,5 +113,3 @@ function clean_nix() {
     nix-collect-garbage -d
   fi
 }
-
-

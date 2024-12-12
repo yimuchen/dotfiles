@@ -1,0 +1,36 @@
+#!/bin/bash
+if [[ $# != "1" ]] ; then
+  echo "Use this script like _cmsrel CMSSW_X_Y_Z where X_Y_Z is the desired version number."
+  echo "This will automatically load the desired CMSSW version in the proper SCRAM_ARCH and "
+  echo "container directory."
+  exit 0
+fi
+
+local CMSSW_VERSION=$1
+local FOUND_VERSIONS=$(grep "${CMSSW_VERSION}\$" $_CMSSW_SCRAM_ARCH_CACHE)
+if [[ "$FOUND_VERSIONS" == "" ]]; then
+  echo "CMSSW version not found in cache, checked that it exists, or rerun the '_build_cmssw_scram_arch' command"
+  exit 1
+fi
+local TARGET_SCRAM_ARCH=$(echo $FOUND_VERSIONS | sed 's@/@ @g' | awk '{print $3}')
+local N_ARCHS=$(echo $TARGET_SCRAM_ARCH | wc -l)
+if [[ "$N_ARCHS" != "1" ]]; then
+  local TARGET_SCRAM_ARCH=$(echo $TARGET_SCRAM_ARCH | tail -n 1)
+  echo "Multiple SCRAM_ARCH values found. Using the last one listed in the file: '$TARGET_SCRAM_ARCH'"
+fi
+
+# Always attempt to spin up the CMSSW environment in a container even if the
+# host OS versions is matching. This ensure consistency between the results
+local CONTAINER_CMD=""
+if [[ "$TARGET_SCRAM_ARCH" == "slc7"* ]]; then
+  CONTAINER_CMD="cmssw-el7"
+elif [[ "$TARGET_SCRAM_ARCH" == "el8"* ]]; then
+  CONTAINER_CMD="cmssw-el8"
+elif [[ "$TARGET_SCRAM_ARCH" == "el9"* ]]; then
+  CONTAINER_CMD="cmssw-el9"
+else
+  echo "Unrecognized SCRAM_ARCH '${TARGET_SCRAM_ARCH}'; Will not continue"
+  exit 1
+fi
+
+$CONTAINER_CMD -p $CMSSW_APPTAINER_BINDPATH -- /bin/bash -c "export SCRAM_ARCH=${TARGET_SCRAM_ARCH}; cmsrel $CMSSW_VERSION"

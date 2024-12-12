@@ -1,0 +1,39 @@
+#!/bin/bash
+# Executing a command in the CMSSW environment. You will not need to initiate
+# the CMSSW containers, nor load the CMSSW environment when using this command.
+# You just need to be sure that your current working directory is within a
+# CMSSW_X_Y_Z/src directory.
+
+PWD_CMSSW_VERSION=$(_cmssw_src_path)
+if [[ $PWD_CMSSW_VERSION == "" ]]; then
+  echo "Not in a valid CMSSW_X_Y_Z/src directory. Exiting..."
+  exit 1
+fi
+PWD_SCRAM_ARCH=$(ls $PWD_CMSSW_VERSION/../bin) # SCRAM arch would be listing in the path
+PWD_SCRAM_ARCH=$(basename $PWD_SCRAM_ARCH)
+if [[ $PWD_SCRAM_ARCH == "" ]]; then
+  echo "Was not abale to determined the SCRAM_ARCH. Existing"
+  exit 1
+fi
+
+# Always attempt to spin up the CMSSW environment in a container even if the
+# host OS versions is matching. This ensure consistency between the results
+CONTAINER_CMD=""
+if [[ "$PWD_SCRAM_ARCH" == "slc7"* ]]; then
+  CONTAINER_CMD="cmssw-el7"
+elif [[ "$PWD_SCRAM_ARCH" == "el8"* ]]; then
+  CONTAINER_CMD="cmssw-el8"
+elif [[ "$PWD_SCRAM_ARCH" == "el9"* ]]; then
+  CONTAINER_CMD="cmssw-el9"
+else
+  echo "Unrecognized SCRAM_ARCH '${PWD_SCRAM_ARCH}'; Will not continue"
+  exit 1
+fi
+
+if [[ $# -eq 0 ]]; then
+  ENV_CMD="cmsenv &&  /bin/bash -l "
+else
+  ENV_CMD="cmsenv && ${@}" # Forcing everything to be a single string
+fi
+
+$CONTAINER_CMD -p $CMSSW_APPTAINER_BINDPATH -- /bin/bash -c "${ENV_CMD}"
