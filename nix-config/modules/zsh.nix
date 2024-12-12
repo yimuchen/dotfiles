@@ -7,9 +7,18 @@
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    syntaxHighlighting = {
-      enable = true;
-    };
+    completionInit = # bash
+      ''
+                # Enabling the autocomplete script. This is very slow on Nix systems so
+                # setting this to only run once per day
+                autoload -Uz compinit
+                if [[ $(($(date +%s) - $(stat -c "%Y" $HOME/.zcompdump))) -gt 86400 ]]; then
+        	        compinit;
+                else
+        	        compinit -C;
+                fi;
+      '';
+    syntaxHighlighting = { enable = true; };
     antidote = {
       # Primary plugin manager (as this doesn't require version pinning)
       enable = true;
@@ -21,6 +30,8 @@
     # Adding to the front of zshrc for instant prompting
     initExtraFirst = # bash
       ''
+        # Uncomment to enable profiling
+        # zmodload zsh/zprof
         # Instant prompt for powerlevel10k
         if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
           source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
@@ -29,12 +40,15 @@
     # Adding to the end of zshrc
     initExtra = # bash
       ''
-        # Additional theme settings for in p10k.zsh
+        # Setting the theme of the prompt
         source "$HOME/.config/zsh/p10k.zsh"
         # Additional settings for specific machines (must be loaded after the p10k configuration)
         source "$HOME/.config/zsh/machine.sh"
         # Additional command-line tools that uses common gnu-coreutils tools
         source "$HOME/.config/zsh/common_utils.sh"
+
+        # Uncomment to run profiling
+        # zprof
       '';
     shellAliases = {
       # Simple aliases of in-built shell functions
@@ -44,7 +58,8 @@
       "ping" = "ping -c 7 -i 0.200";
       "ping-test" = "ping www.google.com";
       "rm" = "rm -i";
-      "dir_size" = "du --max-depth=1 --human-readable --all | sort --human-numeric-sort";
+      "dir_size" =
+        "du --max-depth=1 --human-readable --all | sort --human-numeric-sort";
       "less" = "less --raw-control-chars";
       "wget" = "wget --continue";
 
