@@ -13,13 +13,22 @@ vim.fn.jobwait { id }
 cmssw_path = cmssw_path[1] -- Getting the CMSSW source path
 
 -- Clangd configurations
-require('lspconfig')['clangd'].setup { -- CLANGD does not seem to work well with CMSSW?
+require('lspconfig')['clangd'].setup {
   cmd = { '_cmsexec', 'clangd', '--compile-commands-dir=' .. cmssw_path .. '/../' },
   root_dir = function(_)
     return cmssw_path
   end,
   single_file_support = false,
 }
+local clang_format_cmd = { 'clang-format' }
+vim.list_extend(clang_format_cmd, require('conform.formatters').clang_format.args)
+vim.list_extend(clang_format_cmd, { '--style=file' })
+require('conform').formatters.cmssw_clang_format = {
+  command = '_cmsexec',
+  args = clang_format_cmd,
+  stdin = true,
+}
+require('conform').formatters_by_ft.cpp = { 'cmssw_clang_format' }
 
 -- Python LSP configurations
 require('lspconfig')['pylsp'].setup {

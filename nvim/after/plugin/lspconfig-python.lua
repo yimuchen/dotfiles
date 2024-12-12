@@ -1,18 +1,18 @@
 -- Setting up the python LSP and formatting methods
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'python',
-  callback = function()
-    -- Context LSP: pylsp; Linting LSP: ruff
-    if vim.fn.executable 'pylsp' ~= 0 then
-      require('lspconfig').pylsp.setup {}
-    end
-    if vim.fn.executable 'ruff' ~= 0 then
-      require('lspconfig').ruff.setup {}
-    end
-    -- Formatting
-    require('conform').formatters_by_ft.python = { 'ruff_format', 'ruff_organize_imports' }
-  end,
-})
+if vim.fn.executable 'pylsp' ~= 0 then
+  -- pylsp will be used for context aware language server
+  require('lspconfig').pylsp.setup {}
+end
+
+if vim.fn.executable 'ruff' ~= 0 then
+  -- Using ruff-lsp as a the primary language server for linting. This should
+  -- be made available in your language configurations.
+  require('lspconfig').ruff.setup {}
+end
+
+-- Formatting methods
+require('conform').formatters_by_ft.python = { 'ruff_format', 'ruff_organize_imports' }
+
 -- Additional surrounding function
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'python',
