@@ -1,27 +1,29 @@
 #!/bin/bash
-if [[ $# != "1" ]] ; then
+if [[ $# -eq 0 ]] ; then
   echo "Use this script like _cmsrel CMSSW_X_Y_Z where X_Y_Z is the desired version number."
   echo "This will automatically load the desired CMSSW version in the proper SCRAM_ARCH and "
   echo "container directory."
   exit 0
 fi
+CMSSW_VERSION=$1
 
-local CMSSW_VERSION=$1
-local FOUND_VERSIONS=$(grep "${CMSSW_VERSION}\$" $_CMSSW_SCRAM_ARCH_CACHE)
-if [[ "$FOUND_VERSIONS" == "" ]]; then
+function _list_in_cache() {
+  grep "${CMSSW_VERSION}\$" $_CMSSW_SCRAM_ARCH_CACHE
+}
+if [[ "$(_list_in_cache)" == "" ]]; then
   echo "CMSSW version not found in cache, checked that it exists, or rerun the '_build_cmssw_scram_arch' command"
   exit 1
 fi
-local TARGET_SCRAM_ARCH=$(echo $FOUND_VERSIONS | sed 's@/@ @g' | awk '{print $3}')
-local N_ARCHS=$(echo $TARGET_SCRAM_ARCH | wc -l)
+TARGET_SCRAM_ARCH=$(_list_in_cache | sed 's@/@ @g' | awk '{print $3}'| tail -n 1)
+N_ARCHS=$(_list_in_cache | sed 's@/@ @g' | wc -l)
 if [[ "$N_ARCHS" != "1" ]]; then
-  local TARGET_SCRAM_ARCH=$(echo $TARGET_SCRAM_ARCH | tail -n 1)
   echo "Multiple SCRAM_ARCH values found. Using the last one listed in the file: '$TARGET_SCRAM_ARCH'"
 fi
+TARGET_CMSSW_DIR=$(grep "$TARGET_SCRAM_ARCH.*$CMSSW_VERSION\$" $_CMSSW_SCRAM_ARCH_CACHE)
 
 # Always attempt to spin up the CMSSW environment in a container even if the
 # host OS versions is matching. This ensure consistency between the results
-local CONTAINER_CMD=""
+CONTAINER_CMD=""
 if [[ "$TARGET_SCRAM_ARCH" == "slc7"* ]]; then
   CONTAINER_CMD="cmssw-el7"
 elif [[ "$TARGET_SCRAM_ARCH" == "el8"* ]]; then
@@ -33,4 +35,11 @@ else
   exit 1
 fi
 
-$CONTAINER_CMD -p $CMSSW_APPTAINER_BINDPATH -- /bin/bash -c "export SCRAM_ARCH=${TARGET_SCRAM_ARCH}; cmsrel $CMSSW_VERSION"
+# Running the creation command
+REL_CMD="export SCRAM_ARCH=${TARGET_SCRAM_ARCH}"
+REL_CMD=$REL_CMD" && cmsrel $CMSSW_VERSION"
+REL_CMD=$REL_CMD" && cd $CMSSW_VERSION/src "
+REL_CMD=$REL_CMD" && cmsenv "
+REL_CMD=$REL_CMD" && scram-venv "
+REL_CMD=$REL_CMD" && ln -sf $TARGET_CMSSW_DIR/src/.clang-format ./"
+$CONTAINER_CMD -p $CMSSW_APPTAINER_BINDPATH -- /bin/bash -c "${REL_CMD}"
