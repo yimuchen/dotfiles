@@ -262,7 +262,7 @@ def run_vpn(db: PyKeePass, config: str):
     pw = cred.password.replace("$", "\\$")
     bash_cmd = f"openvpn --config '{config_file}' --auth-user-pass <(echo -e '{cred.username}\\n{pw}')"
     print(bash_cmd)
-    subprocess.run(" ".join(["sudo", "bash", "-c", '"' + bash_cmd + '"']), shell=True)
+    subprocess.run(" ".join(["sudo", "bash", "-c", '"'+bash_cmd+'"']), shell=True)
 
 
 """
