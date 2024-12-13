@@ -35,6 +35,7 @@ in {
     pkgs.kdePackages.kasts
     pkgs.yt-dlp
     pkgs.audacity
+    pkgs.kdePackages.kwave
     pkgs.musescore
     pkgs.gimp
     pkgs.obs-studio
@@ -54,6 +55,7 @@ in {
     pkgs.tigervnc # Remote desktop - VNC
     pkgs.thunderbird # Not migrating to NIX management for now.
     pkgs.zoom-us
+    pkgs.ventoy-full # For bootable USB configurations
     # Alternate browser
     pkgs.chromium
     # pkgs.ladybird
