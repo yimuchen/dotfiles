@@ -40,7 +40,6 @@ in {
     cert_cern_gen
 
     # For editing bash scripts
-    pkgs.clang-tools # This is required for CMSSW, because clangd indexing is strange??
     pkgs.nodePackages.bash-language-server
     pkgs.shfmt
   ];
