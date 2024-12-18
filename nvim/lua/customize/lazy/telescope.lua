@@ -13,10 +13,16 @@ return { -- Fuzzy finder telescope
     telescope.setup {
       defaults = {
         file_ignore_patterns = {
+          -- Node related packages
           'node_modules/*',
           -- Python related directories
           '__pycache__/*',
-          'site%-packages/*',
+          'site-packages/*',
+          -- Commonly used data/image/non-text files that will likely be dumped
+          -- in the work spaces similar to the code files
+          '**/*.root',
+          '**/*.pdf',
+          '**/*.png',
         },
       },
     }
@@ -40,7 +46,7 @@ return { -- Fuzzy finder telescope
       -- Search key maps is handled by telescope (for all key maps without explicit description )
       { '<leader>sk', ts_builtin.keymaps, desc = '[S]earch [K]eymaps', icon = '' },
       -- Spell checking is considered a code actions
-      { '<leader>as', ts_builtin.spell_suggest, desc= '[A]ction [S]pell sugggestion', icon=""}
+      { '<leader>as', ts_builtin.spell_suggest, desc = '[A]ction [S]pell sugggestion', icon = '' },
     }
   end,
 }
