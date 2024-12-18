@@ -14,6 +14,7 @@ in {
     ../modules/tmux.nix
     ../modules/git.nix
     ../modules/remote_misc.nix
+    ../modules/cli-common.nix
     ../modules/termgraphics.nix # For handling graphics in terminals
   ];
 

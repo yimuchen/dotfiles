@@ -23,25 +23,9 @@ let
 in {
   # Miscellaneous command line packages with no additional/minimal configurations.
   home.packages = [
-    pkgs.htop # For monitoring
-    pkgs.tree # For directory structure dumps
-    pkgs.speedtest-cli # To validate connection speeds
-
-    # For bundling files
-    pkgs.zip
-    pkgs.unzip
-
-    # For common configuration file parsing
-    pkgs.jq # For JSON
-    pkgs.yq-go # For YAML
-
     # For handling certificate generation
     pkgs.cacert
     cert_cern_gen
-
-    # For editing bash scripts
-    pkgs.nodePackages.bash-language-server
-    pkgs.shfmt
   ];
 
   home.sessionVariables = {

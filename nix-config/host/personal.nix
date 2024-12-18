@@ -17,6 +17,7 @@ in {
     ../modules/zsh.nix
     ../modules/tmux.nix
     ../modules/git.nix
+    ../modules/cli-common.nix
     ../modules/languagetool.nix
     ../modules/termgraphics.nix # For handling graphics in terminals
     ../modules/system-manage.nix # System management commands
@@ -34,15 +35,6 @@ in {
   # Miscellaneous one-off packages to install on personal machines
   home.packages = [
     pkgs.apptainer # All non-personal machines should use the system apptainer instance!
-    pkgs.htop # For monitoring
-    pkgs.tree # For directory structure dumps
-    pkgs.speedtest-cli # To validate connection speeds
-    pkgs.jq # For JSON
-    pkgs.yq-go # For YAML
-    # Additional file format handling (probably not used on remote machines) 
-    pkgs.unrar
-    pkgs.zip
-    pkgs.unzip
   ];
 
   # Additional session variable to est on local machine

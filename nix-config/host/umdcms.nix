@@ -11,6 +11,8 @@
     ../modules/zsh.nix
     ../modules/termgraphics.nix # For handling graphics in terminals
     ../modules/tmux.nix
+    ../modules/git.nix
+    ../modules/cli-common.nix
     ../modules/remote_misc.nix
   ];
 

@@ -37,6 +37,10 @@
       pkgs.mdformat
       pkgs.python312Packages.jupytext # For editing notebooks
 
+      # For editing bash scripts
+      pkgs.nodePackages.bash-language-server
+      pkgs.shfmt
+
       # Additional tools used by other plugins
       pkgs.ripgrep # For telescope
       pkgs.libgcc # Compiler required for tree-sitter and luarocks

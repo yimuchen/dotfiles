@@ -24,9 +24,9 @@ let
         if [[ "$input" == *:* ]]; then
           temp_name="/tmp/$(basename "$input")"
           scp "$input" "$temp_name"
-          rootbrowse "$temp_name"
+          rootbrowse --web=off "$temp_name"
         else
-          rootbrowse "$input"
+          rootbrowse --web=off "$input"
         fi
       '';
   };
