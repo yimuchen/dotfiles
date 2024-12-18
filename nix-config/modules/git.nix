@@ -8,5 +8,5 @@
   };
 
   # Additional helper tools for working with git
-  home.packages = [ pkgs.tokei ];
+  home.packages = [ pkgs.lazygit pkgs.tokei ];
 }
