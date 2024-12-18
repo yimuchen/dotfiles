@@ -35,7 +35,7 @@ in {
     pkgs.kdePackages.kasts
     pkgs.yt-dlp
     pkgs.audacity
-    pkgs.kdePackages.kwave
+    # pkgs.kdePackages.kwave
     pkgs.musescore
     pkgs.gimp
     pkgs.obs-studio
