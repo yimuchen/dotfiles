@@ -42,7 +42,7 @@ return { -- LSP configurations and language related plugins
             { '<C-h>', vim.lsp.buf.hover, desc = '[H]over Documentation', mode = 'ni' },
             { '<C-e>', vim.diagnostic.open_float, desc = 'Show diagnostic [E]rror messages', mode = 'ni' },
             -- Actions that will directly modify the text buffer
-            { '<leader>a', group = 'Alter' },
+            { '<leader>a', group = '[A]lter' },
             { '<leader>ar', vim.lsp.buf.rename, desc = '[A]ction [R]ename' },
             { '<leader>af', vim.lsp.buf.code_action, desc = '[A]ction LSP [F]ix' },
           }

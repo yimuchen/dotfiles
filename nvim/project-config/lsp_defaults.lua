@@ -1,8 +1,0 @@
-vim.g._load_default_lspconfig 'cpp'
-vim.g._load_default_lspconfig 'sh'
-vim.g._load_default_lspconfig 'js'
-vim.g._load_default_lspconfig 'md'
-vim.g._load_default_lspconfig 'python'
-vim.g._load_default_lspconfig 'lua'
-vim.g._load_default_lspconfig 'nix'
-vim.g._load_default_lspconfig 'tex'
