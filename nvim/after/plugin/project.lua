@@ -35,7 +35,9 @@ if vim.fn.executable '_cmsexec' ~= 0 then
     on_exit = function(_, _, _) end,
   })
   vim.fn.jobwait { _id }
-  vim.g._project_cmssw_path = _cmssw_path[1]
+  if _cmssw_path[1] ~= '' then
+    vim.g._project_cmssw_path = _cmssw_path[1]
+  end
 end
 
 -- Detecting if a global ".apptainer_exec.sh" script exists
@@ -45,6 +47,9 @@ local container_rootdir = vim.fs.root(0, executable_name)
 if container_rootdir ~= nil then
   vim.g._project_apptainer_exec = vim.fs.joinpath(container_rootdir, executable_name)
 end
+
+-- Detecting if there is a flake.nix the define the development shells
+vim.g._project_nix_flake = vim.fs.root(0, 'flake.nix')
 
 -- Adding additional functions that can be useful for loading the environment
 vim.g._project_default_config_dir = vim.env.HOME .. '/.config/nvim/project-config/'
@@ -57,80 +62,120 @@ end
 vim.g._lsp_setup = function(lsp_name, opt_override)
   -- Getting the original default settings
   local lsp_config = require('lspconfig.configs.' .. lsp_name).default_config
+  local base_cmd = lsp_config.cmd -- Stripping the executable path to just the name
+  base_cmd[1] = vim.fs.basename(lsp_config.cmd[1])
 
-  -- Getting the new command from the option overrides
-  lsp_config.cmd[1] = vim.fs.basename(lsp_config.cmd[1]) -- Stripping to just the executable name
-  if opt_override.cmd ~= nil then
-    lsp_config.cmd = opt_override.cmd
-    opt_override.cmd = nil
-  elseif opt_override.cmd_prefix ~= nil or opt_override.cmd_postfix ~= nil then
+  local lsp_opt = vim.deepcopy(opt_override)
+  if lsp_opt.cmd ~= nil then
+    lsp_opt.cmd = lsp_opt.cmd -- Use the explicit command if defined
+  elseif lsp_opt.cmd_prefix ~= nil or lsp_opt.cmd_postfix ~= nil then
     local new_cmd = {}
-    if opt_override.cmd_prefix ~= nil then
-      vim.list_extend(new_cmd, opt_override.cmd_prefix)
-      opt_override.cmd_prefix = nil
+    if lsp_opt.cmd_prefix ~= nil then
+      vim.list_extend(new_cmd, lsp_opt.cmd_prefix)
+      lsp_opt.cmd_prefix = nil
     end
-    vim.list_extend(new_cmd, lsp_config.cmd)
-    if opt_override.cmd_postfix ~= nil then
-      vim.list_extend(new_cmd, opt_override.cmd_postfix)
-      opt_override.cmd_postfix = nil
+    vim.list_extend(new_cmd, base_cmd)
+    if lsp_opt.cmd_postfix ~= nil then
+      vim.list_extend(new_cmd, lsp_opt.cmd_postfix)
+      lsp_opt.cmd_postfix = nil
     end
-    lsp_config.cmd = new_cmd
+    lsp_opt.cmd = new_cmd
   end
 
-  -- Getting any additional settings
-  lsp_config = vim.tbl_extend('force', lsp_config, opt_override)
-  require('lspconfig')[lsp_name].setup(lsp_config)
+  -- Setting up with new options
+  require('lspconfig')[lsp_name].setup(lsp_opt)
 end
 
 -- Simple method for adding prefix/post fix to the command required to the existing defaults
 -- of the configurations found in conform
 vim.g._conform_setup = function(fmt_name, opt_override)
   -- Getting the original default settings
-  local fmt_config = require('conform.formatters.' .. fmt_name)
+  local conform = require 'conform'
+  local default_formatters = require 'conform.formatters'
+  local fmt_config = default_formatters[fmt_name]
+  fmt_config.command = vim.fs.basename(fmt_config.command) -- Stripping to just the executable name
+
+  -- Making a copy of the input options
+  local fmt_opt = vim.deepcopy(opt_override)
 
   -- Getting the new command from the option overrides
-  fmt_config.command = vim.fs.basename(fmt_config.command) -- Stripping to just the executable name
-  if opt_override.command ~= nil then
-    fmt_config.command = opt_override.command
-    opt_override.command = nil
-  elseif opt_override.args ~= nil then
-    fmt_config.args = opt_override.args
-    opt_override.args = nil
-  elseif opt_override.cmd_prefix ~= nil or opt_override.cmd_postfix ~= nil then
+  if fmt_opt.command ~= nil then
+    fmt_config.command = fmt_opt.command
+    fmt_opt.command = nil
+  elseif fmt_opt.args ~= nil then
+    fmt_config.args = fmt_opt.args
+    fmt_opt.args = nil
+  elseif fmt_opt.cmd_prefix ~= nil or fmt_opt.cmd_postfix ~= nil then
     local new_cmd = {}
-    if opt_override.cmd_prefix ~= nil then
-      vim.list_extend(new_cmd, opt_override.cmd_prefix)
-      opt_override.cmd_prefix = nil
+    if fmt_opt.cmd_prefix ~= nil then
+      vim.list_extend(new_cmd, fmt_opt.cmd_prefix)
+      fmt_opt.cmd_prefix = nil
     end
     vim.list_extend(new_cmd, { fmt_config.command })
-    if opt_override.cmd_postfix ~= nil then
-      vim.list_extend(new_cmd, opt_override.cmd_postfix)
-      opt_override.cmd_postfix = nil
+    vim.list_extend(new_cmd, fmt_config.args)
+    if fmt_opt.cmd_postfix ~= nil then
+      vim.list_extend(new_cmd, fmt_opt.cmd_postfix)
+      fmt_opt.cmd_postfix = nil
     end
     fmt_config.command = new_cmd[1]
     fmt_config.args = vim.list_slice(new_cmd, 2)
   end
 
-  -- Setting the filetype to run over
-  local filetype = {}
-  if opt_override.filetype ~= nil then
-    filetype = opt_override.filetype
-  end
-
   -- Getting any additional settings
-  fmt_config = vim.tbl_extend('force', fmt_config, opt_override)
+  fmt_config = vim.tbl_extend('force', fmt_config, fmt_opt)
+  local new_fmt = '_mod_' .. fmt_name
+  conform.formatters[new_fmt] = fmt_config -- Must be inserted like this
+  return new_fmt
+end
 
-  require('conform.formatters')[fmt_name] = fmt_config
-  for _, v in pairs(filetype) do
-    require('conform').formatters_by_ft[v] = { fmt_name }
-  end
+-- Common methods for project setup. These option settings will be exposed as
+-- global tables of neovim
+vim.g._project_lsp_opt_default = nil
+vim.g._project_fmt_opt_default = nil
+if vim.g._project_cmssw_path ~= nil then
+  vim.g._project_lsp_opt_default = { cmd_prefix = { '_cmsexec' } }
+  vim.g._project_fmt_opt_default = { cmd_prefix = { '_cmsexec' } }
+elseif vim.g._project_apptainer_exec ~= nil then
+  vim.g._project_lsp_opt_default = {
+    cmd_prefix = { vim.g._project_apptainer_exec },
+    root_dir = function(_)
+      return vim.fs.dirname(vim.g._project_apptainer_exec)
+    end,
+  }
+  vim.g._project_fmt_opt_default = {
+    cmd_prefix = { vim.g._project_apptainer_exec },
+    cwd = function(_)
+      return vim.fs.dirname(vim.g._project_apptainer_exec)
+    end,
+  }
+elseif vim.g._project_nix_flake ~= nil then
+  vim.g._project_lsp_opt_default = {
+    cmd_prefix = {
+      'nix',
+      'develop',
+      vim.g._project_nix_flake .. '#default',
+      '--quiet',
+      '--offline',
+      '--command',
+    },
+  }
+  vim.g._project_fmt_opt_default = {
+    cmd_prefix = {
+      'nix',
+      'develop',
+      vim.g._project_nix_flake .. '#default',
+      '--quiet',
+      '--offline',
+      '--command',
+    },
+  }
 end
 
 -- Check if a local neovim configuration exists if it exists load that
 -- If not, load all the default configurations in the library
 local project_config = vim.fs.root(0, '.nvim/init.lua')
 if project_config ~= nil then
-  project_config = vim.fs.joinpath(project_config, '.nvim/init.lua')
+  project_config = vim.fs.joinpath(project_config, 'init.lua')
   vim.cmd('source ' .. project_config)
 else
   local defaults = vim.fn.glob(vim.fs.joinpath(vim.g._project_default_config_dir, '/*.lua'))

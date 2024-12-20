@@ -1,9 +1,14 @@
 -- Setting up python LSP methods
-local lspconfig = require 'lspconfig'
-if vim.g._project_cmssw_path ~= nil then
-  vim.g._lsp_setup('pylsp', { cmd_prefix = {'_cmsexec'} })
-  vim.g._lsp_setup('ruff', { cmd_prefix = {'_cmsexec'} })
-  -- Do *not* setup python formatting here
+if vim.g._project_lsp_opt_default ~= nil then
+  vim.g._lsp_setup('pylsp', vim.g._project_lsp_opt_default)
+  vim.g._lsp_setup('ruff', vim.g._project_lsp_opt_default)
+  if vim.g._project_cmssw_path == nil then
+    -- Only setup formatting is not in CMSSW environment
+    require('conform').formatters_by_ft.python = {
+      vim.g._conform_setup('ruff_format', vim.g._project_fmt_opt_default),
+      vim.g._conform_setup('ruff_organize_imports', vim.g._project_fmt_opt_default),
+    }
+  end
 else
   -- Setting up the python LSP and formatting methods
   if vim.fn.executable 'pylsp' ~= 0 then
