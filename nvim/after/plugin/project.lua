@@ -148,7 +148,10 @@ elseif vim.g._project_apptainer_exec ~= nil then
       return vim.fs.dirname(vim.g._project_apptainer_exec)
     end,
   }
-elseif vim.g._project_nix_flake ~= nil then
+elseif vim.g._project_nix_flake ~= nil and vim.env.SHLVL == "1" then
+  -- If SHLVL is not 1, we assume that an embedded shell has already been set,
+  -- and we will not attempt to start another modify the startup command (nix
+  -- dev shells are slow)
   vim.g._project_lsp_opt_default = {
     cmd_prefix = {
       'nix',
