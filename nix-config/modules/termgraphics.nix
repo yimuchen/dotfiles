@@ -35,7 +35,7 @@ in {
       '';
     shellAliases = {
       "imgbrowse" =
-        "find . -name '*.pdf' -o -name '*.png' -o -name '*.jpg' | fzf --preview 'fzf-img-preview {}'";
+        "find . -name '*.pdf' -o -name '*.png' -o -name '*.jpg' | fzf --preview 'fzf-img-preview {}' --preview-window=right,65%";
     };
   };
 }
