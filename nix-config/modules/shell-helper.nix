@@ -6,6 +6,9 @@ let
     ps.setuptools # Nonstandard packages needs setup modules
     ps.tqdm # For progress bars
     ps.wand # For imagemagick python bindings
+    # Additional items for waydroid
+    ps.requests
+    ps.inquirerpy
   ]);
 
   pdftopng = pkgs.writeScriptBin "pdftopng.py"

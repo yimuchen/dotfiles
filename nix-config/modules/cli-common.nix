@@ -14,6 +14,7 @@
 
     # Advance file processing
     pkgs.parallel
+    pkgs.lzip
   ];
 }
 

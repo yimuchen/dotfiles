@@ -43,7 +43,7 @@ in {
     # Fixing the paths of the home-manager profile to be properly exposed
     initExtra = # bash
       ''
-        export PATH=$HOME/.nix-profile/bin/:$PATH
+        export PATH=$PATH:$HOME/.config/zsh/termgraphics
       '';
     # Ensuring system autocomplete paths to be removed
     initExtraBeforeCompInit = # bash

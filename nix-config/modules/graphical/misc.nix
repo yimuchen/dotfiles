@@ -15,8 +15,6 @@ in {
   home.packages = [
     # Terminal interaction Notice that KDE specific configurations will be
     # placed in the plasma.nix configurations
-    pkgs.kdePackages.yakuake
-    pkgs.kdePackages.konsole
     pkgs.wl-clipboard # For getting the command line output into wayland clipboard
     pkgs.showmethekey # For screen casting
     # For interacting with key data base
@@ -33,6 +31,7 @@ in {
     # For image/audio/video editing
     pkgs.kdePackages.kdenlive
     pkgs.kdePackages.kasts
+    pkgs.kdePackages.kdeconnect-kde
     pkgs.yt-dlp
     pkgs.audacity
     # pkgs.kdePackages.kwave
