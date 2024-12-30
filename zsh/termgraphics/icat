@@ -1,0 +1,18 @@
+#!/bin/sh
+# Default method for dumping images onto the display terminal. This script will
+# assume that the first argument is the file of interest, and all other arguments
+# will be passed as is to the underlying kitty icat command.
+
+if [[ $# -eq 0 ]]; then
+  echo "Requires at least 1 argument"
+  exit 1
+fi
+
+img_file=${@:$#}
+icat_opt=${*%${!#}}
+if [[ $(file -b $img_file) == "PDF document"* ]] ; then
+  pdf2png $img_file | _icat $icat_opt
+else
+  _icat $icat_opt $img_file
+fi
+

@@ -1,0 +1,24 @@
+#!/bin/sh
+# Additional script required for showing the preview images in the fzf file listing
+file=$1
+type=$(file --dereference --mime -- $file)
+realpath_msg="Full path: [$(realpath $file)]"
+
+dim=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}
+if [[ ! "$type" =~ image/ ]]; then
+  if [[ "$type" =~ "application/pdf" ]]; then
+    echo $realpath_msg
+    pdf2png $file | _icat --clear --transfer-mode=memory --unicode-placeholder --place="$dim@0x0"
+    exit
+  elif [[ "$type" =~ =binary ]]; then
+    echo "Omitting binary file preview"
+    echo $realpath_msg
+    file "$1"
+    exit
+  fi
+  cat "$file"
+  exit
+else
+  echo "Full path: [$realpath_msg]"
+  _icat --clear --transfer-mode=memory --unicode-placeholder --stdin=no --place="$dim@0x0" $file
+fi
