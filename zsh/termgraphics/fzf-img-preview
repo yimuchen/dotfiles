@@ -1,7 +1,7 @@
 #!/bin/sh
 # Additional script required for showing the preview images in the fzf file listing
 file=$1
-type=$(file --dereference --mime -- $file)
+type=$(file --brief --dereference --mime -- $file)
 realpath_msg="Full path: [$(realpath $file)]"
 dim=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}
 if [[ ! "$type" =~ image/ ]]; then

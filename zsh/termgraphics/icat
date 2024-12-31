@@ -11,7 +11,7 @@ fi
 img_file=${@:$#}
 icat_opt=${*%${!#}}
 if [[ $(file -b $img_file) == "PDF document"* ]] ; then
-  pdf2png $img_file | _icat $icat_opt
+  _pdf2png $img_file | _icat --unicode-placeholder $icat_opt
 else
   _icat $icat_opt $img_file
 fi
