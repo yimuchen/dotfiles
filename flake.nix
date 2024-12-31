@@ -59,19 +59,11 @@
             pkgs.lua-language-server
             pkgs.stylua
 
-            # shell tools for environment configurations
-            pkgs.nodePackages.bash-language-server
-            pkgs.shfmt
-
             # Python language tools
             pkgs.ruff
-            (pkgs.python3.withPackages (ps: [
-              ps.pykeepass
-              ps.argcomplete
-              ps.python-lsp-server
-              ps.wand
-              ps.tqdm
-            ]))
+            # pkgs.pylyzer
+            (pkgs.python3.withPackages
+              (ps: [ ps.argcomplete ps.python-lsp-server ps.wand ps.tqdm ]))
           ];
         };
         # Additional development shells
