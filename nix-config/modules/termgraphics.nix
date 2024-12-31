@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 let
   _pdf2png = pkgs.writeShellApplication {
-    name = "pdf2png";
+    name = "_pdf2png";
     text = # bash
       ''
         ${pkgs.ghostscript}/bin/gs -sDEVICE=pngalpha -o %stdout -r144 -dBATCH -dNOPAUSE -dQUIET "$1"
