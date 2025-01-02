@@ -4,6 +4,9 @@ Frames=10
 [Appearance]
 Skin=arc-dark
 
+[Desktop Entry]
+DefaultProfile=Profile 1.profile
+
 [Dialogs]
 FirstRun=false
 

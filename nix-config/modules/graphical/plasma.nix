@@ -1,7 +1,8 @@
 { config, pkgs, ... }:
 let
   makeln = config.lib.file.mkOutOfStoreSymlink;
-  plasmadir = "${config.home.homeDirectory}/.config/home-manager/plasma";
+  hm_config = "${config.home.homeDirectory}/.config/home-manager/config";
+  hm_share = "${config.home.homeDirectory}/.config/home-manager/share";
 in {
   home.packages = [
     # Additional packages to install for themeing configurations
@@ -13,20 +14,20 @@ in {
 
     # Core GUI programs that we want to keep centrally managed
     pkgs.kdePackages.yakuake
-    # pkgs.kdePackages.konsole # We would probably keep chosty
+    # pkgs.kdePackages.konsole # We would probably keep this around as a backup
     pkgs.ghostty
   ];
 
   # For global behavior
   home.file.".config/kglobalshortcutsrc".source =
-    makeln "${plasmadir}/kglobalshortcutsrc";
+    makeln "${hm_config}/kglobalshortcutsrc";
 
   # Terminal applications
   home.file.".local/share/konsole/profile.profile".source =
-    makeln "${plasmadir}/konsole/profile.profile";
+    makeln "${hm_share}/konsole/profile.profile";
   home.file.".local/share/konsole/Breeze.colorscheme".source =
-    makeln "${plasmadir}/konsole/Breeze.colorscheme";
-  home.file.".config/yakuakerc".source = makeln "${plasmadir}/yakuakerc";
+    makeln "${hm_share}/konsole/Breeze.colorscheme";
+  home.file.".config/yakuakerc".source = makeln "${hm_config}/yakuakerc";
   home.file.".config/ghostty/config".source =
-    makeln "${plasmadir}/ghostty.config";
+    makeln "${hm_config}/ghostty/config";
 }

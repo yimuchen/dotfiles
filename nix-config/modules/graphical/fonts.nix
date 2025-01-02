@@ -1,9 +1,9 @@
 { config, pkgs, ... }:
 let
   makeln = config.lib.file.mkOutOfStoreSymlink;
-  plasmadir = "${config.home.homeDirectory}/.config/home-manager/plasma";
-  dotfile_dir = "${config.home.homeDirectory}/.config/home-manager";
-  target_rime_dir = ".local/share/fcitx5/rime";
+  hm_config = "${config.home.homeDirectory}/.config/home-manager/config";
+  hm_rime = "${hm_config}/../share/fcitx5/rime";
+  target_rime = ".local/share/fcitx5/rime";
 in {
   home.packages = [
     # Terminal fonts to install
@@ -35,26 +35,30 @@ in {
     defaultFonts = {
       sansSerif = [ "Noto Sans" "Noto Sans CJK JP" ];
       serif = [ "Linux Libertine Display" "Noto Serif CJK JP" ];
-      monospace = [ "FiraCode Nerd Font" "Noto Sans Mono CJK JP" ];
+      monospace = [
+        "JetBrainsMono Nerd Font"
+        "FiraCode Nerd Font"
+        "Noto Sans Mono CJK JP"
+      ];
     };
   };
 
   # Adding additional aliases (Not supported by HM yet...)
   home.file.".config/fontconfig/conf.d/99-alias.conf".source =
-    makeln "${dotfile_dir}/fontconfig/alias.conf";
+    makeln "${hm_config}/fontconfig/conf.d/99-alias.conf";
 
   # Input method general configurations (keyboard layout and general input
   # method layout)
-  home.file.".config/kxkbrc".source = makeln "${plasmadir}/kxkbrc";
+  home.file.".config/kxkbrc".source = makeln "${hm_config}/kxkbrc";
   home.file.".config/fcitx5/profile".source =
-    makeln "${plasmadir}/fcitx5-profile";
+    makeln "${hm_config}/fcitx5/profile";
 
-  # Individual input method configurations
-  home.file."${target_rime_dir}/default.custom.yaml".source =
-    makeln "${dotfile_dir}/fontconfig/default.custom.yaml";
-  home.file."${target_rime_dir}/bopomofo_tw.custom.yaml".source =
-    makeln "${dotfile_dir}/fontconfig/bopomofo_tw.custom.yaml";
-  home.file."${target_rime_dir}/bopomofo.custom.dict.yaml".source = # Custom phrases are considered sensitive
+  # Specific configurations for RIME input method
+  home.file."${target_rime}/default.custom.yaml".source =
+    makeln "${hm_rime}/default.custom.yaml";
+  home.file."${target_rime}/bopomofo_tw.custom.yaml".source =
+    makeln "${hm_rime}/bopomofo_tw.custom.yaml";
+  home.file."${target_rime}/bopomofo.custom.dict.yaml".source = # Custom phrases are considered sensitive
     makeln
     "${config.home.homeDirectory}/configurations/sensitive/rime/bopomofo.custom.dict.yaml";
 }

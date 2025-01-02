@@ -1,16 +1,20 @@
 # Configuration for neovim
 
 # Nix home manager will be used to install packages external to neovim, so any
-# binaries cannot be directy installed by the lazy.nvim plugin manager. Notice,
-# however, that the nix installation of language server protocols and other
-# language-specific tools should be determined by the development environment
-# you are working with, and not with this global configuration. There are 3
-# exceptions to this:
+# binaries cannot be directly installed by the lazy.nvim plugin manager.
+# Notice, however, that the nix installation of language server protocols and
+# other language-specific tools should be determined by the development
+# environment you are working with, and not with this global configuration.
+# There are 3 exceptions to this:
 #
 # - Nix (used to configure global nix settings and package flakes)
-# - Markdown (used as my noting format, and not nessecarily tied to a package)
+# - Markdown (used as my noting format, and not necessarily tied to a package)
 
-{ pkgs, config, ... }: {
+{ pkgs, config, ... }:
+let
+  makeln = config.lib.file.mkOutOfStoreSymlink;
+  hm_config = "${config.home.homeDirectory}/.config/home-manager/config";
+in {
   programs.neovim = {
     enable = true;
 
@@ -48,8 +52,6 @@
   };
 
   # Link to the major configuration path
-  home.file.".config/nvim".source = config.lib.file.mkOutOfStoreSymlink
-    "${config.home.homeDirectory}/.config/home-manager/nvim";
-
+  home.file.".config/nvim".source = makeln "${hm_config}/nvim";
   home.sessionVariables."EDITOR" = "nvim";
 }
