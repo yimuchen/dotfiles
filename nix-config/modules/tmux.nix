@@ -1,6 +1,7 @@
 { pkgs, config, ... }:
 let
-  dotfile_dir = "${config.home.homeDirectory}/.config/home-manager";
+  makeln = config.lib.file.mkOutOfStoreSymlink;
+  hm_config = "${config.home.homeDirectory}/.config/home-manager/config";
   # A simple script to spawn a development tmux session that can be traced
   # across cluster nodes
   dev-tmux = pkgs.writeShellApplication {
@@ -38,9 +39,9 @@ in {
       '';
   };
   home.file.".config/tmux/_tmux_custom.sh".source =
-    config.lib.file.mkOutOfStoreSymlink "${dotfile_dir}/tmux/_tmux_custom.sh";
+    makeln "${hm_config}/tmux/_tmux_custom.sh";
   home.file.".config/tmux/config_extra.conf".source =
-    config.lib.file.mkOutOfStoreSymlink "${dotfile_dir}/tmux/config_extra.conf";
+    makeln "${hm_config}/tmux/config_extra.conf";
   home.packages = [ dev-tmux ];
 }
 
