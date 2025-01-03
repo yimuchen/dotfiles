@@ -12,10 +12,10 @@ home directory. When it is complete, the installation process should be
 directly:
 
 ```bash
-git clone https://github.com/yimuchen/dotfiles 
-rm ~/.config/home-manager -rf # Removing existing home-manager configuration
-ln <path>/<to>/dofiles ~/.config/home-manager/ # Linking this repository to home manager
-home-manager switch # Is required to rerun if you make edits to the dotfiles directory
+git clone https://github.com/yimuchen/dotfiles
+rm ~/.config/home-manager -rf                     # Removing existing home-manager configuration
+ln <path >/ <to >/dofiles ~/.config/home-manager/ # Linking this repository to home manager
+home-manager switch                               # Is required to rerun if you make edits to the dotfiles directory
 ```
 
 While the bootstrapping is being finalized, additional instructions will be
@@ -38,19 +38,35 @@ use. The rule of thumb would be:
   nix dependencies. This is mainly to help ensure that consistent development
   session can be configured with nix flake files.
 - All setting up of symbolic links for various configurations that are not
-  easily handled by existing home manager.
+  easily handled by existing home manager configuration options. The
+  miscellaneous configuration files in this case would be listed under the
+  `config` and the `share` directory. And the structure within this directory
+  should mirror what is expected in the `$HOME/.config` and
+  `$HOME/.local/share` directory respectively.
 
-## Shell (ZSH)
+## Shell (`zsh`)
 
-The additional plugin system used will be [antidote], while the downloading of
-packages defined by antidote will be handled by nix. This ensures that the
-built system will have a fully functioning zsh, and you will not be prompted
-with a message when first logging into the shell.
+The additional plugin system used will be [`antidote`][antidote], while the
+downloading of packages defined by antidote will be handled by nix. This
+ensures that the configured system will have a fully functioning `zsh`, and you
+will not be prompted with a message when first logging into the shell.
 
-Aliases for standard coreutils tools, and some non-trivial combination of such
-tools will be defined in the nix configurations. Programmable configurations
-should be defined in the separate `zsh/*.sh` files, such that they can be
-quickly updated when running into a bug without having to rebuild the system.
+Aliases for standard `coreutils` tools, and some non-trivial combination of
+such tools will be defined in the nix configurations. Programmable
+configurations should be defined in the separate `zsh/*.sh` files, such that
+they can be quickly updated when running into a bug without having to rebuild
+the system.
+
+## Shell helper scripts
+
+Additional helper scripts used for performing common routines in a CLI session
+should be store in subdirectories in the `zsh` folder. The individual nix
+configurations used for grouping terminal functionality would be used to expose
+these directories and the global `$PATH` variable. The scripts here should use
+vanilla `sh` where ever possible, as avoid using `nix` specific paths to
+complete the routine (i.e: the script should expected executable files to be
+exposed instead of pointing to a specific nix executable instance), as this
+ensure the same scripts can be ported to other systems that is not running Nix.
 
 ## Python helper scripts
 
