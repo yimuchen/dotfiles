@@ -43,9 +43,9 @@ in {
     # Fixing the paths of the home-manager profile to be properly exposed
     initExtra = # bash
       ''
-        export PATH=$PATH:$HOME/.nix-profile/bin/
+        export PATH=$HOME/.nix-profile/bin/:$PATH
       '';
-    # Ensuring system autocomplete paths to be removed
+    # Ensuring system autocomplete paths are removed
     initExtraBeforeCompInit = # bash
       ''
         fpath=()
