@@ -1,7 +1,9 @@
 # Configurations for the ghostty terminal
 theme = "Monokai Vivid"
 # font-family = "JetBrainsMono Nerd Font"
+gtk-titlebar = false
 background-opacity = 0.85
 cursor-style = block
 shell-integration-features = no-cursor
 gtk-single-instance = true
+auto-update = off
