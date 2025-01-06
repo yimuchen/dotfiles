@@ -16,7 +16,7 @@ vim.opt.smartindent = true
 
 -- Displaying problematic white space characters
 vim.opt.list = true
-vim.opt.listchars = { tab = '▷ ', trail = '▨', extends = '>', precedes = '<' }
+vim.opt.listchars = { tab = '▷ ', trail = '', extends = '>', precedes = '<' }
 
 -- Do not attempt to wrap the text on display
 vim.opt.wrap = false
