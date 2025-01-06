@@ -57,11 +57,20 @@ in {
     shellAliases = {
       "htop" = "htop --user";
       "ssh" = "ssh -F ~/.ssh/config";
+      "home-update" =
+        "nh home switch --update --ask $(realpath $HOME/.config/home-manager)";
     };
   };
   # Additional fixes for ssh to ensure git does not use system-level ssh
   # configurations
   programs.git.extraConfig = {
     core = { sshCommand = "ssh -F ~/.ssh/config"; };
+  };
+
+  # Using NH nix helper to have a nicer update output
+  programs.nh = {
+    enable = true;
+    # clean.enable = true;
+    clean.extraArgs = "--keep-since 7d --keep 5";
   };
 }

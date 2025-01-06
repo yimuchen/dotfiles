@@ -1,6 +1,7 @@
 # Configurations for the personal machine setups
 { config, pkgs, ... }:
 let
+  makeln = config.lib.file.mkOutOfStoreSymlink;
   sensitive_dir = "${config.home.homeDirectory}/configurations/sensitive";
   extern_config_dir =
     "${config.home.homeDirectory}/configurations/systems/config/";
@@ -42,15 +43,11 @@ in {
     MAMBA_ROOT_PREFIX = "${config.home.homeDirectory}/.mamba";
     KPXC_DATABASE = "${config.home.homeDirectory}/.ssh/credentials.kdbx";
     KRB5CCNAME = "DIR:${config.home.homeDirectory}/.temp.persist";
-    EXTERN_CONFIG_DIR = "${extern_config_dir}";
   };
 
   # Pulling additional settings from the un-tracked sensitive configurations
   # directory.
-  home.file.".ssh/config".source =
-    config.lib.file.mkOutOfStoreSymlink "${sensitive_dir}/sshconfig";
-  home.file.".ssh/credentials.kdbx".source =
-    config.lib.file.mkOutOfStoreSymlink "${sensitive_dir}/credentials.kdbx";
+  home.file.".ssh/config".source = makeln "${sensitive_dir}/sshconfig";
 
   # Additional user-level services that I want to use
   services.syncthing = {
@@ -58,6 +55,12 @@ in {
     extraOptions = [
       "--gui-address=127.0.0.1:8000" # Using port 8000
     ];
+  };
+
+  # Alias for system update is different compared with standalone home-manager
+  # configurations
+  programs.zsh.shellAliases = {
+    "system-update" = "nh os switch --update --ask $(realpath /etc/nixos/) -- --impure";
   };
 }
 
