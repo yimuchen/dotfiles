@@ -43,15 +43,35 @@ in {
     };
   };
 
+  # Configurations for the input methods
+  i18n.inputMethod = {
+    enabled = "fcitx5";
+    fcitx5.addons = with pkgs; [
+      fcitx5-gtk
+      fcitx5-chewing
+      fcitx5-anthy
+      fcitx5-chinese-addons
+      fcitx5-rime
+      rime-data
+      kdePackages.fcitx5-qt
+      kdePackages.fcitx5-configtool
+    ];
+  };
+
   # Adding additional aliases (Not supported by HM yet...)
   home.file.".config/fontconfig/conf.d/99-alias.conf".source =
     makeln "${hm_config}/fontconfig/conf.d/99-alias.conf";
 
+  programs.plasma.configFile = {
+    "kxkbrc"."Layout"."DisplayNames" = "";
+    "kxkbrc"."Layout"."LayoutList" = "eu";
+    "kxkbrc"."Layout"."Use" = true;
+    "kxkbrc"."Layout"."VariantList" = "";
+  };
+
   # Input method general configurations (keyboard layout and general input
   # method layout)
-  home.file.".config/kxkbrc".source = makeln "${hm_config}/kxkbrc";
-  home.file.".config/fcitx5/profile".source =
-    makeln "${hm_config}/fcitx5/profile";
+  home.file.".config/fcitx5".source = makeln "${hm_config}/fcitx5";
 
   # Specific configurations for RIME input method
   home.file."${target_rime}/default.custom.yaml".source =

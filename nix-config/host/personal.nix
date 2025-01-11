@@ -26,7 +26,8 @@ in {
     # Graphical items
     ../modules/graphical/firefox.nix
     ../modules/graphical/plasma.nix
-    ../modules/graphical/fonts.nix
+    ../modules/graphical/terminal.nix
+    ../modules/graphical/input.nix
     ../modules/graphical/misc.nix
     ../modules/graphical/steam.nix
     ../modules/graphical/vscode.nix
@@ -60,7 +61,10 @@ in {
   # Alias for system update is different compared with standalone home-manager
   # configurations
   programs.zsh.shellAliases = {
-    "system-update" = "nh os switch --update --ask $(realpath /etc/nixos/) -- --impure";
+    "system-update" =
+      "nh os switch --update --ask $(realpath /etc/nixos/) -- --impure";
+    "system-config-update" =
+      "nh os switch --ask $(realpath /etc/nixos/) -- --impure";
   };
 }
 

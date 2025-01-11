@@ -30,7 +30,7 @@
     };
   };
 
-  # Creating the application entry 
+  # Creating the application entry
   xdg.desktopEntries = {
     "firefox.work" = {
       name = "Firefox - work";

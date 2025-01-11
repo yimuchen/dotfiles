@@ -1,8 +1,20 @@
 { config, pkgs, ... }:
+# General configuration for plasma workspace look-and-feel. Components that
+# require longer files to define should be placed in the "plasma-workspace"
+# folder, and the file there should not contain any logic
 let
   makeln = config.lib.file.mkOutOfStoreSymlink;
   hm_config = "${config.home.homeDirectory}/.config/home-manager/config";
-  hm_share = "${config.home.homeDirectory}/.config/home-manager/share";
+
+  # Fixing certain non-KDE items crashing on file selection.
+  # https://github.com/NixOS/nixpkgs/issues/149812#issuecomment-1144285380
+  missing-gsettings-schemas-fix = builtins.readFile
+    "${pkgs.stdenv.mkDerivation {
+      name = "missing-gsettings-schemas-fix";
+      dontUnpack = true; # Make it buildable without “src” attribute
+      buildInputs = [ pkgs.gtk3 ];
+      installPhase = ''printf %s "$GSETTINGS_SCHEMAS_PATH" >"$out"'';
+    }}";
 in {
   home.packages = [
     # Additional packages to install for themeing configurations
@@ -11,23 +23,27 @@ in {
     pkgs.arc-theme
     pkgs.arc-kde-theme
     pkgs.papirus-icon-theme
-
-    # Core GUI programs that we want to keep centrally managed
-    pkgs.kdePackages.yakuake
-    # pkgs.kdePackages.konsole # We would probably keep this around as a backup
-    pkgs.ghostty
   ];
 
   # For global behavior
   home.file.".config/kglobalshortcutsrc".source =
     makeln "${hm_config}/kglobalshortcutsrc";
 
-  # Terminal applications
-  home.file.".local/share/konsole/profile.profile".source =
-    makeln "${hm_share}/konsole/profile.profile";
-  home.file.".local/share/konsole/Breeze.colorscheme".source =
-    makeln "${hm_share}/konsole/Breeze.colorscheme";
-  home.file.".config/yakuakerc".source = makeln "${hm_config}/yakuakerc";
-  home.file.".config/ghostty/config".source =
-    makeln "${hm_config}/ghostty/config";
+  # Fixing some QT-GTK interaction oddities
+  home.sessionVariables.XDG_DATA_DIRS =
+    "$XDG_DATA_DIRS:${missing-gsettings-schemas-fix}";
+
+  programs.plasma = {
+    enable = true;
+    workspace = {
+      theme = "Arc-Dark";
+      cursor = {
+        theme = "Adwaita";
+        size = 24;
+      };
+      iconTheme = "Papirus-Dark";
+    };
+    panels = [ ./plasma-workspace/task-panel-primary.nix ];
+  };
+
 }
