@@ -1,9 +1,10 @@
 # Configurations for the ghostty terminal
-theme = "Monokai Vivid"
-# font-family = "JetBrainsMono Nerd Font"
-gtk-titlebar = true
-background-opacity = 0.85
+theme = "Breeze"
+auto-update = off
+background-opacity = 0.93
+# Forcing the cursor and disabling shell-integration
 cursor-style = block
 shell-integration-features = no-cursor
+# Removing title bar
+gtk-titlebar = true
 gtk-single-instance = true
-auto-update = off
