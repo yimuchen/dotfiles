@@ -70,6 +70,7 @@ function cmssw-make() {
   cd -
 }
 
+
 function condor_q_brief() {
   condor_q -total | grep $USER && condor_q -total | grep 'all user'
 }

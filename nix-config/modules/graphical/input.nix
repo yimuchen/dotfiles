@@ -30,6 +30,7 @@ in {
     pkgs.ttf-tw-moe
   ];
 
+  # Configuration for global font settings fall backs
   fonts.fontconfig = {
     enable = true;
     defaultFonts = {
@@ -41,6 +42,22 @@ in {
         "Noto Sans Mono CJK JP"
       ];
     };
+  };
+
+  # Plasma font configurations
+  programs.plasma.fonts = {
+    fixedWidth.family = "JetBrainsMono Nerd Font";
+    fixedWidth.pointSize = 12;
+    general.family = "Noto Sans CJK JP";
+    general.pointSize = 12;
+    menu.family = "Noto Sans CJK JP";
+    menu.pointSize = 12;
+    small.family = "Noto Sans CJK JP";
+    small.pointSize = 11;
+    toolbar.family = "Noto Sans CJK JP";
+    toolbar.pointSize = 10;
+    windowTitle.family = "Noto Sans CJK JP";
+    windowTitle.pointSize = 12;
   };
 
   # Configurations for the input methods
@@ -62,6 +79,8 @@ in {
   home.file.".config/fontconfig/conf.d/99-alias.conf".source =
     makeln "${hm_config}/fontconfig/conf.d/99-alias.conf";
 
+  programs.plasma.input.keyboard.numlockOnStartup = "on";
+  # Forcing Layouts
   programs.plasma.configFile = {
     "kxkbrc"."Layout"."DisplayNames" = "";
     "kxkbrc"."Layout"."LayoutList" = "eu";

@@ -25,9 +25,9 @@ in {
     pkgs.papirus-icon-theme
   ];
 
-  # For global behavior
+  # We are still managing shortcuts by symlinking for the time being
   home.file.".config/kglobalshortcutsrc".source =
-    makeln "${hm_config}/kglobalshortcutsrc";
+     makeln "${hm_config}/kglobalshortcutsrc";
 
   # Fixing some QT-GTK interaction oddities
   home.sessionVariables.XDG_DATA_DIRS =
@@ -35,15 +35,14 @@ in {
 
   programs.plasma = {
     enable = true;
-    workspace = {
-      theme = "Arc-Dark";
-      cursor = {
-        theme = "Adwaita";
-        size = 24;
-      };
-      iconTheme = "Papirus-Dark";
-    };
+    workspace = (import ./plasma-workspace/workspace-theme.nix) { };
     panels = [ ./plasma-workspace/task-panel-primary.nix ];
+    krunner = { # krunner has it's own configuration
+      activateWhenTypingOnDesktop = false;
+      position = "center";
+      shortcuts = { launch = "Meta"; };
+    };
+    # shortcuts = (import ./plasma-workspace/shortcuts.nix) {} ;
   };
 
 }

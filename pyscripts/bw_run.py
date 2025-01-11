@@ -94,7 +94,6 @@ def run_kinit():
           The SSH_HOST should be able to complete without user input, i.e. no password login.
     """
     kinit_items = obtain_bw_items(protocol_filter(["kerberos", "ssh_kerberos"]))
-
     for item in [x for x in kinit_items if protocol_filter("kerberos")(x)]:
         username = item["login"]["username"]
         for server in get_protocols(item, "kerberos"):
