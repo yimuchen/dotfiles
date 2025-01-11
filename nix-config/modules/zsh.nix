@@ -13,10 +13,10 @@
                 # setting this to only run once per day
                 autoload -Uz compinit
                 if [[ $(($(date +%s) - $(stat -c "%Y" $HOME/.zcompdump))) -gt 86400 ]]; then
-        	        compinit;
+                  compinit
                 else
-        	        compinit -C;
-                fi;
+                  compinit -C
+                fi
       '';
     syntaxHighlighting = { enable = true; };
     antidote = {
