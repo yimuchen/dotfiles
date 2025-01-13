@@ -11,7 +11,7 @@
     # For video and audio playback
     pkgs.vlc
     pkgs.kdePackages.elisa
-    (pkgs.kdePackages.k3b.override { transcode = null; })
+    pkgs.kdePackages.k3b
     # For image display
     pkgs.kdePackages.okular
     pkgs.evince
