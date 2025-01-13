@@ -9,12 +9,14 @@ let
     date.format = "isoDate";
     date.position = "belowTime";
     timeZone.format = "city";
+    timeZone.alwaysShow = true;
   };
 in {
   location = "bottom";
   height = 50;
   hiding = "autohide";
   floating = true;
+  screen = "all";
   widgets = [
     { # Generic launcher
       kickoff = {
@@ -34,6 +36,8 @@ in {
           "applications:startcenter.desktop" # Libreoffice
           "applications:bitwarden.desktop"
           "applications:virt-manager.desktop"
+          "applications:org.kicad.kicad.desktop"
+          "applications:org.musescore.MuseScore.desktop"
         ];
       };
     }
