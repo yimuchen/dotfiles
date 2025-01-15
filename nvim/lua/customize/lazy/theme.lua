@@ -20,12 +20,7 @@ return {
           tag_attribute = { italic = true }, -- attribute of tag in reactjs
         },
         filter = 'pro', -- classic | octagon | pro | machine | ristretto | spectrum
-        -- Enable this will disable filter option
-        day_night = {
-          enable = false, -- turn off by default
-          day_filter = 'pro', -- classic | octagon | pro | machine | ristretto | spectrum
-          night_filter = 'spectrum', -- classic | octagon | pro | machine | ristretto | spectrum
-        },
+        day_night = { enable = false },
         inc_search = 'background', -- underline | background
         background_clear = {
           'toggleterm',
@@ -92,15 +87,19 @@ return {
       }
     end,
   },
-  { -- Upper line of breadcrumb for feature signature
-    'utilyre/barbecue.nvim',
-    name = 'barbecue',
-    version = '*',
-    dependencies = { 'SmiteshP/nvim-navic', 'nvim-tree/nvim-web-devicons' },
+  {
+    -- Upper line of breadcrumb for feature signature
+    'Bekaboo/dropbar.nvim',
+    -- optional, but required for fuzzy finder support
+    dependencies = {
+      'nvim-telescope/telescope-fzf-native.nvim',
+      build = 'make',
+    },
     config = function()
-      require('barbecue').setup {
-        theme = 'monokai-pro',
-      }
+      -- local dropbar_api = require 'dropbar.api'
+      -- vim.keymap.set('n', '<Leader>;', dropbar_api.pick, { desc = 'Pick symbols in winbar' })
+      -- vim.keymap.set('n', '[;', dropbar_api.goto_context_start, { desc = 'Go to start of current context' })
+      -- vim.keymap.set('n', '];', dropbar_api.select_next_context, { desc = 'Select next context' })
     end,
   },
   { -- Moving command line to center, messages to top right
