@@ -79,13 +79,10 @@ in {
   home.file.".config/fontconfig/conf.d/99-alias.conf".source =
     makeln "${hm_config}/fontconfig/conf.d/99-alias.conf";
 
-  programs.plasma.input.keyboard.numlockOnStartup = "on";
   # Forcing Layouts
-  programs.plasma.configFile = {
-    "kxkbrc"."Layout"."DisplayNames" = "";
-    "kxkbrc"."Layout"."LayoutList" = "eu";
-    "kxkbrc"."Layout"."Use" = true;
-    "kxkbrc"."Layout"."VariantList" = "";
+  programs.plasma.input.keyboard = {
+    numlockOnStartup = "on";
+    layouts = [{ layout = "eu"; }];
   };
 
   # Input method general configurations (keyboard layout and general input
