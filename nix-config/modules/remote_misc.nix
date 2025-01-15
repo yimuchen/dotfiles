@@ -40,10 +40,15 @@ in {
 
   # Additional fixes for ZSH to remove system-level configurations
   programs.zsh = {
-    # Fixing the paths of the home-manager profile to be properly exposed
-    initExtra = # bash
+    # Fixing the paths of the home-manager profile to be properly exposed (this
+    # needs to be done With .zshenv to ensure that changes to paths is always
+    # loaded)
+    envExtra = # bash
       ''
         export PATH=$HOME/.nix-profile/bin/:$PATH
+        if [[ -d "/cvmfs/cms.cern.ch" ]]; then
+          export PATH="$PATH:$HOME/.config/zsh/cmssw_tools/"
+        fi
       '';
     # Ensuring system autocomplete paths are removed
     initExtraBeforeCompInit = # bash

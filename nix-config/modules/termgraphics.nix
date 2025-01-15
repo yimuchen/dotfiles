@@ -29,7 +29,7 @@ in {
   programs.fzf = { enable = true; };
   # Additional alias for quickly browsing all images files in a directory
   programs.zsh = {
-    initExtra = # bash
+    envExtra = # bash
       ''
         export PATH=$PATH:$HOME/.config/zsh/termgraphics
       '';

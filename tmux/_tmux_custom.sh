@@ -67,7 +67,7 @@ editor_window() {
     tmux new-window -n "Editor" -t "${editor_idx}"
     # When closing the editor, always try to close the repl pane to ensure the
     # editor is always pane 0
-    tmux respawn-pane -t ${editor_idx}.0 -k "nvim . && ~/.config/tmux/_tmux_custom.sh _close_repl_pane $1"
+    tmux respawn-pane -t ${editor_idx}.0 -k "zsh  --login -c 'nvim .' && ~/.config/tmux/_tmux_custom.sh _close_repl_pane $1"
   fi
 }
 
