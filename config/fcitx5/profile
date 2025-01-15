@@ -14,21 +14,15 @@ Layout=
 
 [Groups/0/Items/1]
 # Name
-Name=rime
+Name=chewing
 # Layout
 Layout=
 
 [Groups/0/Items/2]
 # Name
-Name=chewing
-# Layout
-Layout=
-
-[Groups/0/Items/3]
-# Name
 Name=anthy
 # Layout
-Layout=us
+Layout=
 
 [GroupOrder]
 0=Default
