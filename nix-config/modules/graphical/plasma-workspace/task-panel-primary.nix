@@ -1,4 +1,5 @@
 # Windows-like panel at the bottom
+{ }:
 let
   pkgs = import <nixpkgs> { };
   lib = pkgs.lib;
@@ -16,7 +17,6 @@ in {
   height = 50;
   hiding = "autohide";
   floating = true;
-  screen = "all";
   widgets = [
     { # Generic launcher
       kickoff = {

@@ -15,6 +15,9 @@ let
       buildInputs = [ pkgs.gtk3 ];
       installPhase = ''printf %s "$GSETTINGS_SCHEMAS_PATH" >"$out"'';
     }}";
+  panel_base = (import ./plasma-workspace/task-panel-primary.nix) { };
+  panel_0 = pkgs.lib.recursiveUpdate panel_base { screen = 0; };
+  panel_1 = pkgs.lib.recursiveUpdate panel_base { screen = 1; };
 in {
   home.packages = [
     # Additional packages to install for themeing configurations
@@ -27,7 +30,7 @@ in {
 
   # We are still managing shortcuts by symlinking for the time being
   home.file.".config/kglobalshortcutsrc".source =
-     makeln "${hm_config}/kglobalshortcutsrc";
+    makeln "${hm_config}/kglobalshortcutsrc";
 
   # Fixing some QT-GTK interaction oddities
   home.sessionVariables.XDG_DATA_DIRS =
@@ -36,7 +39,7 @@ in {
   programs.plasma = {
     enable = true;
     workspace = (import ./plasma-workspace/workspace-theme.nix) { };
-    panels = [ ./plasma-workspace/task-panel-primary.nix ];
+    panels = [ panel_0 panel_1 ];
     krunner = { # krunner has it's own configuration
       activateWhenTypingOnDesktop = false;
       position = "center";
