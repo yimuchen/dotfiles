@@ -59,6 +59,8 @@ in {
       "ssh" = "ssh -F ~/.ssh/config";
       "home-update" =
         "nh home switch --update --ask $(realpath $HOME/.config/home-manager)";
+      "home-config-update" =
+        "nh home switch --ask $(realpath $HOME/.config/home-manager)";
     };
   };
   # Additional fixes for ssh to ensure git does not use system-level ssh
