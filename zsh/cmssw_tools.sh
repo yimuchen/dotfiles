@@ -36,6 +36,10 @@ function _build_cmssw_scram_arch() {
   ls -1 -d /cvmfs/cms.cern.ch/el9_amd64_gcc*/cms/cmssw-patch/CMSSW* >>$_CMSSW_SCRAM_ARCH_CACHE
 }
 
+# Exposing CMSSW container detection tools. This needs to be isolated to
+# separate scripts in the $PATH environment variable to allow these fundamental
+# tools be also be used in other tools (neovim)
+
 # Simple alias functions to directly call CMSSW methods without having to load in cmsenv
 function cmsRun() {
   _cmsexec cmsRun $@
