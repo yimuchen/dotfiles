@@ -40,13 +40,9 @@ in {
 
   # Additional fixes for ZSH to remove system-level configurations
   programs.zsh = {
-<<<<<<< HEAD
     # Fixing the paths of the home-manager profile to be properly exposed (this
     # needs to be done With .zshenv to ensure that changes to paths is always
     # loaded)
-=======
-    # Fixing the paths of the home-manager profile to be properly exposed
->>>>>>> ce01a07 (Fixing various evnrionment scripts)
     envExtra = # bash
       ''
         export PATH=$HOME/.nix-profile/bin/:$PATH

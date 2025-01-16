@@ -45,15 +45,6 @@ in {
       position = "center";
       shortcuts = { launch = "Meta"; };
     };
-<<<<<<< HEAD
-    # shortcuts = (import ./plasma-workspace/shortcuts.nix) {} ;
-=======
-    krunner = {
-      activateWhenTypingOnDesktop = false;
-      position = "center";
-    };
-    panels = [ ./plasma-workspace/task-panel-primary.nix ];
->>>>>>> ce01a07 (Fixing various evnrionment scripts)
   };
 
 }
