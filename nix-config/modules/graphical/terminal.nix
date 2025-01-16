@@ -17,10 +17,6 @@ in {
   programs.konsole.enable = false; # Now disabling Konsole by default
 
   # Configuration that is set by nix-configurations (Hot key configurations)
-  programs.plasma.shortcuts = {
-    "yakuake"."toggle-window-state" = "Meta+X";
-    "services/org.kde.ghostty.desktop"."_launch" = "Meta+Alt+T";
-  };
 
   # Terminal applications
   home.file.".local/share/konsole/profile.profile".source =
