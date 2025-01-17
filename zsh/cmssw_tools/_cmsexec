@@ -36,4 +36,5 @@ else
   ENV_CMD="cmsenv && ${@}" # Forcing everything to be a single string
 fi
 
-$CONTAINER_CMD -p $CMSSW_APPTAINER_BINDPATH -- /bin/bash -c "${ENV_CMD}"
+_CMSSW_APPTAINER_BINDARGS="--bind ${CMSSW_APPTAINER_BINDPATH//,/ --bind }"
+$CONTAINER_CMD -p $_CMSSW_APPTAINER_BINDARGS -- /bin/bash -c "${ENV_CMD}"

@@ -18,9 +18,10 @@ fi
 
 # Additional bind paths for cmssw-elX. Notice that the paths will need to be
 # different for different cluster setups.
-alias cmssw-el7-int="cmssw-el7 -p ${CMSSW_APPTAINER_BINDPATH} -- /bin/bash -l"
-alias cmssw-el8-int="cmssw-el8 -p ${CMSSW_APPTAINER_BINDPATH} -- /bin/bash -l"
-alias cmssw-el9-int="cmssw-el9 -p ${CMSSW_APPTAINER_BINDPATH} -- /bin/bash -l"
+_CMSSW_APPTAINER_BINDARGS="--bind ${CMSSW_APPTAINER_BINDPATH//,/ --bind }"
+alias cmssw-el7-int="cmssw-el7 -p ${_CMSSW_APPTAINER_BINDARGS} -- /bin/bash -l"
+alias cmssw-el8-int="cmssw-el8 -p ${_CMSSW_APPTAINER_BINDARGS} -- /bin/bash -l"
+alias cmssw-el9-int="cmssw-el9 -p ${_CMSSW_APPTAINER_BINDARGS} -- /bin/bash -l"
 
 # Some aliases for running CMSSW related environments
 export _CMSSW_SCRAM_ARCH_CACHE=$HOME/.cache/cmssw_scram_arch.txt
@@ -41,13 +42,6 @@ function _build_cmssw_scram_arch() {
 # tools be also be used in other tools (neovim)
 
 # Simple alias functions to directly call CMSSW methods without having to load in cmsenv
-function cmsRun() {
-  _cmsexec cmsRun $@
-}
-function cms_py3() {
-  _cmsexec python3 $@
-}
-
 function cmssw-clean() {
   _cmsexec scram b clean
 }
