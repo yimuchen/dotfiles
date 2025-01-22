@@ -20,6 +20,7 @@ let
         fi
       '';
   };
+  hm_binextra = "${config.home.homeDirectory}/.config/home-manager/bin/remote/";
 in {
   # Miscellaneous command line packages with no additional/minimal configurations.
   home.packages = [
@@ -40,15 +41,16 @@ in {
 
   # Additional fixes for ZSH to remove system-level configurations
   programs.zsh = {
-    # Fixing the paths of the home-manager profile to be properly exposed (this
-    # needs to be done With .zshenv to ensure that changes to paths is always
-    # loaded)
     envExtra = # bash
       ''
+        # Fixing the paths of the home-manager profile to be properly exposed
+        # (this needs to be done With .zshenv to ensure that changes to paths
+        # is always loaded)
         export PATH=$HOME/.nix-profile/bin/:$PATH
         if [[ -d "/cvmfs/cms.cern.ch" ]]; then
           export PATH="$PATH:$HOME/.config/zsh/cmssw_tools/"
         fi
+        export PATH=$PATH:${hm_binextra}
       '';
     # Ensuring system autocomplete paths are removed
     initExtraBeforeCompInit = # bash

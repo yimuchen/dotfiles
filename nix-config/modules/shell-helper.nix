@@ -2,21 +2,16 @@
 let
   # Setting up the python with various dependencies
   envpython = pkgs.python3.withPackages (ps: [
+    # Items required for the scripts found in pyscripts directory
     ps.argcomplete # Autocompletion of scripts
     ps.setuptools # Nonstandard packages needs setup modules
     ps.tqdm # For progress bars
     ps.wand # For imagemagick python bindings
+    ps.psutil # For generating unique ID everytime we boot
     # Additional items for waydroid
     ps.requests
     ps.inquirerpy
   ]);
-
-  pdftopng = pkgs.writeScriptBin "pdftopng.py"
-    (builtins.readFile ../../pyscripts/pdftopng.py);
-  bw_run = pkgs.writeScriptBin "bw_run.py"
-    (builtins.readFile ../../pyscripts/bw_run.py);
-  nix_check_update = pkgs.writeScriptBin "nix-check-update.py"
-    (builtins.readFile ../../pyscripts/nix-check-update.py);
 
   root-browse = pkgs.writeShellApplication {
     name = "root-browse";
@@ -33,23 +28,27 @@ let
         fi
       '';
   };
+  hm_binextra = "${config.home.homeDirectory}/.config/home-manager/bin/local/";
 in {
   # Configurations for adding system helper scripts
   home.packages = [
     envpython # The system python environment
-    pdftopng # PDF to PNG batch conversion script
-    bw_run # Interacting with keepassxc for CLI credential interactions
-    nix_check_update # Checking for nix updates upstream
     root-browse # Thin wrap around root browse
   ];
   # Additional set-up to allow for auto-completion
-  programs.zsh.initExtra = # bash
-    ''
-      fpath=(${envpython}/lib/python3.12/site-packages/argcomplete/bash_completion.d "$fpath[@]")
-      eval "$(cd ${pdftopng}/bin         && register-python-argcomplete pdftopng.py         -s zsh)"
-      eval "$(cd ${bw_run}/bin           && register-python-argcomplete bw_run.py           -s zsh)"
-      eval "$(cd ${nix_check_update}/bin && register-python-argcomplete nix-check-update.py -s zsh)"
-    '';
+  programs.zsh = {
+    envExtra = # bash
+      ''
+        # This needs to be available in all items
+        export PATH="$PATH:${hm_binextra}"
+      '';
+    initExtra = # bash
+      ''
+        fpath=(${envpython}/lib/python3.12/site-packages/argcomplete/bash_completion.d "$fpath[@]")
+        eval "$(cd ${hm_binextra} && register-python-argcomplete pdftopng.py -s zsh)"
+        eval "$(cd ${hm_binextra} && register-python-argcomplete bw_run.py -s zsh)"
+      '';
+  };
 
   # Additional helper to keep track of home-manager packages
   home.file.".local/state/hm-packages".text = let
@@ -58,6 +57,13 @@ in {
       builtins.sort builtins.lessThan (pkgs.lib.lists.unique packages);
     formatted = builtins.concatStringsSep "\n" sortedUnique;
   in formatted;
+
+  # Creating a service to starting the rcb listener aon user login
+  systemd.user.services.rcb_listener = {
+    Unit = { Description = "Remote clipboard listener service"; };
+    Install = { WantedBy = [ "default.target" ]; };
+    Service = { ExecStart = "${hm_binextra}/rcb_listener.py --port 9543"; };
+  };
 
   home.sessionVariables = {
     NIXCUSTOM_HM_PACKAGES =

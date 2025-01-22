@@ -49,6 +49,7 @@ in {
   # Pulling additional settings from the un-tracked sensitive configurations
   # directory.
   home.file.".ssh/config".source = makeln "${sensitive_dir}/sshconfig";
+  home.file.".config/rcb".source = makeln "${sensitive_dir}/config/rcb";
 
   # Additional user-level services that I want to use
   services.syncthing = {
