@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+import hashlib
+import json
+import os
+import socket
+import subprocess
+import sys
+
+
+def _ing_domain() -> str:
+    return subprocess.check_output(["domainname", "-d"]).rstrip().decode("utf8")
+
+
+def _ing_user() -> str:
+    return os.environ["USER"]
+
+
+def _ing_uid() -> str:
+    return os.getuid()
+
+
+def calc_token():
+    return hashlib.sha256(
+        json.dumps([_ing_domain(), _ing_user(), _ing_uid()]).encode("utf8")
+    ).hexdigest()
+
+
+if __name__ == "__main__":
+    if len(sys.argv) == 1:
+        message = {
+            "domain": _ing_domain(),
+            "user": _ing_user(),
+            "token": calc_token(),
+            "msg": sys.stdin.read().rstrip(),
+        }
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.connect(("localhost", int(os.getenv("RCB_PORT", "9543"))))
+                s.send(json.dumps(message).encode("utf8"))
+        except:
+            pass
+    elif sys.argv[1] == "token":
+        print(_ing_domain(), _ing_user(), calc_token())
