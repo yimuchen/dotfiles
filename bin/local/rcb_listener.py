@@ -15,8 +15,12 @@ class ListenThread:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.bind(("localhost", port))
         self._terminate = False
-        with open(token_file) as f:
-            self._allowed = [set(x.split()) for x in f.readlines()]
+        self.token_file = token_file
+
+    def allowed(self):
+        with open(self.token_file) as f:
+            return [set(x.split()) for x in f.readlines()]
+
 
     def process_loop(self):
         self.socket.listen(5)
@@ -39,9 +43,9 @@ class ListenThread:
             user = request["user"]
             token = request["token"]
             msg = request["msg"]
-            assert set([domain, user, token]) in self._allowed
+            assert set([domain, user, token]) in self.allowed()
             cb_process = subprocess.Popen("wl-copy", shell=True, stdin=subprocess.PIPE)
-            cb_process.stdin.write(request["msg"].encode("utf8"))
+            cb_process.stdin.write(msg.encode("utf8"))
             cb_process.stdin.close()
             cb_process.wait()
         except KeyboardInterrupt as err:  # Passing interrupt signal to the main loop
