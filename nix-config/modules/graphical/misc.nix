@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, pkgs-stable, ... }: {
   # Miscellaneous packages that needs to be installed but does not require
   # additional configurations. KDE packages that require additional
   # configurations will be placed in plasma.nix
@@ -31,8 +31,8 @@
     pkgs.libreoffice
     pkgs.wpsoffice
     # Work related
-    pkgs.kicad # Circuit/PCB design. NOTE: Has issue upgrading to python3.12?
-    pkgs.kikit # Additional PCB panneling
+    pkgs-stable.kicad # Circuit/PCB design. NOTE: Has issue upgrading to python3.12?
+    pkgs-stable.kikit # Additional PCB panneling
     pkgs.freecad # 3D object modelling NOTE: Has issue with QT python binding?
     pkgs.virt-manager
     pkgs.freerdp3 # Remote desktop - RDP
