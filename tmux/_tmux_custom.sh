@@ -192,8 +192,9 @@ dev_tmux() {
       _log "[DEV_TMUX] Attaching to session ${session_name}@${cached_host}}"
       # "Reattaching over ssh session at machine
       local nix_cmd="nix-portable nix shell --offline 'nixpkgs#nix' 'nixpkgs#tmux' --command"
+      local reverse_flag=" -R 9543:localhost:9543 "
       local tmux_cmd="zsh -c \"tmux attach-session -t ${session_name}\""
-      local ssh_cmd="ssh -F $HOME/.ssh/config -o RequestTTY=yes ${cached_host}"
+      local ssh_cmd="ssh -F $HOME/.ssh/config ${reverse_flag} -o RequestTTY=yes ${cached_host}"
       $ssh_cmd $nix_cmd $tmux_cmd
     fi
   else
