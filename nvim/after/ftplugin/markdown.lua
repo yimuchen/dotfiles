@@ -5,3 +5,5 @@ if string.sub(buffer_name, -6) == '.ipynb' then
   -- languages / completion / diagnostics / treesitter query
   require('otter').activate({ 'python' }, true, true, nil)
 end
+
+vim.opt.wrap = true
