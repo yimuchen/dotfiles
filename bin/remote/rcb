@@ -1,36 +1,36 @@
 #!/usr/bin/env python3
-import hashlib
 import json
 import os
 import socket
 import subprocess
 import sys
+import uuid
 
 
-def _ing_domain() -> str:
+def _id_domain() -> str:
     return subprocess.check_output(["domainname", "-d"]).rstrip().decode("utf8")
 
 
-def _ing_user() -> str:
+def _id_user() -> str:
     return os.environ["USER"]
 
 
-def _ing_uid() -> str:
-    return os.getuid()
-
-
-def calc_token():
-    return hashlib.sha256(
-        json.dumps([_ing_domain(), _ing_user(), _ing_uid()]).encode("utf8")
-    ).hexdigest()
+def get_token() -> str:
+    token_file = ".local/state/rcb.token"
+    token_file = os.path.join(os.environ["HOME"], token_file)
+    if not os.path.isfile(token_file):
+        with open(token_file, "w") as f:
+            f.write(str(uuid.uuid4()))
+    with open(token_file, "r") as f:
+        return f.read()
 
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
         message = {
-            "domain": _ing_domain(),
-            "user": _ing_user(),
-            "token": calc_token(),
+            "domain": _id_domain(),
+            "user": _id_user(),
+            "token": get_token(),
             "msg": sys.stdin.read().rstrip(),
         }
         try:
@@ -40,4 +40,4 @@ if __name__ == "__main__":
         except:
             pass
     elif sys.argv[1] == "token":
-        print(_ing_domain(), _ing_user(), calc_token())
+        print(_id_domain(), _id_user(), get_token())

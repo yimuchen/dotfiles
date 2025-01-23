@@ -13,7 +13,7 @@ class ListenThread:
         self._log = logging.getLogger("remote.clipboard.server.log")
         self._log.info("Creating socket instance")
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.bind(("0.0.0.0", port))
+        self.socket.bind(("localhost", port))
         self._terminate = False
         with open(token_file) as f:
             self._allowed = [set(x.split()) for x in f.readlines()]
