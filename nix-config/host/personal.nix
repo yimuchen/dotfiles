@@ -3,6 +3,7 @@
 let
   makeln = config.lib.file.mkOutOfStoreSymlink;
   sensitive_dir = "${config.home.homeDirectory}/configurations/sensitive";
+  project_dir = "${config.home.homeDirectory}/projects/Personal";
   extern_config_dir =
     "${config.home.homeDirectory}/configurations/systems/config/";
 in {
@@ -50,6 +51,7 @@ in {
   # directory.
   home.file.".ssh/config".source = makeln "${sensitive_dir}/sshconfig";
   home.file.".config/rcb".source = makeln "${sensitive_dir}/config/rcb";
+  home.file.".config/nvim-custom/plugins".source = makeln "${project_dir}/nvim-plugins";
 
   # Additional user-level services that I want to use
   services.syncthing = {
