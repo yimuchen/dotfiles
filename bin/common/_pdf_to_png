@@ -1,0 +1,2 @@
+#!/bin/sh
+$NIX_EXEC_GS -sDEVICE=png256 -o %stdout -r144 -dBATCH -dNOPAUSE -dQUIET "$1"

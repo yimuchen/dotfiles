@@ -1,0 +1,2 @@
+#!/bin/sh
+$NIX_EXEC_KITTEN icat "$@"

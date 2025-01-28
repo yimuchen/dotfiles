@@ -1,4 +1,7 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, ... }:
+let
+  hm_binextra = "${config.home.homeDirectory}/.config/home-manager/bin/common/";
+in {
   # Configuration of ZSH environment. Here we most of the configurations here
   # should be either simple signal lines augmentation of standard coreutils
   # items. For items for complicated, it should either be placed in the
@@ -9,14 +12,14 @@
     enableCompletion = true;
     completionInit = # bash
       ''
-                # Enabling the autocomplete script. This is very slow on Nix systems so
-                # setting this to only run once per day
-                autoload -Uz compinit
-                if [[ $(($(date +%s) - $(stat -c "%Y" $HOME/.zcompdump))) -gt 86400 ]]; then
-                  compinit
-                else
-                  compinit -C
-                fi
+        # Enabling the autocomplete script. This is very slow on Nix systems so
+        # setting this to only run once per day
+        autoload -Uz compinit
+        if [[ $(($(date +%s) - $(stat -c "%Y" $HOME/.zcompdump))) -gt 86400 ]]; then
+          compinit
+        else
+          compinit -C
+        fi
       '';
     syntaxHighlighting = { enable = true; };
     antidote = {
@@ -37,6 +40,14 @@
           source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
         fi
       '';
+    # environment variables is to be set before login in. All configurations to
+    # expose extra executable needed to be here, as remote system does not use
+    # zsh.
+    envExtra = # bash
+    ''
+        # Adding the common executable bash scripts
+        export PATH=$PATH:${hm_binextra}
+    '';
     # Adding to the end of zshrc
     initExtra = # bash
       ''

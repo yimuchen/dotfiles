@@ -1,0 +1,22 @@
+#!/bin/sh
+file=$1
+type=$(file --brief --dereference --mime -- $file)
+realpath_msg="Full path: [$(realpath $file)]"
+dim=${FZF_PREVIEW_COLUMNS}x$((FZF_PREVIEW_LINES+1))
+if [[ ! "$type" =~ image/ ]]; then
+  if [[ "$type" =~ "application/pdf" ]]; then
+    echo $realpath_msg
+    _pdf_to_png $file | _icat --clear --transfer-mode=stream --unicode-placeholder --place="$dim@0x0" | sed '$d' | sed $'$s/$/\e[m/'
+    exit
+  elif [[ "$type" =~ =binary ]]; then
+    echo "Omitting binary file preview"
+    echo $realpath_msg
+    file "$1"
+    exit
+  fi
+  cat "$file"
+  exit
+else
+  echo "$realpath_msg"
+  _icat --clear --transfer-mode=stream --unicode-placeholder --stdin=no --place="$dim@0x0" $file | sed '$d' | sed $'$s/$/\e[m/'
+fi
