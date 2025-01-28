@@ -1,14 +1,32 @@
 -- Setting up python LSP methods
-if vim.g._project_lsp_opt_default ~= nil then
-  vim.g._lsp_setup('pylsp', vim.g._project_lsp_opt_default)
-  vim.g._lsp_setup('ruff', vim.g._project_lsp_opt_default)
-  if vim.g._project_cmssw_path == nil then
-    -- Only setup formatting is not in CMSSW environment
-    require('conform').formatters_by_ft.python = {
-      vim.g._conform_setup('ruff_format', vim.g._project_fmt_opt_default),
-      vim.g._conform_setup('ruff_organize_imports', vim.g._project_fmt_opt_default),
-    }
-  end
+local modexec = require 'modexec'
+
+if modexec.current_config.cmssw ~= nil then
+  local cmssw = modexec.current_config.cmssw
+  modexec.mod.lsp_setup('pylsp', { cmd_prefix = cmssw.cmd_prefix })
+  modexec.mod.lsp_setup('ruff', { cmd_prefix = cmssw.cmd_prefix })
+
+  -- Python formatting not setup in for CMSSW for now
+elseif modexec.current_config.apptainer ~= nil then
+  local apptainer = modexec.current_config.apptainer
+  local lsp_config = {
+    cmd_prefix = apptainer.cmd_prefix,
+    root_dir = function(_)
+      return apptainer.cmd_base
+    end,
+  }
+  modexec.mod.lsp_setup('pylsp', lsp_config)
+  modexec.mod.lsp_setup('ruff', lsp_config)
+  local conform_config = {
+    cmd_prefix = apptainer.cmd_prefix,
+    cwd = function(_)
+      return apptainer.cmd_base
+    end,
+  }
+  require('conform').formatters_by_ft.python = {
+    modexec.mod.conform_formatter('ruff_format', conform_config),
+    modexec.mod.conform_formatter('ruff_organize_imports', conform_config),
+  }
 else
   -- Setting up the python LSP and formatting methods
   if vim.fn.executable 'pylsp' ~= 0 then
