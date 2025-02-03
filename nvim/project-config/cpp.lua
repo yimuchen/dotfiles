@@ -1,7 +1,6 @@
 -- Setting the LSP, linters and formatters for CPP and python files to point to the
 -- executable in the container/internal CMSSW environment instead
 local modexec = require 'modexec'
-vim.print(modexec)
 
 if modexec.current_config.cmssw ~= nil then
   -- Clangd configurations
