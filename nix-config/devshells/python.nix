@@ -1,6 +1,6 @@
 { pkgs, pyversion, ... }:
 let
-  python_fhs = pkgs.buildFHSUserEnv {
+  python_fhs = pkgs.buildFHSEnv {
     name = "python_fhs";
     description = ''
       Simple development environment for pure python. This will attempt to
