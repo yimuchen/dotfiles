@@ -8,6 +8,8 @@
     # For interacting with password data base
     pkgs.bitwarden-cli
     pkgs.bitwarden-desktop
+    # For keyboard configuration
+    pkgs.wootility
     # For video and audio playback
     pkgs.vlc
     pkgs.kdePackages.elisa
@@ -41,7 +43,7 @@
     pkgs.zoom-us
     pkgs.ventoy-full # For bootable USB configurations
     # Alternate browser
-    pkgs.chromium
+    pkgs.ungoogled-chromium
     # pkgs.ladybird
   ];
 }
