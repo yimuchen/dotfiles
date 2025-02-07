@@ -6,5 +6,6 @@ background-opacity = 0.93
 cursor-style = block
 shell-integration-features = no-cursor
 # Removing title bar
+window-decoration = auto
 gtk-titlebar = true
 gtk-single-instance = true
