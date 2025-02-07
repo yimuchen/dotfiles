@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # Environment variables
-. "/etc/profiles/per-user/ensc/etc/profile.d/hm-session-vars.sh"
+if [[ -r /etc/profile/per-user/$USER/etc/profile.d/home-session-vars.sh ]] ; then
+ source "/etc/profiles/per-user/ensc/etc/profile.d/hm-session-vars.sh"
+elif [[ -r $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh ]] ; then
+ source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+fi
 
 # Only source this once
 if [[ -z "$__HM_ZSH_SESS_VARS_SOURCED" ]]; then

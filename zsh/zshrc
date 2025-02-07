@@ -76,12 +76,6 @@ source "$HOME/.config/zsh/common_utils.sh"
 # Additional settings for specific machines (must be loaded after the p10k configuration)
 source "$HOME/.config/zsh/machine.sh"
 
-
-
-fpath=(/nix/store/r1x5asn33xvr6iiwn6f71jd4hvss72dk-python3-3.12.8-env/lib/python3.12/site-packages/argcomplete/bash_completion.d "$fpath[@]")
-eval "$(cd /home/ensc/.config/home-manager/bin/local/ && register-python-argcomplete pdftopng.py -s zsh)"
-eval "$(cd /home/ensc/.config/home-manager/bin/local/ && register-python-argcomplete bw_run.py -s zsh)"
-
 ############## Uncomment to run profiling
 # zprof
 ########
