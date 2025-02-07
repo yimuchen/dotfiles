@@ -11,7 +11,13 @@ let
         "$HOME/.config/tmux/_tmux_custom.sh" dev_tmux "$@"
       '';
   };
-
+  dev-tmux-list = pkgs.writeShellApplication {
+    name = "dev-tmux-list";
+    text = # bash
+      ''
+        "$HOME/.config/tmux/_tmux_custom.sh" list_dev_tmux
+      '';
+  };
 in {
   # Configuration for tmux for multiplexing and session saving
   programs.tmux = {
@@ -42,6 +48,6 @@ in {
     makeln "${hm_config}/tmux/_tmux_custom.sh";
   home.file.".config/tmux/config_extra.conf".source =
     makeln "${hm_config}/tmux/config_extra.conf";
-  home.packages = [ dev-tmux ];
+  home.packages = [ dev-tmux dev-tmux-list ];
 }
 

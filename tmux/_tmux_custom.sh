@@ -204,6 +204,16 @@ dev_tmux() {
   fi
 }
 
+# Method for listing sessions handled by dev_tmux method
+list_dev_tmux() {
+  local wildcard=$(_cache_file '*')
+  local session_files=$(find $(dirname $wildcard) -type f -name $(basename $wildcard) -exec echo {} +)
+  for session in $session_files; do
+    local session_name=$(basename $session)
+    echo ${session_name/tmux.session./} $(cat $session)
+  done
+}
+
 # Some preprocessing steps to make sure files/directory exists
 if [[ ! -d "${_cache_dir}" ]]; then
   mkdir -p ${_cache_dir}
