@@ -4,6 +4,7 @@ import getpass
 import json
 import logging
 import subprocess
+import sys
 from typing import Any, Callable, Dict, List, Optional
 
 import argcomplete
@@ -31,9 +32,10 @@ def obtain_bw_items(item_filter: Optional[Callable] = None) -> List[Dict]:
     try:
         items_list = json.loads(stdout)
     except:
-        raise RuntimeError(
+        _log.error(
             "Bitwarden did not return a valid response, make sure you provided the correct master password"
         )
+        sys.exit(1)
     if item_filter is not None:
         items_list = [x for x in items_list if item_filter(x)]
     return items_list
