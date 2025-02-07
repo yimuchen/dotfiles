@@ -1,0 +1,5 @@
+[core]
+  sshCommand = "ssh -F ~/.ssh/config"
+[user]
+  email = "enochnotsocool@gmail.com"
+  name = "Yi-Mu \"Enoch\" Chen"

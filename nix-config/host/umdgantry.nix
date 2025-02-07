@@ -8,16 +8,11 @@
   # Importing the other modules
   imports = [
     ../modules/neovim.nix
-    ../modules/zsh.nix
     ../modules/tmux.nix
-    ../modules/termgraphics.nix # For handling graphics in terminals
     ../modules/remote_misc.nix
+    ../modules/cli-common.nix
   ];
 
   # Miscellaneous one-off packages.
   home.packages = [ ];
-
-  home.sessionVariables = {
-    MAMBA_ROOT_PREFIX = "${config.home.homeDirectory}/.mamba";
-  };
 }

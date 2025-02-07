@@ -53,5 +53,4 @@ in {
 
   # Link to the major configuration path
   home.file.".config/nvim".source = makeln "${hm_config}/nvim";
-  home.sessionVariables."EDITOR" = "nvim";
 }

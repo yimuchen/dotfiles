@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Environment variables
+. "/etc/profiles/per-user/ensc/etc/profile.d/hm-session-vars.sh"
+
+# Only source this once
+if [[ -z "$__HM_ZSH_SESS_VARS_SOURCED" ]]; then
+  export __HM_ZSH_SESS_VARS_SOURCED=1
+fi
+
+if [[ -z "${DOMAIN_NAME}" ]]; then
+  export DOMAIN_NAME=$(domainname -d)
+fi
+
+export PATH="$PATH:/home/ensc/.config/home-manager/bin/common/"
+export DEFAULT_DEVSHELL_STORE="${HOME}/.config/home-manager/nix-config/devshells"
+export EDITOR="nvim"
+export MAMBA_ROOT_PREFIX="$HOME/.mamba";
+
+# Local configurations for personal machines
+if [[ "$HOST" == "ensc"* ]]; then
+  export PATH="$PATH:$HOME/.config/home-manager/bin/local/"
+  export KRB5CCNAME="DIR:${HOME}/.temp.persist";
+# Common configurations for remote machines
+else
+  export PATH=$HOME/.nix-profile/bin/:$PATH
+  export PATH="$PATH:$HOME/.config/home-manager/bin/remote/"
+  if [[ -d "/cvmfs/cms.cern.ch" ]]; then
+    export PATH="$PATH:$HOME/.config/zsh/cmssw_tools/"
+  fi
+  export SSL_CERT_FILE="$HOME/.nix-profile/etc/ssl/certs/ca-bundle.crt";
+fi
+
+# Machine specific path settings
+if [[ "$HOST" == "hepcms"* ]]; then
+  export CMSSW_APPTAINER_BINDPATH="/data,/data2"
+elif [[ "$HOST" == "cmslpc"* ]]; then
+  export CMSSW_APPTAINER_BINDPATH="/uscms,/uscmst1b_scratch,/cvmfs,/cvmfs/grid.cern.ch/etc/grid-security:/etc/grid-security,/uscms_data"
+  export LARGE_STORAGE_DIR="/uscms_data/d3/yimuchen"
+elif [[ "$HOST" == "lxplus"* && "$DOMAIN_NAME" == "cern.ch" ]]; then
+  export LARGE_STORAGE_DIR="/afs/cern.ch/work/y/yichen"
+elif [[ "$DOMAIN_NAME" == "etp.kit.edu" ]]; then # KIT RELATED MACHINES
+  export CMSSW_APPTAINER_BINDPATH="/ceph,/work,/home,/cvmfs/grid.cern.ch/etc/grid-security:/etc/grid-security,/etc/condor,/var/lib/condor"
+  export LARGE_STORAGE_DIR="/work/ychen";
+fi # Don't do anything for unrecognized machines
+
+

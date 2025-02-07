@@ -22,9 +22,6 @@
     pkgs.clang-tools # For CMSSW development!
   ];
 
-  home.sessionVariables = {
-    MAMBA_ROOT_PREFIX = "${config.home.homeDirectory}/.mamba";
-  };
 
   # Additional directory soft links to ensure that large files of custom
   # packages are placed in

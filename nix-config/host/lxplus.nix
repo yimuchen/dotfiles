@@ -1,7 +1,5 @@
 # Configurations for the personal machine setups
-{ config, pkgs, lib, ... }:
-let large_storage_dir = "/afs/cern.ch/work/y/yichen";
-in {
+{ config, pkgs, lib, ... }: {
   home.username = "yichen";
   home.homeDirectory = "/afs/cern.ch/user/y/yichen";
   home.stateVersion = "23.11"; # DO NOT EDIT!!
@@ -20,11 +18,6 @@ in {
 
   # Miscellaneous one-off packages on lxplus machines
   home.packages = [ ];
-
-  home.sessionVariables = {
-    MAMBA_ROOT_PREFIX = "${config.home.homeDirectory}/.mamba";
-    LARGE_STORAGE_DIR = large_storage_dir;
-  };
 
   # Soft linking in AFS currently does not work... using mkForce as path
   # instead. This means that hot reloading of files doesn't work, unfortunately
