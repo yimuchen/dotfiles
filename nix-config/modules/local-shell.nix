@@ -13,7 +13,7 @@ let
   ]);
 in {
   # Configurations for adding system helper scripts
-  home.packages = [ python ];
+  home.packages = [ python pkgs.stress-ng ];
   home.sessionVariables = {
     NIX_EXEC_ROOT = "${pkgs.root}/bin/root";
     NIX_EXEC_ROOTBROWSE = "${pkgs.root}/bin/rootbrowse";

@@ -57,6 +57,9 @@ in {
     ".config/tmux".source = makeln "${hm_configdir}/tmux";
     # For Git configurations
     ".config/git".source = makeln "${hm_configdir}/git";
+    # Re-linking the zsh path to a common position so that other programs that
+    # require the full shell path can use it (tmux/neovim)
+    ".local/share/zsh".source = makeln "${pkgs.zsh}/bin/zsh";
   };
 }
 

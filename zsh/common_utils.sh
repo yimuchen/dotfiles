@@ -63,14 +63,9 @@ function show_colors256() {
 }
 
 # Helper functions for getting tmux spin up
-function dev-tmux() {
-  "$HOME/.config/tmux/_tmux_custom.sh" dev_tmux "$@"
-}
+alias -- ctmux="$HOME/.config/tmux-plugins-custom/cluster-session/scripts/ctmux attach-session"
 
-function list-dev-tmux() {
-  "$HOME/.config/tmux/_tmux_custom.sh" list_dev_tmux
-}
-
+####################################
 ## Functions for modifying command line behavior
 
 function _add_buffer_prefix() {

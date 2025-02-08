@@ -1,6 +1,4 @@
-{ pkgs, config, ... }:
-let makeln = config.lib.file.mkOutOfStoreSymlink;
-in {
+{ pkgs, ... }: {
   # Miscellaneous command line packages with no additional/minimal configurations.
 
   # For handling certificate generation
@@ -13,7 +11,4 @@ in {
     clean.extraArgs = "--keep-since 7d --keep 5";
   };
 
-  # Re-linking the zsh path to a common position so that other programs that
-  # require the full shell path can use it (tmux/neovim)
-  home.file.".local/share/zsh".source = makeln "${pkgs.zsh}/bin/zsh";
 }
