@@ -16,9 +16,6 @@ alias -- rm='rm -i'
 alias -- root='root -l'
 alias -- wget='wget --continue'
 
-# Required for ensuring that a zsh binary is accessible to the tmux session
-ln -sf $(which zsh) $HOME/.local/zsh
-
 # Additional utility function
 function get_jupyter_url() {
    # Getting the url of the of the jupyter server session that is running in
