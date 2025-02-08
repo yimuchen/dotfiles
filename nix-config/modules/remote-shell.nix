@@ -15,5 +15,5 @@ in {
 
   # Re-linking the zsh path to a common position so that other programs that
   # require the full shell path can use it (tmux/neovim)
-  home.files.".local/share/zsh" = makeln "${pkgs.zsh}/bin/zsh";
+  home.file.".local/share/zsh".source = makeln "${pkgs.zsh}/bin/zsh";
 }

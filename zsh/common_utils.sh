@@ -18,28 +18,57 @@ alias -- wget='wget --continue'
 
 # Additional utility function
 function get_jupyter_url() {
-   # Getting the url of the of the jupyter server session that is running in
-   # this directory
-   local json_file=$(ls -1t ${PWD}/.local/share/jupyter/runtime/jpserver-*.json | head -n 1)
-   local token=$(jq -r '.token' ${json_file})
-   local port=$(jq -r '.port' ${json_file})
-   # Assuming that localhost is used to expose the runtime
-   echo "http://localhost:${port}/?token=${token}"
+  # Getting the url of the of the jupyter server session that is running in
+  # this directory
+  local json_file=$(ls -1t ${PWD}/.local/share/jupyter/runtime/jpserver-*.json | head -n 1)
+  local token=$(jq -r '.token' ${json_file})
+  local port=$(jq -r '.port' ${json_file})
+  # Assuming that localhost is used to expose the runtime
+  echo "http://localhost:${port}/?token=${token}"
 }
 
-function show_term_color() {
-  for i in {0..255}; do
-    print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'};
+function show_colors256() {
+  # Solution obtained here:
+  # https://stackoverflow.com/a/30578008
+  local c i j
+
+  printf "Standard 16 colors\n"
+  for ((c = 0; c < 17; c++)); do
+    printf "|%s%3d%s" "$(tput setaf "$c")" "$c" "$(tput sgr0)"
   done
+  printf "|\n\n"
+
+  printf "Colors 16 to 231 for 256 colors\n"
+  for ((c = 16, i = j = 0; c < 232; c++, i++)); do
+    printf "|"
+    ((i > 5 && (i = 0, ++j))) && printf " |"
+    ((j > 5 && (j = 0, 1))) && printf "\b \n|"
+    printf "%s%3d%s" "$(tput setaf "$c")" "$c" "$(tput sgr0)"
+  done
+  printf "|\n\n"
+
+  printf "Greyscale 232 to 255 for 256 colors\n"
+  for (( ; c < 256; c++)); do
+    printf "|%s%3d%s" "$(tput setaf "$c")" "$c" "$(tput sgr0)"
+  done
+  printf "|\n"
 }
 
+# Helper functions for getting tmux spin up
+function dev-tmux() {
+  "$HOME/.config/tmux/_tmux_custom.sh" dev_tmux "$@"
+}
+
+function list-dev-tmux() {
+  "$HOME/.config/tmux/_tmux_custom.sh" list_dev_tmux
+}
 
 function _add_buffer_prefix() {
   # Function for checking the current working directory, and seeing if command
   # should be augmented by a command prefix
 
   ## Check if in CMSSW environment
-  if command -v _cmsexec 2>&1 > /dev/null ; then
+  if command -v _cmsexec 2>&1 >/dev/null; then
     if [[ $(_cmssw_src_path) != "" ]]; then
       echo "_cmsexec "
       return
@@ -53,7 +82,7 @@ function _add_buffer_prefix() {
   fi
 }
 
-function modify-accept-line () {
+function modify-accept-line() {
   # Notice that this function can never have output, the only thing we can do
   # is modify the BUFFER variable. Any modifications done here will
   # automatically be including in all the history items so that we will never
@@ -69,7 +98,7 @@ function modify-accept-line () {
     # load the default condor image for default python development
     if [[ ${default_prefix} != "" ]]; then
       BUFFER="${default_prefix}$BUFFER"
-    elif command -v _apptainer_conda.sh 2>&1 > /dev/null ; then
+    elif command -v _apptainer_conda.sh 2>&1 >/dev/null; then
       BUFFER="_apptainer_conda.sh $BUFFER"
     fi
   fi
