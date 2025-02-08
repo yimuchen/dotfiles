@@ -28,9 +28,10 @@ in {
     # Required for fzf terminal image browsing
     pkgs.pdftk # For PDF image manipulation
     pkgs.file # To get information about the file
+    pkgs.imagemagick # For image file conversion
 
     # Tools to better manage git repositories
-    pkgs.git
+    pkgs.git # Making sure a newer version of git is included
     pkgs.lazygit
     pkgs.tokei
 

@@ -16,6 +16,14 @@ alias -- rm='rm -i'
 alias -- root='root -l'
 alias -- wget='wget --continue'
 
+# Image browser compound command will be written as a function instead
+alias -- icat='fzf_img_preview'
+
+function img-browse() {
+  find . -name '*.pdf' -o -name '*.png' -o -name '*.jpg' -o -name '*.svg' |
+    fzf --preview 'fzf_img_preview {}' --preview-window=right,65%
+}
+
 # Additional utility function
 function get_jupyter_url() {
   # Getting the url of the of the jupyter server session that is running in
@@ -62,6 +70,8 @@ function dev-tmux() {
 function list-dev-tmux() {
   "$HOME/.config/tmux/_tmux_custom.sh" list_dev_tmux
 }
+
+## Functions for modifying command line behavior
 
 function _add_buffer_prefix() {
   # Function for checking the current working directory, and seeing if command
