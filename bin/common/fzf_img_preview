@@ -3,14 +3,20 @@
 # method, or be used standalone for single image viewing. Including additional
 # wrapper to cast common image formats to be compatible with the kitty image
 # protocol.
+if [[ $# == 0 ]]; then
+  echo "Requires at least 1 argument for input"
+  exit 0
+fi
 
 preview_file=$1
+
+if [[ ! -r $preview_file ]]; then
+  echo "Error! Cannot open file for reading!"
+  exit 1
+fi
+
 type=$(file --brief --dereference --mime -- $preview_file)
 realpath_msg="Full path: [$(realpath $preview_file)] | Detected filetype: [$type]"
-
-if [[ ! -z $FZF_PREVIEW_COLUMNS ]]; then
-  place_args="--place=${FZF_PREVIEW_COLUMNS}x$((FZF_PREVIEW_LINES + 1))@0x0"
-fi
 
 EXEC_GS="gs"
 if [[ ! -z $NIX_EXEC_GS ]]; then
@@ -24,15 +30,19 @@ fi
 
 kitty_common="--clear --transfer-mode=stream --unicode-placeholder"
 
+if [[ ! -z $FZF_PREVIEW_COLUMNS ]]; then
+  kitty_common=$kitty_common" --place=${FZF_PREVIEW_COLUMNS}x$((FZF_PREVIEW_LINES + 1))@0x0"
+fi
+
 echo "$realpath_msg"
 if [[ "$type" =~ "application/pdf" ]]; then
   $EXEC_GS -sDEVICE=png256 -o %stdout -r200 -dBATCH -dNOPAUSE -dQUIET "$1" |
     $EXEC_KITTEN icat ${kitty_common} ${place_args}
 elif [[ "$type" =~ "image/svg" ]]; then
   magick $preview_file "/tmp/svg_preview.png"
-  $EXEC_KITTEN icat ${kitty_common} --stdin=no $place_args "/tmp/svg_preview.png"
+  $EXEC_KITTEN icat ${kitty_common} --stdin=no "/tmp/svg_preview.png"
 elif [[ "$type" =~ "image/" ]]; then
-  $EXEC_KITTEN icat ${kitty_common} --stdin=no $place_args $preview_file
+  $EXEC_KITTEN icat ${kitty_common} --stdin=no $preview_file
 elif [[ "$type" =~ =binary ]]; then
   echo "Omitting binary file preview"
   file "$1"
