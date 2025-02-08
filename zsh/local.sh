@@ -6,7 +6,9 @@ alias -- system-config-update='nh os switch --ask $(realpath /etc/nixos/) -- --i
 alias -- system-update='nh os switch --update --ask $(realpath /etc/nixos/) -- --impure'
 
 # Additional setup for the python session
-fpath=(${envpython}/lib/python3.12/site-packages/argcomplete/bash_completion.d "$fpath[@]")
+NIX_ENVPYTHON_DIR=$(dirname $(dirname $(realpath $(which python))))
+ENVPYTHON_VERSION=$(python --version | awk '{print $2}' | cut -f1,2 -d'.')
+fpath=(${NIX_ENVPYTHON_DIR}/lib/python${ENVPYTHON_VERSION}/site-packages/argcomplete/bash_completion.d "$fpath[@]")
 eval "$(cd $HOME/.config/home-manager/bin/local/ && register-python-argcomplete pdftopng.py -s zsh)"
 eval "$(cd $HOME/.config/home-manager/bin/local/ && register-python-argcomplete bw_run.py -s zsh)"
 
