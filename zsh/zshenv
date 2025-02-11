@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Environment variables
-if [[ -r /etc/profile/per-user/$USER/etc/profile.d/home-session-vars.sh ]] ; then
- source "/etc/profiles/per-user/ensc/etc/profile.d/hm-session-vars.sh"
+if [[ -r /etc/profiles/per-user/$USER/etc/profile.d/hm-session-vars.sh ]] ; then
+ source "/etc/profiles/per-user/$USER/etc/profile.d/hm-session-vars.sh"
 elif [[ -r $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh ]] ; then
  source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
 fi
@@ -18,33 +18,43 @@ fi
 export PATH="$PATH:/home/ensc/.config/home-manager/bin/common/"
 export DEFAULT_DEVSHELL_STORE="${HOME}/.config/home-manager/nix-config/devshells"
 export EDITOR="nvim"
-export MAMBA_ROOT_PREFIX="$HOME/.mamba";
+export MAMBA_ROOT_PREFIX="$HOME/.mamba"
+export MACHINE_TYPE_SIMPLE=""
+export MACHINE_TYPE_DETAIL=""
 
 # Local configurations for personal machines
 if [[ "$HOST" == "ensc"* ]]; then
   export PATH="$PATH:$HOME/.config/home-manager/bin/local/"
-  export KRB5CCNAME="DIR:${HOME}/.temp.persist";
+  export KRB5CCNAME="DIR:${HOME}/.temp.persist"
+  export MACHINE_TYPE_SIMPLE="local"
 # Common configurations for remote machines
+  export MACHINE_TYPE_DETAIL="personal"
 else
   export PATH=$HOME/.nix-profile/bin/:$PATH
   export PATH="$PATH:$HOME/.config/home-manager/bin/remote/"
   if [[ -d "/cvmfs/cms.cern.ch" ]]; then
     export PATH="$PATH:$HOME/.config/zsh/cmssw_tools/"
   fi
-  export SSL_CERT_FILE="$HOME/.nix-profile/etc/ssl/certs/ca-bundle.crt";
+  export SSL_CERT_FILE="$HOME/.nix-profile/etc/ssl/certs/ca-bundle.crt"
+  export MACHINE_TYPE_SIMPLE="remote"
 fi
+
 
 # Machine specific path settings
 if [[ "$HOST" == "hepcms"* ]]; then
   export CMSSW_APPTAINER_BINDPATH="/data,/data2"
+  export MACHINE_TYPE_DETAIL="umdcms"
 elif [[ "$HOST" == "cmslpc"* ]]; then
   export CMSSW_APPTAINER_BINDPATH="/uscms,/uscmst1b_scratch,/cvmfs,/cvmfs/grid.cern.ch/etc/grid-security:/etc/grid-security,/uscms_data"
   export LARGE_STORAGE_DIR="/uscms_data/d3/yimuchen"
+  export MACHINE_TYPE_DETAIL="cmslpc"
 elif [[ "$HOST" == "lxplus"* && "$DOMAIN_NAME" == "cern.ch" ]]; then
   export LARGE_STORAGE_DIR="/afs/cern.ch/work/y/yichen"
+  export MACHINE_TYPE_DETAIL="lxplus"
 elif [[ "$DOMAIN_NAME" == "etp.kit.edu" ]]; then # KIT RELATED MACHINES
   export CMSSW_APPTAINER_BINDPATH="/ceph,/work,/home,/cvmfs/grid.cern.ch/etc/grid-security:/etc/grid-security,/etc/condor,/var/lib/condor"
   export LARGE_STORAGE_DIR="/work/ychen";
+  export MACHINE_TYPE_DETAIL="kit"
 fi # Don't do anything for unrecognized machines
 
 

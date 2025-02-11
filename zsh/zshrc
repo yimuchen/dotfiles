@@ -24,6 +24,7 @@ if [[ $USER == "ensc" ]] ; then
     fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
   done
 else
+  profile=$HOME/.nix-profile
   fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
 fi
 HELPDIR=$(realpath "$(dirname $(realpath $(which zsh)))/../share/zsh/$ZSH_VERSION/help")

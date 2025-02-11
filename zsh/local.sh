@@ -26,13 +26,14 @@ function firmware_update() {
   echo "Apply updates:             fwupdmgr update"
 }
 
+EXEC_ROOTBROWSE="${NIX_EXEC_ROOTBROWSE:=rootbrowse}"
 function root_browse() {
   input="$1"
   if [[ "$input" == *:* ]]; then
     temp_name="/tmp/$(basename "$input")"
     scp "$input" "$temp_name"
-    $NIX_EXEC_ROOTBROWSE --web=off "$temp_name"
+    $EXEC_ROOTBROWSE --web=off "$temp_name"
   else
-    $NIX_EXEC_ROOTBROWSE --web=off "$input"
+    $EXEC_ROOTBROWSE --web=off "$input"
   fi
 }
