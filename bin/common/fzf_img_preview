@@ -18,15 +18,8 @@ fi
 type=$(file --brief --dereference --mime -- $preview_file)
 realpath_msg="Full path: [$(realpath $preview_file)] | Detected filetype: [$type]"
 
-EXEC_GS="gs"
-if [[ ! -z $NIX_EXEC_GS ]]; then
-  EXEC_GS=$NIX_EXEC_GS
-fi
-
-EXEC_KITTEN="kitten"
-if [[ ! -z $NIX_EXEC_KITTEN ]]; then
-  EXEC_KITTEN=$NIX_EXEC_KITTEN
-fi
+EXEC_GS="${NIX_EXEC_GS:=gs}"
+EXEC_KITTEN="${NIX_EXEC_KITTEN:=kitten}"
 
 kitty_common="--clear --transfer-mode=stream --unicode-placeholder"
 
