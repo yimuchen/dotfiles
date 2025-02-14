@@ -1,10 +1,5 @@
 # Configurations for the personal machine setups
-{ config, pkgs, ... }:
-let
-  makeln = config.lib.file.mkOutOfStoreSymlink;
-  sensitive_dir = "${config.home.homeDirectory}/configurations/sensitive";
-  project_dir = "${config.home.homeDirectory}/projects/Personal";
-in {
+{ config, pkgs, ... }: {
   home.username = "ensc";
   home.homeDirectory = "/home/ensc";
   home.stateVersion = "23.11"; # DO NOT EDIT!!
@@ -32,12 +27,5 @@ in {
   home.packages = [
     pkgs.apptainer # All non-personal machines should use the system apptainer instance!
   ];
-
-  # Pulling additional settings from the un-tracked sensitive configurations
-  # directory.
-  home.file.".ssh/config".source = makeln "${sensitive_dir}/sshconfig";
-  home.file.".config/rcb".source = makeln "${sensitive_dir}/config/rcb";
-  home.file.".config/nvim-custom/plugins".source =
-    makeln "${project_dir}/nvim-plugins";
 }
 

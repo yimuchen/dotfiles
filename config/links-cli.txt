@@ -1,0 +1,8 @@
+# File to be placed in the $HOME/.config directory
+#
+./git        $HOME/.config/git
+./zsh        $HOME/.config/zsh
+./zsh/zshenv $HOME/.zshenv
+./zsh/zshrc  $HOME/.zshrc
+./nvim       $HOME/.config/nvim
+./tmux       $HOME/.config/tmux

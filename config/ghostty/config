@@ -1,5 +1,6 @@
 # Configurations for the ghostty terminal
 theme = "Breeze"
+font-family = "JetBrainsMono Nerd Font"
 auto-update = off
 background-opacity = 0.93
 # Forcing the cursor and disabling shell-integration

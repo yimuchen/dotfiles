@@ -1,0 +1,3 @@
+# Where to send files for linking
+
+./konsole/profile.profile $HOME/.local/share/konsole/profile.profile

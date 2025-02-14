@@ -6,7 +6,7 @@
     pkgs.wl-clipboard # For getting the command line output into wayland clipboard
     pkgs.showmethekey # For screen casting
     # For interacting with password data base
-    pkgs.bitwarden-cli
+    pkgs-stable.bitwarden-cli
     pkgs.bitwarden-desktop
     # For keyboard configuration
     pkgs.wootility

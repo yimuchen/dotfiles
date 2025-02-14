@@ -3,9 +3,6 @@
 # require longer files to define should be placed in the "plasma-workspace"
 # folder, and the file there should not contain any logic
 let
-  makeln = config.lib.file.mkOutOfStoreSymlink;
-  hm_config = "${config.home.homeDirectory}/.config/home-manager/config";
-
   # Fixing certain non-KDE items crashing on file selection.
   # https://github.com/NixOS/nixpkgs/issues/149812#issuecomment-1144285380
   missing-gsettings-schemas-fix = builtins.readFile
@@ -29,8 +26,6 @@ in {
   ];
 
   # We are still managing shortcuts by symlinking for the time being
-  home.file.".config/kglobalshortcutsrc".source =
-    makeln "${hm_config}/kglobalshortcutsrc";
 
   # Fixing some QT-GTK interaction oddities
   home.sessionVariables.XDG_DATA_DIRS =

@@ -1,0 +1,172 @@
+#!/usr/bin/env python3
+import argparse
+import hashlib
+import logging
+import os
+import warnings
+from typing import List, Tuple
+
+_log = logging.getLogger("symlinkmgr")
+
+
+class SymLinkState:
+    """
+    Symlink states are defined as a 2 column file with the 2 columns being the
+    link source and the link target respectively.
+
+    It will attempt to create a copy of the file with all paths resolved and
+    place it in a state file, this ensures that if the symlink relations are
+    modified, the handled symlinks are removed to avoid polluting the space.
+    """
+
+    def __init__(self, source_file: str, state_dir: str):
+        self.source_file = os.path.realpath(source_file)
+        self.state_dir = os.path.realpath(state_dir)
+        assert os.path.isfile(source_file), "Source file must be readable"
+        assert os.path.isdir(state_dir), "State storage directory"
+
+    @property
+    def current_state_file(self) -> str:
+        return os.path.join(
+            self.state_dir,
+            hashlib.sha256(self.source_file.encode("utf-8")).hexdigest() + ".txt",
+        )
+
+    def read_state_file(self, file_path) -> List[Tuple[str, str]]:
+        """
+        Reading the state file
+        """
+        state = []
+        with open(file_path) as f:
+            lines = f.readlines()
+            for line in lines:
+                line = line.strip()
+                if line.startswith("#"):
+                    continue
+                if line == "":
+                    continue
+                source, target = line.split()
+                source = os.path.expandvars(source)
+                if not os.path.isabs(source):
+                    source = os.path.abspath(
+                        os.path.join(os.path.dirname(self.source_file), source)
+                    )
+                target = os.path.expandvars(target)
+                if any(x[1] == target for x in state):
+                    warnings.warn(f"Skipping over duplicate target [{target}]")
+                    continue
+                state.append((source, target))
+        return state
+
+    @property
+    def current_state(self) -> List[Tuple[str, str]]:
+        if os.path.exists(self.current_state_file):
+            if not os.path.isfile(self.current_state_file):
+                raise RuntimeError(
+                    f"State file [{self.current_state_file}] is not a file"
+                )
+            else:
+                return self.read_state_file(self.current_state_file)
+        else:
+            return []
+
+    @property
+    def target_state(self) -> List[Tuple[str, str]]:
+        return self.read_state_file(self.source_file)
+
+    def run_symlink(self, none_dry=False):
+        current_state = self.current_state
+        target_state = self.target_state
+
+        # Clearing targets that are no-longer specified
+        for link_source, link_target in current_state:
+            if not any(x[1] == link_target for x in target_state):
+                _log.info(f"Removing un-specified link [{link_target}]")
+                if none_dry:
+                    os.remove(link_target)
+
+        # Creating new links:
+        executed_state = []
+        for link_source, link_target in target_state:
+            if os.path.exists(link_target):
+                # What to do for existing links:
+                if not os.path.islink(link_target):
+                    _log.error(
+                        f"Target path [{link_target}] is not a symbolic link! Skipping..."
+                    )
+                    continue
+                elif os.path.realpath(link_target) == os.path.realpath(link_target):
+                    _log.info(f"Same link unchanged [{link_source} -> {link_target}]")
+                    executed_state.append((link_source, link_target))
+                    continue
+                elif os.path.islink(link_target):
+                    _log.info("Updating symbolic link:")
+                    _log.info(
+                        f"<<< Previous: [{os.path.realpath(link_target)} -> {link_target}]"
+                    )
+                    _log.info(f">>> Update  : [{link_source} -> {link_target}]")
+                    executed_state.append((link_source, link_target))
+                    if none_dry:
+                        os.symlink(link_source, link_target)
+            else:
+                _log.info(f"Creating new link: [{link_source} -> {link_target}]")
+                executed_state.append((link_source, link_target))
+                if none_dry:
+                    os.makedirs(os.path.dirname(link_target), exist_ok=True)
+                    os.symlink(link_source, link_target)
+
+        # Writing stuff that was handled to the state file. Only update if none_dry was specified
+        if none_dry:
+            _log.info(f"Writing to state file {self.current_state_file}")
+            with open(self.current_state_file, "w") as f:
+                for source, target in executed_state:
+                    f.write(f"{source} {target}\n")
+
+        return
+
+    def save_state(self):
+        pass
+
+
+if __name__ == "__main__":
+    logging.basicConfig()
+    _log.setLevel(logging.DEBUG)
+    parser = argparse.ArgumentParser(
+        "symlinkmgr.py",
+        "A very simple application for managing symbolic links for dotfiles",
+    )
+    parser.add_argument(
+        "sources",
+        nargs="+",
+        help="""
+        Files containing how the symbolic link. Each symbolic link should be
+        it's separate line, with the <source> <dest> format, separated by
+        spaces. (I don't know how to safely handle paths with spaces just yet).
+        Environment variables such as $HOME can be used for simplify the
+        process. Empty lines or lines starting with "#" will be ignored.
+        """,
+    )
+    parser.add_argument(
+        "--state_dir",
+        type=str,
+        default=os.path.expandvars("$HOME/.local/state/symlinkmgr/"),
+        help="Where to store the current state of which symlinks are being managed by which file",
+    )
+    parser.add_argument(
+        "--dry_run",
+        action="store_true",
+        help="Dumping the equivalent commands to stdout instead of actually executing the processes",
+    )
+
+    args = parser.parse_args()
+    if os.path.exists(args.state_dir) and (not os.path.isdir(args.state_dir)):
+        raise ValueError(
+            f"Specified state directory [{args.state_dir}] exists but is not a directory!"
+        )
+    if not os.path.exists(args.state_dir):
+        _log.info(f"Creating directory for state logging at [{args.state_dir}]")
+        os.mkdir(args.state_dir)
+
+    for source_file in args.sources:
+        state_mgr = SymLinkState(source_file, args.state_dir)
+        state_mgr.run_symlink(none_dry=not args.dry_run)

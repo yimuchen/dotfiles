@@ -1,0 +1,8 @@
+# Links for graphical program configurations
+#
+
+./kglobalshortcutsrc                      $HOME/.config/kglobalshortcutsrc
+./yakuakerc                               $HOME/.config/yakuakerc
+./fcitx5                                  $HOME/.config/fcitx5
+./fontconfig/conf.d/99-alias.conf         $HOME/.config/fontconfig/conf.d/99-alias.conf
+./fontconfig/conf.d/50-default-fonts.conf $HOME/.config/fontconfig/conf.d/50-default-fonts.conf

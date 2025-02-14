@@ -10,11 +10,7 @@
 # - Nix (used to configure global nix settings and package flakes)
 # - Markdown (used as my noting format, and not necessarily tied to a package)
 
-{ pkgs, config, ... }:
-let
-  makeln = config.lib.file.mkOutOfStoreSymlink;
-  hm_config = "${config.home.homeDirectory}/.config/home-manager/config";
-in {
+{ pkgs, config, ... }: {
   programs.neovim = {
     enable = true;
 
@@ -50,7 +46,4 @@ in {
       pkgs.libgcc # Compiler required for tree-sitter and luarocks
     ];
   };
-
-  # Link to the major configuration path
-  home.file.".config/nvim".source = makeln "${hm_config}/nvim";
 }

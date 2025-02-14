@@ -1,8 +1,4 @@
-{ config, pkgs, ... }:
-let
-  makeln = config.lib.file.mkOutOfStoreSymlink;
-  hm_configdir = "${config.home.homeDirectory}/.config/home-manager/config";
-in {
+{ config, pkgs, ... }: {
   # Common command line packages that is useful for all systems that I will be using
   home.packages = [
     # The main shell (adding here such that this is guaranteed to be available,
@@ -47,19 +43,5 @@ in {
     NIX_EXEC_KITTEN = "${pkgs.kitty}/bin/kitten";
   };
 
-  # Additional configuration files for the tools listed above
-  home.file = {
-    # For ZSH configurations
-    ".config/zsh".source = makeln "${hm_configdir}/zsh";
-    ".zshrc".source = makeln "${hm_configdir}/zsh/zshrc";
-    ".zshenv".source = makeln "${hm_configdir}/zsh/zshenv";
-    # tmux configuration
-    ".config/tmux".source = makeln "${hm_configdir}/tmux";
-    # For Git configurations
-    ".config/git".source = makeln "${hm_configdir}/git";
-    # Re-linking the zsh path to a common position so that other programs that
-    # require the full shell path can use it (tmux/neovim)
-    ".local/share/zsh".source = makeln "${pkgs.zsh}/bin/zsh";
-  };
 }
 
