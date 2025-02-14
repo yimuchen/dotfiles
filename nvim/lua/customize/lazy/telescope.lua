@@ -30,7 +30,6 @@ return { -- Fuzzy finder telescope
     -- Adding additional telescope plugins
     pcall(telescope.load_extension, 'fzf')
     pcall(telescope.load_extension, 'ui-select')
-
     -- Setting up the key bindings (with which-key)
     local wk = require 'which-key'
     wk.add {
@@ -45,8 +44,6 @@ return { -- Fuzzy finder telescope
       { '<leader>sb', ts_builtin.buffers, desc = '[S]earch [B]uffers' },
       -- Search key maps is handled by telescope (for all key maps without explicit description )
       { '<leader>sk', ts_builtin.keymaps, desc = '[S]earch [K]eymaps', icon = '' },
-      -- Spell checking is considered a code actions
-      { '<leader>as', ts_builtin.spell_suggest, desc = '[A]ction [S]pell sugggestion', icon = '' },
     }
   end,
 }
