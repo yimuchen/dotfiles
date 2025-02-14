@@ -30,12 +30,14 @@ if [[ "$HOST" == "ensc"* ]]; then
 # Common configurations for remote machines
   export MACHINE_TYPE_DETAIL="personal"
 else
-  export PATH=$HOME/.nix-profile/bin/:$PATH
-  export PATH="$PATH:$HOME/.config/home-manager/bin/remote/"
+  if [[ -d $HOME/.nix-profile/bin ]] ; then
+    export PATH=$HOME/.nix-profile/bin/:$PATH
+    export SSL_CERT_FILE="$HOME/.nix-profile/etc/ssl/certs/ca-bundle.crt"
+  fi
   if [[ -d "/cvmfs/cms.cern.ch" ]]; then
     export PATH="$PATH:$HOME/.config/zsh/cmssw_tools/"
   fi
-  export SSL_CERT_FILE="$HOME/.nix-profile/etc/ssl/certs/ca-bundle.crt"
+  export PATH="$PATH:$HOME/.config/home-manager/bin/remote/"
   export MACHINE_TYPE_SIMPLE="remote"
 fi
 
