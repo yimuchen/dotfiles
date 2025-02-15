@@ -6,100 +6,81 @@ assuming that you are working from the base directory of this repository. To
 allow changes to be reflected immediately after any edits, all custom files
 will be soft-linked to the required repositories.
 
-The repository is slowly transitioning into using [nix]
-[home-manager][homemanager] for bootstrapping all the configurations to the
-home directory. When it is complete, the installation process should be
-directly:
+## Installation
+
+The dependencies for running the various items here can be handled either by:
+
+- [`decman`][decman]: The declarative wrapper for [Archlinux]'s [pacman]. The
+  modules for using that can be found in the [`decman`](./decman/) directory.
+- [`home-manager`][homemanager]: The declarative system used by
+  [Nix/NixOS][nix], simply copy this directory to the standard
+  `~/.config/home-manager/` directory, and run `home-manager switch` to get the
+  packages defined here repository.
+- [`gentoo-protage`][portage] (currently CLI-only): the list of packages that
+  are to be installed can be found in the
+  [`portage-cli-tools.txt`](./portage-cli-tools.txt) file. Pipe the contents to
+  the `emerge` command to save this.
+
+After the main package installs, you will still need to add the various
+configuration files as a symbolic links into you user directory. This
+repository provides the `symlinkmgr` tool in the [`./bin/common/`](./bin)
+directory, and you can run this like:
 
 ```bash
-git clone https://github.com/yimuchen/dotfiles
-rm ~/.config/home-manager -rf                     # Removing existing home-manager configuration
-ln <path >/ <to >/dofiles ~/.config/home-manager/ # Linking this repository to home manager
-home-manager switch                               # Is required to rerun if you make edits to the dotfiles directory
+./bin/common/symlinkmgr ./config/links-cli.txt
 ```
 
-While the bootstrapping is being finalized, additional instructions will be
-provided to ensure that configurations can still be used (especially for system
-where nix is still not available)
+This links that are managed by this tool will be kept in a log file so that
+links can be cleanly removed when the system is updated.
 
-## What should be handled by nix?
+## What should be handled by package managers?
 
-Using nix as the package manager does not quite solve the problem of all
-configuration managements methods that can exist for the packages that we can
-use. The rule of thumb would be:
+The package managers should be used for getting the libraries required to use
+the user tools and ideally nothing more. This is an attempt to help ensure that
+this same repository can be used regardless of what system is being used, and
+not tied to any single package management system. Configuration should largely
+be handled by the `symlinkmgr` mentioned above. One exception to this rule is
+the use of `decman` to hard-wire GUI configuration into the user home
+directory. These are configurations that are not expected to be changed often.
 
-- If the configurations contain programmable logic (like with `neovim` and
-  `zsh`), the configuration should always attempt to use the packages native
-  configuration method rather than using nix. Nix in this case will be used to
-  set up links to the configuration.
-- If the configurations dependencies packages that uses is not native to the
-  configuration language (like language specific tools for `neovim`, or
-  wrappers to make certain CLI tools easier to use), these should be handled as
-  nix dependencies. This is mainly to help ensure that consistent development
-  session can be configured with nix flake files.
-- All setting up of symbolic links for various configurations that are not
-  easily handled by existing home manager configuration options. The
-  miscellaneous configuration files in this case would be listed under the
-  `config` and the `share` directory. And the structure within this directory
-  should mirror what is expected in the `$HOME/.config` and
-  `$HOME/.local/share` directory respectively.
+## The general layout
 
-## Shell (`zsh`)
+- [`config`](./config): this directory should mirror the structure that is used
+  in `$HOME/.config` for files that you want to have version managed. Most
+  application configurations are expected to sit here and be linked to the home
+  folder. There are 3 exceptional applications that we want the directories to
+  be elevated to the primary directory:
 
-The additional plugin system used will be [`antidote`][antidote], while the
-downloading of packages defined by antidote will be handled by nix. This
-ensures that the configured system will have a fully functioning `zsh`, and you
-will not be prompted with a message when first logging into the shell.
+  - [`nvim`](./nvim): My preferred [text editor][neovim], with the most
+    involved configuration.
+  - [`zsh`](./zsh): My preferred [shell][zsh], with the most machine-dependent
+    configurations.
+  - [`tmux`](./tmux): My preferred [terminal multiplexer][tmux], with the
+    (currently) my most experimental developments.
 
-Aliases for standard `coreutils` tools, and some non-trivial combination of
-such tools will be defined in the nix configurations. Programmable
-configurations should be defined in the separate `zsh/*.sh` files, such that
-they can be quickly updated when running into a bug without having to rebuild
-the system.
+- [`share`](./share/): this directory should mirror the structure that is used
+  in `$HOME/.local/share` for files that you want to have version managed.
+  These typically contain small, one-off configurations for some
+  cross-application configurations.
 
-## Shell helper scripts
+- [`bin`](./bin): Custom helper scripts for terminal applications. The scripts
+  here should either be python or bash, with the more exotic dependencies
+  listed by the package manager session. There are currently 3 categories, the
+  exposure of these paths are handled by the `zsh` configurations.
 
-Additional helper scripts used for performing common routines in a CLI session
-should be store in subdirectories in the `zsh` folder. The individual nix
-configurations used for grouping terminal functionality would be used to expose
-these directories and the global `$PATH` variable. The scripts here should use
-vanilla `sh` where ever possible, as avoid using `nix` specific paths to
-complete the routine (i.e: the script should expected executable files to be
-exposed instead of pointing to a specific nix executable instance), as this
-ensure the same scripts can be ported to other systems that is not running Nix.
+  - [`common`](./bin/common): Useful terminal application that can be used
+    anywhere.
+  - [`local`](./bin/local): Only useful if you are the system admin of primary
+    user for of the machine.
+  - [`remote`](./bin/remote): Only useful if when working on a remote machine
+    (over and `ssh`) connection for example.
 
-## Python helper scripts
+- [`misc`](./misc/): Configuration for standard but not preferred tools: `bash`
+  and `vim`. These will not be handled directly, but should serve as a
+  reference for when setting on an environment where the fancier tools are not
+  available.
 
-For more complicated routines, python scripts with `subprocess` is a little
-easier to handle than bash scripts. Such tools will be provided in the
-[`pyscripts`](pyscripts) directory. The nontrivial python dependencies are
-listed in the [`pyscripts/requirements.txt`](pyscripts) file, though you should
-instead use the system package manager to install these python dependencies.
-Once you have installed the python dependencies, the scripts can be enabled run
-the following commands:
-
-```bash
-# Linking scripts to the common position
-ln -sf $PWD/pyscripts $HOME/.pyscripts
-
-# If this line is not already somewhere in your shell configurations
-export PATH=$PATH:$HOME/.pyscripts
-
-# Ensuring that python auto complete is main available (scripts can still be used is not done)
-activate-global-python-argcomplete --user
-```
-
-## Neovim configuration
-
-The organization of neovim configurations follows the example found in the
-tutorial made by the [ThePrimeagen][primetut]. As the configuration of neovim
-also runs into external dependency management, this should always be coupled
-with the other session configurations (see the `README.md` file in the
-[`nvim`](nvim) directory for more information).
-
-On the initial start up the lazy package manager should automatically start
-pulling the required packages. For how the neovim configuration is done, see
-the documentation in [`nvim/README.md`](nvim) file.
+- [`pkg`](./pkg): This is where the package management files should be placed.
 
 ## Latex settings
 
@@ -115,23 +96,13 @@ repository) Some external dependencies might be needed for the font
 configuration to function. For additional details, see the
 [`texmf/tex/latex/README`](texmf/tex/latex).
 
-## Plasma configurations
-
-Currently, plasma configurations are not easily performed by nix, we will be
-keeping track of the required `rc` files in the plasma directory. The file
-structure in the `plasma` should follow how the files are structured in the
-`~/.config` directory. The construction of the symlink as well as why certain
-items are required to kept will be handled by `nix` home-manager.
-
-## Miscellaneous
-
-Miscellaneous configuration that we will be using for the commonly used
-"vanilla" unix system, such as vim instead of neovim, bash instead of zsh and
-so on. These files will **not** be managed by nix/home-manager, and should be
-directly modified/copied to the target file.
-
-[antidote]: https://github.com/mattmc3/antidote
+[archlinux]: https://archlinux.org/
+[decman]: https://github.com/kiviktnm/decman
 [homemanager]: https://nix-community.github.io/home-manager/
+[neovim]: https://neovim.io/
 [nix]: https://nixos.org/
-[primetut]: https://www.youtube.com/watch?v=w7i4amO_zaE
+[pacman]: https://wiki.archlinux.org/title/Pacman
+[portage]: https://wiki.gentoo.org/wiki/Portage
 [texlive]: https://www.tug.org/texlive/
+[tmux]: https://github.com/tmux/tmux/wiki
+[zsh]: https://www.zsh.org/
