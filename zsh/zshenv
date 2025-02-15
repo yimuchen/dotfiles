@@ -12,10 +12,13 @@ if [[ -z "$__HM_ZSH_SESS_VARS_SOURCED" ]]; then
 fi
 
 if [[ -z "${DOMAIN_NAME}" ]]; then
-  export DOMAIN_NAME=$(domainname -d)
+  if command -v domainname 2>&1 >/dev/null
+  then
+      export DOMAIN_NAME=$(domainname -d)
+   fi
 fi
 
-export PATH="$PATH:/home/ensc/.config/home-manager/bin/common/"
+export PATH="$PATH:$HOME/.config/home-manager/bin/common/"
 export DEFAULT_DEVSHELL_STORE="${HOME}/.config/home-manager/nix-config/devshells"
 export EDITOR="nvim"
 export MAMBA_ROOT_PREFIX="$HOME/.mamba"
@@ -39,6 +42,10 @@ else
   fi
   export PATH="$PATH:$HOME/.config/home-manager/bin/remote/"
   export MACHINE_TYPE_SIMPLE="remote"
+
+  if [[ -z $LANG ]]; then
+    export LANG="en_US.UTF-8"
+  fi
 fi
 
 

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Firefox - default
+Icon=firefox
+Exec=firefox -P casual %U
+Categories=Network;WebBrowser
+GenericName=Web Browser
+MimeType=text/html;text/xml
+Terminal=false
+Type=Application
+Version=1.4
+

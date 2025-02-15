@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Firefox - work
+Icon=firefox-nightly
+Exec=firefox -P work %U
+Categories=Network;WebBrowser
+GenericName=Web Browser
+MimeType=text/html;text/xml
+Terminal=false
+Type=Application
+Version=1.4
+

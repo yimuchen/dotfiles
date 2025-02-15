@@ -37,3 +37,8 @@ function root_browse() {
     $EXEC_ROOTBROWSE --web=off "$input"
   fi
 }
+
+# Enabling conda if it exists
+if [[ -f /opt/miniconda3/etc/profile.d/conda.sh ]]; then
+  source /opt/miniconda3/etc/profile.d/conda.sh
+fi

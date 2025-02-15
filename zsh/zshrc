@@ -23,11 +23,13 @@ if [[ $USER == "ensc" ]] ; then
   for profile in ${(z)NIX_PROFILES}; do
     fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
   done
-else
+elif [[ -d $HOME/.nix-profile ]]; then
   profile=$HOME/.nix-profile
   fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
 fi
-HELPDIR=$(realpath "$(dirname $(realpath $(which zsh)))/../share/zsh/$ZSH_VERSION/help")
+
+
+# HELPDIR=$(realpath "$(dirname $(realpath $(which zsh)))/../share/zsh/$ZSH_VERSION/help")
 
 # Installing the antidote plugin manager if it doesn't exist
 export ANTIDOTE_HOME=$HOME/.local/share/antidote_plugins
