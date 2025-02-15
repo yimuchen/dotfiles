@@ -1,0 +1,15 @@
+zsh
+tmux
+htop
+speedtest-cli
+zip
+unzip
+app-misc/jq
+yq-go
+sys-process/parallel
+fzf
+imagemagick
+kitty
+sys-apps/ripgrep
+neovim
+
