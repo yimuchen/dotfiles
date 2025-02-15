@@ -76,8 +76,57 @@ eval "$(fzf --zsh)"
 source "$HOME/.config/zsh/p10k.zsh"
 # Additional command-line tools that uses common gnu-coreutils tools
 source "$HOME/.config/zsh/common_utils.sh"
-# Additional settings for specific machines (must be loaded after the p10k configuration)
-source "$HOME/.config/zsh/machine.sh"
+
+# Additional theme based on host name
+if [[ "$HOST" == "ensc"* ]]; then                # Personal machine
+  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=7   # White
+  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=232 # BLACK
+  typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=235 # DARK GRAY
+  typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=3   # Orange
+  source $HOME/.config/zsh/local.sh
+else
+  source $HOME/.config/zsh/remote.sh
+  # Loading CMSSW configurations if possible (some configurations requires
+  # knowing the cluster configuration)
+  if [[ -d "/cvmfs/cms.cern.ch" ]]; then
+    source $HOME/.config/zsh/cmssw_tools.sh
+  fi
+fi
+
+if [[ "$HOST" == "ensc"* ]]; then                # Personal machine
+  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=7   # White
+  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=232 # BLACK
+  typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=235 # DARK GRAY
+  typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=3   # Orange
+elif [[ "$MACHINE_TYPE_DETAIL" == "umdcms" ]]; then
+  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=7   # White
+  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=232 # BLACK
+  typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=235 # DARK GRAY
+  typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=3   # Orange
+elif [[ "$MACHINE_TYPE_DETAIL" == "cmslpc" ]]; then
+  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=3 # ORANGE
+  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=232
+  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=3 # ORANGE
+  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=232
+  # Domain name is defined by zshenv
+elif [[ "$MACHINE_TYPE_DETAIL" == "lxplus" ]]; then
+  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=19 # DEEP BLUE
+  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=7
+  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=19 # DEEP BLUE
+  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=7
+elif [[ "$MACHINE_TYPE_DETAIL" == "kit" ]]; then # KIT RELATED MACHINES
+  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=22  # DEEP GREEN
+  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=7
+  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=22 # DEEP GREEN
+  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=7
+else
+  ## HOSTNAME NOT LISTED!!
+  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=1          # RED
+  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=232        # BLACK
+  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=1   # RED
+  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=232 # BLACK
+fi
+
 
 ############## Uncomment to run profiling
 # zprof
