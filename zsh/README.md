@@ -27,5 +27,9 @@ There are 2 core files that are common to all configurations:
   - [`cmssw_tools.sh`](./cmssw_tools.sh): A special subset of utilities for
     interacting with CMSSW related tools (only exposed for remote sessions as
     well).
+  - [`zsh_plugins.txt`](./zsh_plugins.txt): The main plugin file containing
+    everything that is handled by the [`antidote`][antidote] plugin manager
   - [`p10k.zsh`](./p10k.zsh): A special file that was generated for the prompt
     designer
+
+[antidote]: https://antidote.sh/
