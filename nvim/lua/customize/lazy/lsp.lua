@@ -38,7 +38,7 @@ return { -- LSP configurations and language related plugins
             { '<leader>ssd', ts_builtin.lsp_document_symbols, desc = '[S]search [S]ymbols in [D]ocument' },
             { '<leader>ssw', ts_builtin.lsp_dynamic_workspace_symbols, desc = '[S]earch [S]ymbols in [W]orkspace' },
             { '<leader>sd', ts_builtin.diagnostics, desc = '[S]earch [D]iagnostics' },
-            -- Opening preview buffers - Use CTRL as modifier!
+            -- Opening preview buffers - Use CTRLs as modifier!
             { '<C-h>', vim.lsp.buf.hover, desc = '[H]over Documentation', mode = 'ni' },
             { '<C-e>', vim.diagnostic.open_float, desc = 'Show diagnostic [E]rror messages', mode = 'ni' },
             -- Actions that will directly modify the text buffer

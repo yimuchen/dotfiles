@@ -10,7 +10,7 @@ return {
     --  - ci'  - [C]hange [I]nside [']quote
     local spec_treesitter = require('mini.ai').gen_spec.treesitter
     require('mini.ai').setup {
-      n_lines = 1000, -- Required for large code blocks
+      n_lines = 10000, -- Required for large code blocks
       custom_textobjects = {
         -- Typical code objects
         ['F'] = spec_treesitter { a = '@function.outer', i = '@function.inner' },
@@ -26,8 +26,5 @@ return {
     -- - sr)'  - [S]urround [R]eplace [)] [']
     require('mini.surround').setup()
 
-    -- Custom startup screen
-    -- As this requires custom function, this will be setup in the plugins directory
-    -- require('mini.starter').setup({})
   end,
 }
