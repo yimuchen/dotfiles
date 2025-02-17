@@ -20,68 +20,27 @@
       homeConfigurations."yimuchen" =
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = [ ./nix-config/host/lpc.nix ];
+          modules = [ ./pkg/nix/host/lpc.nix ];
         };
       # Configuration for lxplus systems
       homeConfigurations."yichen" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        modules = [ ./nix-config/host/lxplus.nix ];
+        modules = [ ./pkg/nix/host/lxplus.nix ];
       };
       # Configuration for UMD clusters
       homeConfigurations."yichen@hepcms-rubin" =
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = [ ./nix-config/host/umdcms.nix ];
-        };
-      # Configuration for Gantry control system
-      homeConfigurations."yimuchen@PHYSLXPSC2264" =
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [ ./nix-config/host/umdgantry.nix ];
+          modules = [ ./pkg/nix/host/umdcms.nix ];
         };
       # Configuration for KIT cluster system
       homeConfigurations."ychen" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        modules = [ ./nix-config/host/kit.nix ];
+        modules = [ ./pkg/nix/host/kit.nix ];
       };
 
       # We need to treat this as a package,
       defaultPackage.${system} = pkgs.zsh;
-
-      # Adding shell that is required for developement using editors, this is
-      # mainly to include additional language servers and formatters that are
-      # not listed for interactive use.
-      devShells.${system} = {
-        default = pkgs.mkShell {
-          name = "Development environment for dotfiles";
-          packages = [
-            # Lua tools for neovim configurations
-            pkgs.lua-language-server
-            pkgs.stylua
-
-            # Python language tools
-            pkgs.ruff
-            # pkgs.pylyzer
-            (pkgs.python3.withPackages
-              (ps: [ ps.argcomplete ps.python-lsp-server ps.wand ps.tqdm ]))
-          ];
-        };
-        # Additional development shells
-        python-3p10 = (import ./nix-config/devshells/python.nix {
-          pkgs = pkgs;
-          pyversion = "3.10";
-        });
-        python-3p11 = (import ./nix-config/devshells/python.nix {
-          pkgs = pkgs;
-          pyversion = "3.11";
-        });
-        python-3p12 = (import ./nix-config/devshells/python.nix {
-          pkgs = pkgs;
-          pyversion = "3.12";
-        });
-        lua = (import ./nix-config/devshells/lua.nix pkgs);
-        tex = (import ./nix-config/devshells/tex.nix pkgs);
-      };
     };
 }
 
