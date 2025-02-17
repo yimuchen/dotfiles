@@ -127,6 +127,10 @@ else
   typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=232 # BLACK
 fi
 
+# Required for fixing keystrokes??
+bindkey  "^[[H"   beginning-of-line
+bindkey  "^[[F"   end-of-line
+bindkey  "^[[3~"  delete-char
 
 ############## Uncomment to run profiling
 # zprof

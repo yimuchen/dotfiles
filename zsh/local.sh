@@ -2,8 +2,6 @@
 alias -- efireboot='systemctl reboot --firmware-setup'
 alias -- poweroff='systemctl poweroff'
 alias -- reboot='systemctl reboot'
-alias -- system-config-update='nh os switch --ask $(realpath /etc/nixos/) -- --impure'
-alias -- system-update='nh os switch --update --ask $(realpath /etc/nixos/) -- --impure'
 
 # Additional setup for the python session
 NIX_ENVPYTHON_DIR=$(dirname $(dirname $(realpath $(which python))))
@@ -24,6 +22,12 @@ function firmware_update() {
   echo "Pull metadata from source: fwupdmgr refresh"
   echo "List available updates:    fwupdmgr get-updates"
   echo "Apply updates:             fwupdmgr update"
+}
+
+function system_update() {
+  cd /home/ensc/configurations/systems 
+  sudo decman --source /home/ensc/configurations/systems/decman-source.py
+  cd -
 }
 
 EXEC_ROOTBROWSE="${NIX_EXEC_ROOTBROWSE:=rootbrowse}"
