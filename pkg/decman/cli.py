@@ -57,8 +57,6 @@ class CliTools(decman.Module):
         deps += ["zip", "unzip", "lzip"]
         # For direct interactions with the wayland clipboard
         deps += ["wl-clipboard"]
-        # For setting up development environment
-        deps += ["nix"]
         return deps
 
     def aur_packages(self):
@@ -74,11 +72,3 @@ class CliTools(decman.Module):
                 content="\n".join(["auto_activate_base: false"])
             )
         }
-
-    def on_enable(self):
-        # User needs to be added to the nix-user group
-        decman.prg(["gpasswd", "-a", "ensc", "nix-user"])
-        # Adding files to the nix channel
-
-    def systemd_units(self):
-        return ["nix-daemon.service"]
