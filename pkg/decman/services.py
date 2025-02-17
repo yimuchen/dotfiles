@@ -1,43 +1,6 @@
-import configparser
-import os
-import tempfile
-from typing import Dict
-
 import decman
 
-__user__ = "ensc"
-
-
-class UserService:
-    def __init__(self, name):
-        self.name
-        self.install = None
-        self.service = None
-        self.unit = None
-
-    @property
-    def service_file(self):
-        return os.path.join(
-            "/home/" + __user__ + "/.config/systemd/user/" + self.name + ".service"
-        )
-
-    def to_str(self) -> str:
-        config = configparser.ConfigParser()
-        config["Install"] = self.install
-        config["Service"] = self.service
-        config["Unit"] = self.unit
-        with tempfile.NamedTemporaryFile("w") as tmp:
-            config.write(tmp, space_around_delimiters=False)
-            tmp.flush()
-            with open(tmp.name, "r") as rf:
-                return rf.read()
-
-    def to_decman(self) -> Dict[str, decman.File]:
-        return {
-            self.service_file: decman.File(
-                content=self.to_str(), owner=__user__, group=__user__
-            )
-        }
+from ._common import _user_
 
 
 class Syncthing(decman.Module):
@@ -51,20 +14,21 @@ class Syncthing(decman.Module):
     def systemd_units(self):
         # Launching syncthing as a system service owned by the user, this way
         # Syncing can begin event before the user formally logs in
-        return [f"syncthing@{__user__}.service"]
+        return [f"syncthing@{_user_}.service"]
 
 
 class RcbListener(decman.Module):
     def __init__(self):
         super().__init__(name="rcb_listener", enabled=True, version="1")
+        self.rcb_service = decman.UserService(user=_user_, name="rcb_listener")
+        self.rcb_service["Install"] = {"WantedBy": "default.target"}
+        self.rcb_service["Service"] = {
+            "ExecStart": f"{decman.dec_source(_user_)}/bin/local/rcb_listener.py --port 9543"
+        }
+        self.rcb_service["Unit"] = {"Description": "Remote clipboard listener service"}
 
     def files(self):
-        rcb_service = UserService("rcb_listener")
-        rcb_service.install = {"WantedBy": "default.target"}
-        rcb_service.service = {"ExecStart": " --port 9543"}
-        rcb_service.unit = {"Description": "Remote clipboard listener service"}
-
-        return rcb_service.to_decman()
+        return self.rcb_service.to_decman()
 
     def systemd_user_units(self):
-        return {__user__: ["rcb_listener.service"]}
+        return {_user_: [self.rcb_service.service_name]}

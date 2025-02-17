@@ -2,74 +2,15 @@
 Specifically for the look and feel of plasma
 """
 
-import configparser
 import os
-import tempfile
-from typing import Dict
 
 import decman
 
-_user_ = "ensc"
-
-
-def _make_config_direct(path: str) -> Dict[str, decman.File]:
-    """
-    Generating entry for performing a direct copy of the files to the
-    $HOME/.config directory. This is good for files that you don't want to
-    change without modifying install dependencies.
-    """
-    return {
-        os.path.join(decman.config_path(_user_), path): decman.File(
-            source_file=os.path.join(decman.dec_source(_user_), "config/" + path)
-        )
-    }
-
-
-def _make_share_direct(path: str) -> Dict[str, decman.File]:
-    """
-    Generating entry for performing a direct copy of the file to the
-    $HOME/.local/share directory. This is good for files that you don't want to
-    change without modifying install dependencies.
-    """
-    return {
-        os.path.join(decman.share_path(_user_), path): decman.File(
-            source_file=os.path.join(decman.dec_source(_user_), "share/" + path)
-        )
-    }
+from ._common import _make_config_direct, _make_share_direct, _user_
 
 
 def config_path(path):
     return os.path.join(decman.config_path(_user_), path)
-
-
-class ConfExp(configparser.ConfigParser):
-    """
-    Configuration parser that can be used for a partial update of a
-    configuration file. This entry most useful when you want to leave certain
-    entries float but pin specific entries of interest.
-    """
-
-    def __init__(self, path: str):
-        super().__init__(interpolation=None)
-        self.read(path)
-        self.target_path = path
-
-    def optionxform(self, optionstr):  # Disable case casing
-        return optionstr
-
-    def to_str(self) -> str:
-        with tempfile.NamedTemporaryFile("w") as tmp:
-            self.write(tmp, space_around_delimiters=False)
-            tmp.flush()
-            with open(tmp.name, "r") as rf:
-                return rf.read()
-
-    def to_decman(self) -> Dict[str, decman.File]:
-        return {
-            self.target_path: decman.File(
-                content=self.to_str(), owner=_user_, group=_user_
-            )
-        }
 
 
 class Fonts(decman.Module):
@@ -108,7 +49,9 @@ class Input(decman.Module):
         return deps
 
     def files(self):
-        kwinrc = ConfExp(config_path("kwinrc"))
+        kwinrc = decman.ConfExp(
+            ref_path=config_path("kwinrc"), target_path=config_path("kwinrc")
+        )
         kwinrc["Wayland"] = {  # Pinning the input method
             "InputMethod[$e]": "/usr/share/applications/fcitx5-wayland-launcher.desktop"
         }
@@ -134,7 +77,9 @@ class Themes(decman.Module):
     def files(self):
         """Theming that are likely not chancing for a long time"""
 
-        kcminputrc = ConfExp(config_path("kcminputrc"))
+        kcminputrc = decman.ConfExp(
+            ref_path=config_path("kcminputrc"), target_path=config_path("kcminputrc")
+        )
         kcminputrc["Keyboard"] = {"NumLock": "0"}
         kcminputrc["Mouse"] = {"cursorSize": "24", "cursorTheme": "Adwaita"}
 
@@ -160,9 +105,10 @@ class Applications(decman.Module):
         super().__init__(name="plasma-application", enabled=True, version="1")
 
     def files(self):
-        firefox_profile = ConfExp(
-            os.path.join(decman.home_path(_user_), ".mozilla/firefox/profiles.ini")
+        ff_ppath = os.path.join(
+            decman.home_path(_user_), ".mozilla/firefox/profiles.ini"
         )
+        firefox_profile = decman.ConfExp(ref_path=ff_ppath, target_path=ff_ppath)
         firefox_profile["Profile0"] = {
             "Default": "1",
             "IsRelative": "1",
@@ -192,7 +138,10 @@ class ShortCuts(decman.Module):
         super().__init__(name="plasma-shortcuts", enabled=True, version="1")
 
     def files(self):
-        shortcutsrc = ConfExp(config_path("kglobalshortcutsrc"))
+        shortcutsrc = decman.ConfExp(
+            ref_path=config_path("kglobalshortcutsrc"),
+            target_path=config_path("kglobalshortcutsrc"),
+        )
         # Odd notation for getting the various entries to work?
         shortcutsrc["services][com.mitchellh.ghostty.desktop"] = {"_launch": "Meta+T"}
         # Explicitly disabling console for now
