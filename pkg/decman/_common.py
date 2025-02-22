@@ -5,7 +5,7 @@ import decman
 
 _user_ = "ensc"
 # String representing the base directory of user configurations
-_dec_source = os.path.realpath(os.path.basename(__file__) + "/../../")
+_dec_source = os.path.realpath(os.path.dirname(__file__) + "/../../")
 
 
 def _make_config_direct(path: str) -> Dict[str, decman.File]:
@@ -16,7 +16,9 @@ def _make_config_direct(path: str) -> Dict[str, decman.File]:
     """
     return {
         os.path.join(decman.config_path(_user_), path): decman.File(
-            source_file=os.path.join(_dec_source, "config/" + path)
+            source_file=os.path.join(_dec_source, "config/" + path),
+            owner=_user_,
+            group=_user_,
         )
     }
 
@@ -29,6 +31,8 @@ def _make_share_direct(path: str) -> Dict[str, decman.File]:
     """
     return {
         os.path.join(decman.share_path(_user_), path): decman.File(
-            source_file=os.path.join(_dec_source, "share/" + path)
+            source_file=os.path.join(_dec_source, "share/" + path),
+            owner=_user_,
+            group=_user_,
         )
     }

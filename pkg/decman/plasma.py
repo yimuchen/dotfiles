@@ -50,7 +50,10 @@ class Input(decman.Module):
 
     def files(self):
         kwinrc = decman.ConfExp(
-            ref_path=config_path("kwinrc"), target_path=config_path("kwinrc")
+            ref_path=config_path("kwinrc"),
+            target_path=config_path("kwinrc"),
+            user=_user_,
+            group=_user_,
         )
         kwinrc["Wayland"] = {  # Pinning the input method
             "InputMethod[$e]": "/usr/share/applications/fcitx5-wayland-launcher.desktop"
@@ -78,7 +81,10 @@ class Themes(decman.Module):
         """Theming that are likely not chancing for a long time"""
 
         kcminputrc = decman.ConfExp(
-            ref_path=config_path("kcminputrc"), target_path=config_path("kcminputrc")
+            ref_path=config_path("kcminputrc"),
+            target_path=config_path("kcminputrc"),
+            user=_user_,
+            group=_user_,
         )
         kcminputrc["Keyboard"] = {"NumLock": "0"}
         kcminputrc["Mouse"] = {"cursorSize": "24", "cursorTheme": "Adwaita"}
@@ -108,7 +114,9 @@ class Applications(decman.Module):
         ff_ppath = os.path.join(
             decman.home_path(_user_), ".mozilla/firefox/profiles.ini"
         )
-        firefox_profile = decman.ConfExp(ref_path=ff_ppath, target_path=ff_ppath)
+        firefox_profile = decman.ConfExp(
+            ref_path=ff_ppath, target_path=ff_ppath, user=_user_, group=_user_
+        )
         firefox_profile["Profile0"] = {
             "Default": "1",
             "IsRelative": "1",
