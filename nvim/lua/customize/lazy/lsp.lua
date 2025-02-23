@@ -44,7 +44,7 @@ return { -- LSP configurations and language related plugins
             -- Actions that will directly modify the text buffer
             { '<leader>a', group = '[A]lter' },
             { '<leader>ar', vim.lsp.buf.rename, desc = '[A]ction [R]ename' },
-            { '<leader>af', vim.lsp.buf.code_action, desc = '[A]ction LSP [F]ix' },
+            -- { '<leader>af', vim.lsp.buf.code_action, desc = '[A]ction LSP [F]ix' },
           }
 
           -- The following two autocommands are used to highlight references of the
