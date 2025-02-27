@@ -1,4 +1,8 @@
+import os
+
 import decman
+
+from ._common import user
 
 
 class Core(decman.Module):
@@ -8,14 +12,13 @@ class Core(decman.Module):
         super().__init__(name="gui-core", enabled=True, version="1")
 
     def pacman_packages(self):
-        return [
-            "firefox",
-            "ghostty",
-            "yakuake",
-            "bitwarden",
-            "thunderbird",
-            "korganizer",
-        ]
+        # For online interactions
+        deps = ["firefox", "bitwarden"]
+        # For personal information management
+        deps += ["thunderbird", "korganizer"]
+        # Terminal of preference
+        deps += ["ghostty", "yakuake"]
+        return deps
 
 
 class Office(decman.Module):
@@ -89,3 +92,24 @@ class Gaming(decman.Module):
 
     def aur_packages(self):
         return ["r2modman-bin", "proton-ge-custom-bin"]
+
+
+class Symlink(decman.Module):
+    """
+    Generating the user-level symlinks. We will have decman to call the
+    external symlinkmgr method, as not all systems will be using decman
+    """
+
+    def __init__(self):
+        super().__init__(name="symlinks", enabled=True, version="1")
+
+    def after_update(self):
+        decman.prg(
+            [
+                os.path.join(user.config_source_dir, "bin/common/symlinkmgr"),
+                "--state_dir=" + user.home_path + "/.local/state/symlinkmgr",
+                os.path.join(user.config_source_dir, "config/links-graphical.txt"),
+            ],
+            user=user.username,
+            env_overrides={"HOME": user.home_path},
+        )

@@ -2,6 +2,8 @@ import os
 
 import decman
 
+from ._common import user
+
 
 class Neovim(decman.Module):
     def __init__(self):
@@ -68,7 +70,28 @@ class CliTools(decman.Module):
 
     def files(self):
         return {
-            os.path.join(decman.home_path("ensc"), ".condarc"): decman.File(
+            os.path.join(user.home_path, ".condarc"): decman.File(
                 content="\n".join(["auto_activate_base: false"])
             )
         }
+
+
+class Symlink(decman.Module):
+    """
+    Generating the user-level symlinks. We will have decman to call the
+    external symlinkmgr method, as not all systems will be using decman
+    """
+
+    def __init__(self):
+        super().__init__(name="symlinks", enabled=True, version="1")
+
+    def after_update(self):
+        decman.prg(
+            [
+                os.path.join(user.config_source_dir, "bin/common/symlinkmgr"),
+                "--state_dir=" + user.home_path + "/.local/state/symlinkmgr",
+                os.path.join(user.config_source_dir, "config/links-cli.txt"),
+            ],
+            user=user.username,
+            env_overrides={"HOME": user.home_path},
+        )

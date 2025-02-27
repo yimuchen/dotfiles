@@ -6,11 +6,7 @@ import os
 
 import decman
 
-from ._common import _make_config_direct, _make_share_direct, _user_
-
-
-def config_path(path):
-    return os.path.join(decman.config_path(_user_), path)
+from ._common import user
 
 
 class Fonts(decman.Module):
@@ -32,10 +28,12 @@ class Fonts(decman.Module):
         return ["ttf-tw", "ttf-ms-fonts"]
 
     def files(self):
-        return {
-            **_make_config_direct("fontconfig/conf.d/50-default-fonts.conf"),
-            **_make_config_direct("fontconfig/conf.d/99-alias.conf"),
-        }
+        return user.filemgr_config.create_decman_list(
+            [
+                "fontconfig/conf.d/50-default-fonts.conf",
+                "fontconfig/conf.d/99-alias.conf",
+            ]
+        )
 
 
 class Input(decman.Module):
@@ -49,20 +47,15 @@ class Input(decman.Module):
         return deps
 
     def files(self):
-        kwinrc = decman.ConfExp(
-            ref_path=config_path("kwinrc"),
-            target_path=config_path("kwinrc"),
-            user=_user_,
-            group=_user_,
-        )
+        kwinrc = user.create_confexp(ref_path=os.path.join(user.config_path, "kwinrc"))
         kwinrc["Wayland"] = {  # Pinning the input method
             "InputMethod[$e]": "/usr/share/applications/fcitx5-wayland-launcher.desktop"
         }
         return {
-            **_make_config_direct("kxkbrc"),
+            **user.filemgr_config.create_decman_list(
+                ["kxkbrc", "fcitx5/profile", "fcitx5/config"]
+            ),
             **kwinrc.to_decman(),
-            **_make_config_direct("fcitx5/profile"),  # Pins ordering of input methods
-            **_make_config_direct("fcitx5/config"),  # Pinning hot key items
         }
 
 
@@ -79,25 +72,20 @@ class Themes(decman.Module):
 
     def files(self):
         """Theming that are likely not chancing for a long time"""
-
-        kcminputrc = decman.ConfExp(
-            ref_path=config_path("kcminputrc"),
-            target_path=config_path("kcminputrc"),
-            user=_user_,
-            group=_user_,
+        kcminputrc = user.create_confexp(
+            ref_path=os.path.join(user.config_path, "kcminputrc")
         )
         kcminputrc["Keyboard"] = {"NumLock": "0"}
         kcminputrc["Mouse"] = {"cursorSize": "24", "cursorTheme": "Adwaita"}
 
         return {
-            **_make_config_direct("krunnerrc"),
-            **_make_config_direct("ktimezonedrc"),
-            **_make_config_direct("plasmarc"),
+            **user.filemgr_config.create_decman_list(
+                ["krunnerrc", "ktimezonedrc", "plasmarc", "yakuakerc"]
+            ),
+            **user.filemgr_share.create_decman_list(
+                ["konsole/pinned.profile", "konsole/Breeze.colorscheme"]
+            ),
             **kcminputrc.to_decman(),
-            # Pinning a yakuake styling
-            **_make_config_direct("yakuakerc"),
-            **_make_share_direct("konsole/pinned.profile"),
-            **_make_share_direct("konsole/Breeze.colorscheme"),
         }
 
 
@@ -111,12 +99,8 @@ class Applications(decman.Module):
         super().__init__(name="plasma-application", enabled=True, version="1")
 
     def files(self):
-        ff_ppath = os.path.join(
-            decman.home_path(_user_), ".mozilla/firefox/profiles.ini"
-        )
-        firefox_profile = decman.ConfExp(
-            ref_path=ff_ppath, target_path=ff_ppath, user=_user_, group=_user_
-        )
+        ff_ppath = os.path.join(user.home_path, ".mozilla/firefox/profiles.ini")
+        firefox_profile = user.create_confexp(ref_path=ff_ppath)
         firefox_profile["Profile0"] = {
             "Default": "1",
             "IsRelative": "1",
@@ -132,8 +116,12 @@ class Applications(decman.Module):
 
         return {
             **firefox_profile.to_decman(),
-            **_make_share_direct("applications/firefox.work.desktop"),
-            **_make_share_direct("applications/firefox.default.desktop"),
+            **user.filemgr_share.create_decman_list(
+                [
+                    "applications/firefox.work.desktop",
+                    "applications/firefox.default.desktop",
+                ]
+            ),
         }
 
 
@@ -146,9 +134,8 @@ class ShortCuts(decman.Module):
         super().__init__(name="plasma-shortcuts", enabled=True, version="1")
 
     def files(self):
-        shortcutsrc = decman.ConfExp(
-            ref_path=config_path("kglobalshortcutsrc"),
-            target_path=config_path("kglobalshortcutsrc"),
+        shortcutsrc = user.create_confexp(
+            ref_path=os.path.join(user.config_path, "kglobalshortcutsrc")
         )
         # Odd notation for getting the various entries to work?
         shortcutsrc["services][com.mitchellh.ghostty.desktop"] = {"_launch": "Meta+T"}
