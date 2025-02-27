@@ -6,3 +6,4 @@
 ./zsh/zshrc  $HOME/.zshrc
 ./nvim       $HOME/.config/nvim
 ./tmux       $HOME/.config/tmux
+../bin/      $HOME/.config/dot-bin

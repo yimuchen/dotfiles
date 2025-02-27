@@ -19,7 +19,10 @@ function img-browse() {
     fzf --preview 'fzf_img_preview {}' --preview-window=right,65%
 }
 
-# Additional utility function
+# Additional utility for python develpment
+# Required for conda autocomplete
+export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
+
 function get_jupyter_url() {
   # Getting the url of the of the jupyter server session that is running in
   # this directory

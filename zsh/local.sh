@@ -7,8 +7,8 @@ alias -- reboot='systemctl reboot'
 NIX_ENVPYTHON_DIR=$(dirname $(dirname $(realpath $(which python))))
 ENVPYTHON_VERSION=$(python --version | awk '{print $2}' | cut -f1,2 -d'.')
 fpath=(${NIX_ENVPYTHON_DIR}/lib/python${ENVPYTHON_VERSION}/site-packages/argcomplete/bash_completion.d "$fpath[@]")
-eval "$(cd $HOME/.config/home-manager/bin/local/ && register-python-argcomplete pdftopng.py -s zsh)"
-eval "$(cd $HOME/.config/home-manager/bin/local/ && register-python-argcomplete bw_run.py -s zsh)"
+eval "$(cd $HOME/.config/dot-bin/local/ && register-python-argcomplete pdftopng.py -s zsh)"
+eval "$(cd $HOME/.config/dot-bin/local/ && register-python-argcomplete bw_run.py -s zsh)"
 
 function force_ntp_update() {
   # Function to force system clock to be updated using CURL command. This can

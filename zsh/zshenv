@@ -18,8 +18,7 @@ if [[ -z "${DOMAIN_NAME}" ]]; then
    fi
 fi
 
-export PATH="$PATH:$HOME/.config/home-manager/bin/common/"
-export DEFAULT_DEVSHELL_STORE="${HOME}/.config/home-manager/nix-config/devshells"
+export PATH="$PATH:$HOME/.config/dot-bin/common/"
 export EDITOR="nvim"
 export MAMBA_ROOT_PREFIX="$HOME/.mamba"
 export MACHINE_TYPE_SIMPLE=""
@@ -27,7 +26,7 @@ export MACHINE_TYPE_DETAIL=""
 
 # Local configurations for personal machines
 if [[ "$HOST" == "ensc"* ]]; then
-  export PATH="$PATH:$HOME/.config/home-manager/bin/local/"
+  export PATH="$PATH:$HOME/.config/dot-bin/local/"
   export KRB5CCNAME="DIR:${HOME}/.temp.persist"
   export MACHINE_TYPE_SIMPLE="local"
 # Common configurations for remote machines
@@ -38,9 +37,9 @@ else
     export SSL_CERT_FILE="$HOME/.nix-profile/etc/ssl/certs/ca-bundle.crt"
   fi
   if [[ -d "/cvmfs/cms.cern.ch" ]]; then
-    export PATH="$PATH:$HOME/.config/home-manager/bin/remote/cmssw/"
+    export PATH="$PATH:$HOME/.config/dot-bin/remote/cmssw/"
   fi
-  export PATH="$PATH:$HOME/.config/home-manager/bin/remote/"
+  export PATH="$PATH:$HOME/.config/dot-bin/remote/"
   export MACHINE_TYPE_SIMPLE="remote"
 
   if [[ -z $LANG ]]; then
