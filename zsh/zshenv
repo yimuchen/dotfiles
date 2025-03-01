@@ -23,6 +23,7 @@ export EDITOR="nvim"
 export MAMBA_ROOT_PREFIX="$HOME/.mamba"
 export MACHINE_TYPE_SIMPLE=""
 export MACHINE_TYPE_DETAIL=""
+export _TMUX_SHELL=$(realpath $(which zsh))
 
 # Local configurations for personal machines
 if [[ "$HOST" == "ensc"* ]]; then
@@ -44,6 +45,10 @@ else
 
   if [[ -z $LANG ]]; then
     export LANG="en_US.UTF-8"
+  fi
+
+  if [[ -d $HOME/.miniforge3/etc ]] ; then
+    source $HOME/.miniforge3/etc/profile.d/conda.sh
   fi
 fi
 
