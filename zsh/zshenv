@@ -30,8 +30,9 @@ if [[ "$HOST" == "ensc"* ]]; then
   export PATH="$PATH:$HOME/.config/dot-bin/local/"
   export KRB5CCNAME="DIR:${HOME}/.temp.persist"
   export MACHINE_TYPE_SIMPLE="local"
-# Common configurations for remote machines
   export MACHINE_TYPE_DETAIL="personal"
+
+# Common configurations for remote machines
 else
   if [[ -d $HOME/.nix-profile/bin ]] ; then
     export PATH=$HOME/.nix-profile/bin/:$PATH
