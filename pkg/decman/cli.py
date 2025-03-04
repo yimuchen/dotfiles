@@ -1,6 +1,9 @@
+import glob
 import os
+import subprocess
 
 import decman
+import decman_utils
 
 from ._common import user
 
@@ -36,12 +39,23 @@ class ScriptsDep(decman.Module):
     def pacman_packages(self):
         deps = ["python"]  # Main language used for helper scripts
         # Additional python helper libraries
-        deps += ["python-argcomplete", "python-tqdm", "python-wand", "python-requests"]
+        deps += [
+            "python-argcomplete",
+            "python-tqdm",
+            "python-wand",
+            "python-requests",
+            "python-numpydoc",
+        ]
         # Image manipulations stuff
         deps += ["kitty", "ghostscript", "imagemagick"]
         # For password interactions in cli
         deps += ["bitwarden-cli"]
         return deps
+
+    def after_update(self):
+        decman_utils.common.install_python_symlink(
+            user.home_path + "/projects/Personal/python-modules/scriptize"
+        )
 
 
 class CliTools(decman.Module):

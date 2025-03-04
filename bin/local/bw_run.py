@@ -3,11 +3,13 @@ import argparse
 import getpass
 import json
 import logging
+import os
 import subprocess
 import sys
 from typing import Any, Callable, Dict, List, Optional
 
 import argcomplete
+import scriptize
 
 """
 General functions for selecting credentials from bw
@@ -71,9 +73,14 @@ def get_protocols(item: Dict[str, Any], protocol: str):
     ]
 
 
-"""
-Functions for obtaining a kerberos ticket
-"""
+scriptizer = scriptize.Scriptizer(
+    prog=os.path.basename(__file__),
+    description="""
+        Using the credentials stored in a bitwarden vault to perform predefined
+        operations. This script assumes that you have access to the `bw`
+        command, and that you have already logged in to a vault of interest
+        with the `bw login` method. """,
+)
 
 
 def args_kinit(parsers: argparse.ArgumentParser):
@@ -81,8 +88,11 @@ def args_kinit(parsers: argparse.ArgumentParser):
     return kinit_parser
 
 
-def run_kinit():
+@scriptizer.register_function
+def kinit():
     """
+    Creating the kerberos ticket
+
     Generating the kerberos ticket using the credentials stored in BitWarden
     vaults. The credentials that will be used should contain the following
     information in the format of a URI:
@@ -124,20 +134,11 @@ def run_kinit():
             )
 
 
-"""
-Functions for activating the certificate on ssh hosts
-"""
-
-
-def args_voms(parsers: argparse.ArgumentParser):
-    voms_parser = parsers.add_parser(
-        "voms", help="Activate VOMS certificates on ssh hosts"
-    )
-    return voms_parser
-
-
+@scriptizer.register_function
 def run_voms():
     """
+    Activating VOMS certificates on ssh hosts
+
     The item containing the VOMS certificate credential should be listed with
     URI entries in the format of "cert_voms://SSH_SERVER", where the
     "SSH_SERVER" is the ssh host that should be handled. Theses ssh hosts
@@ -148,7 +149,7 @@ def run_voms():
         for ssh_host in get_protocols(item, "cert_voms"):
             try:
                 _log.info(
-                    f"Running voms-proxy-init using certificate [{item["name"]}] at ssh host [{ssh_host}]"
+                    f"Running voms-proxy-init using certificate [{item['name']}] at ssh host [{ssh_host}]"
                 )
                 ssh_cmd = ["ssh", ssh_host]
                 voms_cmd = [
@@ -175,36 +176,7 @@ def run_voms():
                 _log.error("Error when running voms", err)
 
 
-"""
-The overall control flow
-"""
-
-
 if __name__ == "__main__":
     logging.basicConfig()
     _log.setLevel(logging.DEBUG)
-    parser = argparse.ArgumentParser(
-        "bw_run",
-        """
-        Using the credentials stored in a bitwarden vault to perform predefined
-        operations. This script assumes that you have access to the `bw`
-        command, and that you have already logged in to a vault of interest
-        with the `bw login` method.
-        """,
-    )
-    subparsers = parser.add_subparsers(dest="subcmd")
-    args_kinit(subparsers)
-    args_voms(subparsers)
-    argcomplete.autocomplete(parser)
-
-    # Running the initial commit
-    args = parser.parse_args()
-    if not args.subcmd:
-        parser.print_help()
-        raise ValueError("Command is required")
-
-    # Parsing the various sub commands
-    if args.subcmd == "kinit":
-        run_kinit()
-    elif args.subcmd == "voms":
-        run_voms()
+    scriptizer.run_interactive()
