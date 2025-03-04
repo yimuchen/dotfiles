@@ -72,6 +72,10 @@ vim.diagnostic.config { update_in_insert = false }
 --
 if vim.fn.isdirectory(vim.env.HOME .. '/.nix-profile/bin') ~= 0 then
   vim.opt.shell = vim.env.HOME .. '/.nix-profile/bin/zsh'
-else
+elseif vim.fn.isdirectory('/etc/profiles/per-user/' .. vim.env.USER) ~= 0 then
   vim.opt.shell = '/etc/profiles/per-user/' .. vim.env.USER .. '/bin/zsh'
+elseif vim.fn.isdirectory(vim.env.HOME .. '/.portage') ~= 0 then
+  vim.opt.shell = vim.env.HOME .. '/.portage/bin/zsh'
+else
+  vim.opt.shell = '/bin/zsh'
 end

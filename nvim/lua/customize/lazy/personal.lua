@@ -24,6 +24,7 @@ add_local_plugin('modexec', {
       detect = function()
         return {
           cmssw = modexec.env.cmssw(),
+          conda = modexec.env.conda(),
           apptainer = modexec.env.apptainer(),
         }
       end,

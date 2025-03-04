@@ -7,6 +7,15 @@ if modexec.current_config.cmssw ~= nil then
   modexec.mod.lsp_setup('ruff', { cmd_prefix = cmssw.cmd_prefix })
 
   -- Python formatting not setup in for CMSSW for now
+elseif modexec.current_config.conda ~= nil then
+  local conda_mod = modexec.current_config.conda
+  modexec.mod.lsp_setup('pylsp', conda_mod)
+  modexec.mod.lsp_setup('ruff', conda_mod)
+
+  require('conform').formatters_by_ft['python'] = {
+    modexec.mod.conform_formatter('ruff_format', conda_mod),
+    modexec.mod.conform_formatter('ruff_organize_imports', conda_mod),
+  }
 elseif modexec.current_config.apptainer ~= nil then
   local apptainer = modexec.current_config.apptainer
   local lsp_config = {
@@ -23,7 +32,7 @@ elseif modexec.current_config.apptainer ~= nil then
       return apptainer.cmd_base
     end,
   }
-  require('conform').formatters_by_ft.python = {
+  require('conform').formatters_by_ft['python'] = {
     modexec.mod.conform_formatter('ruff_format', conform_config),
     modexec.mod.conform_formatter('ruff_organize_imports', conform_config),
   }
@@ -37,7 +46,7 @@ else
     -- Using ruff-lsp as a the primary language server for linting. This should
     -- be made available in your language configurations.
     require('lspconfig').ruff.setup {}
-    require('conform').formatters_by_ft.python = { 'ruff_format', 'ruff_organize_imports' }
+    require('conform').formatters_by_ft['python'] = { 'ruff_format', 'ruff_organize_imports' }
   end
 end
 -- Formatting methods

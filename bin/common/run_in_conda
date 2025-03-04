@@ -1,0 +1,28 @@
+#!/bin/bash
+
+env_name=${1}
+command=${@:2}
+
+## Ensuring that conda is activated
+if [[ -d /opt/miniconda3/etc/profile.d/ ]]; then
+  source /opt/miniconda3/etc/profile.d/conda.sh
+elif [[ -d $HOME/.miniforge3/etc ]]; then
+  source $HOME/.miniforge3/etc/profile.d/conda.sh
+fi
+
+## If listed environment is not found then
+has_env=$(conda env list | grep $env_name)
+if [[ $has_env == "" ]] ; then
+  echo "Requested environment [${env_name}] does not exist!"
+  exit 1
+fi
+
+if [[ $(basename $CONDA_PREFIX) != $env_name ]] ; then
+  conda activate $1
+fi
+
+if [[ command == "" ]]; then
+  python # Start interactiv python session
+else
+  $command
+fi

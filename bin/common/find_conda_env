@@ -1,0 +1,26 @@
+#!/bin/bash
+
+environment_file=""
+dir=$(pwd)
+while [[ $environment_file == "" ]]; do
+  for allow_file in "environment.yaml" "environment.yml" "env.yaml" "env.yml"; do
+    if [[ -r $dir/$allow_file ]]; then
+      environment_file=$dir/$allow_file
+      break
+    fi
+  done
+  dir=$(dirname $dir)
+  if [[ $dir == "/" ]]; then
+    break
+  fi
+done
+
+if [[ $environment_file == "" ]]; then
+  exit 1
+fi
+
+env_name=$(yq '.name' ${environment_file})
+if [[ $env_name == "null" ]]; then
+  exit 1
+fi
+echo $env_name
