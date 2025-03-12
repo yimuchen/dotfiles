@@ -179,4 +179,5 @@ def run_voms():
 if __name__ == "__main__":
     logging.basicConfig()
     _log.setLevel(logging.DEBUG)
+    argcomplete.autocomplete(scriptizer.main_parser)
     scriptizer.run_interactive()
