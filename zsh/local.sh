@@ -25,9 +25,7 @@ function firmware_update() {
 }
 
 function system_update() {
-  cd /home/ensc/configurations/systems 
-  sudo decman --source /home/ensc/configurations/systems/decman-source.py
-  cd -
+  sudo decman --source $HOME/configurations/systems/decman-source.py
 }
 
 EXEC_ROOTBROWSE="${NIX_EXEC_ROOTBROWSE:=rootbrowse}"
