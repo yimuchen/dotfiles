@@ -88,7 +88,10 @@ class Gaming(decman.Module):
         super().__init__(name="gui-game", enabled=True, version="1")
 
     def pacman_packages(self):
-        return ["steam", "lutris"]
+        deps = ["steam", "lutris"]
+        # Optional dependencies for lutris
+        deps += ["wine", "python-protobuf"]
+        return deps
 
     def aur_packages(self):
         return ["r2modman-bin", "proton-ge-custom-bin"]
