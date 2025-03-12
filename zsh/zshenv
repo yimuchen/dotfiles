@@ -24,13 +24,15 @@ export MAMBA_ROOT_PREFIX="$HOME/.mamba"
 export MACHINE_TYPE_SIMPLE=""
 export MACHINE_TYPE_DETAIL=""
 export _TMUX_SHELL=$(realpath $(which zsh))
+export KRB5CCNAME="DIR:${HOME}/.temp.persist"
 
 # Local configurations for personal machines
 if [[ "$HOST" == "ensc"* ]]; then
   export PATH="$PATH:$HOME/.config/dot-bin/local/"
-  export KRB5CCNAME="DIR:${HOME}/.temp.persist"
   export MACHINE_TYPE_SIMPLE="local"
   export MACHINE_TYPE_DETAIL="personal"
+  # Do NOT include a server that may not exist. A lot of programs don't like this...
+  # export CUPS_SERVER=192.168.13.2
 
 # Common configurations for remote machines
 else
