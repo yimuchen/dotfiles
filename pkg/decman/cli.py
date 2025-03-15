@@ -1,6 +1,4 @@
-import glob
 import os
-import subprocess
 
 import decman
 import decman_utils
@@ -19,6 +17,7 @@ class Neovim(decman.Module):
         deps += ["lua-language-server", "stylua"]
         deps += ["shfmt", "bash-language-server"]
         deps += ["mdformat"]
+        deps += ["harper"]
         # For fuzzy finder
         deps += ["ripgrep"]
         return deps
