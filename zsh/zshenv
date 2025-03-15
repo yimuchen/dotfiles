@@ -26,9 +26,16 @@ export MACHINE_TYPE_DETAIL=""
 export _TMUX_SHELL=$(realpath $(which zsh))
 export KRB5CCNAME="DIR:${HOME}/.temp.persist"
 
+# Helper function to avoid excessively appending paths
+function append_path(){
+  if [[ $PATH != *":$1"* ]]; then
+    export PATH="$PATH:$1"
+  fi
+}
+
 # Local configurations for personal machines
 if [[ "$HOST" == "ensc"* ]]; then
-  export PATH="$PATH:$HOME/.config/dot-bin/local/"
+  append_path "$HOME/.config/dot-bin/local/"
   export MACHINE_TYPE_SIMPLE="local"
   export MACHINE_TYPE_DETAIL="personal"
   # Do NOT include a server that may not exist. A lot of programs don't like this...
@@ -37,13 +44,13 @@ if [[ "$HOST" == "ensc"* ]]; then
 # Common configurations for remote machines
 else
   if [[ -d $HOME/.nix-profile/bin ]] ; then
-    export PATH=$HOME/.nix-profile/bin/:$PATH
+    append_path "$HOME/.nix-profile/bin/"
     export SSL_CERT_FILE="$HOME/.nix-profile/etc/ssl/certs/ca-bundle.crt"
   fi
   if [[ -d "/cvmfs/cms.cern.ch" ]]; then
-    export PATH="$PATH:$HOME/.config/dot-bin/remote/cmssw/"
+    append_path "$HOME/.config/dot-bin/remote/cmssw/"
   fi
-  export PATH="$PATH:$HOME/.config/dot-bin/remote/"
+  append_path "$HOME/.config/dot-bin/remote/"
   export MACHINE_TYPE_SIMPLE="remote"
 
   if [[ -z $LANG ]]; then
@@ -64,6 +71,8 @@ elif [[ "$HOST" == "cmslpc"* ]]; then
   export CMSSW_APPTAINER_BINDPATH="/uscms,/uscmst1b_scratch,/cvmfs,/cvmfs/grid.cern.ch/etc/grid-security:/etc/grid-security,/uscms_data"
   export LARGE_STORAGE_DIR="/uscms_data/d3/yimuchen"
   export MACHINE_TYPE_DETAIL="cmslpc"
+  # Fixing condor not found in prefix environment
+  append_path "/usr/local/bin"
 elif [[ "$HOST" == "lxplus"* && "$DOMAIN_NAME" == "cern.ch" ]]; then
   export LARGE_STORAGE_DIR="/afs/cern.ch/work/y/yichen"
   export MACHINE_TYPE_DETAIL="lxplus"
@@ -72,5 +81,3 @@ elif [[ "$DOMAIN_NAME" == "etp.kit.edu" ]]; then # KIT RELATED MACHINES
   export LARGE_STORAGE_DIR="/work/ychen";
   export MACHINE_TYPE_DETAIL="kit"
 fi # Don't do anything for unrecognized machines
-
-

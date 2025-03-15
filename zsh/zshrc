@@ -77,6 +77,9 @@ source "$HOME/.config/zsh/p10k.zsh"
 # Additional command-line tools that uses common gnu-coreutils tools
 source "$HOME/.config/zsh/common_utils.sh"
 
+# Resourcing the zshenv environment (fixing path loading in gentoo prefix)
+source "$HOME/.zshenv"
+
 # Additional theme based on host name
 if [[ "$HOST" == "ensc"* ]]; then                # Personal machine
   typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=7   # White
