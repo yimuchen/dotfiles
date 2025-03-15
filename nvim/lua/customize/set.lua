@@ -60,7 +60,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- Setting the spelling checking for single words
 vim.opt.spelllang = 'en_us'
-vim.opt.spell = true
+vim.opt.spell = false -- Disable by default, expecting that this is handled by LSP
 vim.opt.spelloptions = 'camel'
 
 -- Stop generating diagnostic updates when inserting (ltex-ls)

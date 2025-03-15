@@ -1,3 +1,8 @@
+-- Common petting stuff
+if vim.fn.executable 'harper-ls' then
+  require('lspconfig').harper_ls.setup {}
+end
+
 -- Formatting methods
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'markdown' },
