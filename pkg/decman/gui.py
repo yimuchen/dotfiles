@@ -13,11 +13,16 @@ class Core(decman.Module):
 
     def pacman_packages(self):
         # For online interactions
-        deps = ["firefox", "bitwarden"]
+        deps = ["bitwarden"]
         # For personal information management
         deps += ["thunderbird", "korganizer"]
         # Terminal of preference
         deps += ["ghostty", "yakuake"]
+        return deps
+
+    def aur_packages(self):
+        # My browser of choice
+        deps = ["zen-browser-bin"]
         return deps
 
 
