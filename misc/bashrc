@@ -8,12 +8,15 @@
 
 # For nix settings
 export NP_RUNTIME=bwrap
-export NP_LOCATION=/uscms_data/d3/yimuchen/nix-setup/ 
+export NP_LOCATION=/uscms_data/d3/yimuchen/nix-setup/
 export PATH=/uscms_data/d3/yimuchen/nix-setup:$PATH
 alias nix-zsh-shell="nix-portable nix shell --offline 'nixpkgs#nix' 'nixpkgs#zsh' 'nixpkgs#tmux' --command zsh -l"
+
+# For gentoo/portage-prefix setup
+export PORTAGE_PATH=$HOME/.portage
+alias portage-shell="SHELL=/bin/zsh $PORTAGE_PATH/startprefix"
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
   . /etc/bashrc
 fi
-
