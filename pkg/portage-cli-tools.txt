@@ -12,4 +12,4 @@ imagemagick
 kitty
 sys-apps/ripgrep
 neovim
-
+dev-util/sh
