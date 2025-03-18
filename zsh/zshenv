@@ -51,6 +51,7 @@ else
     append_path "$HOME/.config/dot-bin/remote/cmssw/"
   fi
   append_path "$HOME/.config/dot-bin/remote/"
+  append_path "$HOME/.cargo/bin/"
   export MACHINE_TYPE_SIMPLE="remote"
 
   if [[ -z $LANG ]]; then
