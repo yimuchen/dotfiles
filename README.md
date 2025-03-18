@@ -10,8 +10,9 @@ will be soft-linked to the required repositories.
 
 The dependencies for running the various items here can be handled either by:
 
-- [`decman`][decman]: The declarative wrapper for [Archlinux]'s [pacman]. The
-  modules for using that can be found in the [`decman`](./decman/) directory.
+- [`decman`][decman]: The declarative wrapper for [ArchLinux][archlinux]
+  [`pacman`][pacman]. The modules for using that can be found in the
+  [`decman`](./pkg/decman/) directory.
 - [`home-manager`][homemanager]: The declarative system used by
   [Nix/NixOS][nix], simply copy this directory to the standard
   `~/.config/home-manager/` directory, and run `home-manager switch` to get the
@@ -22,7 +23,7 @@ The dependencies for running the various items here can be handled either by:
   the `emerge` command to save this.
 
 After the main package installs, you will still need to add the various
-configuration files as a symbolic links into you user directory. This
+configuration files as a symbolic links into your user directory. This
 repository provides the `symlinkmgr` tool in the [`./bin/common/`](./bin)
 directory, and you can run this like:
 
@@ -92,7 +93,7 @@ create a separate copy to ensure the object styles are properly frozen.
 The packages here expected most of the common [`texlive`][texlive] packages for
 math writing are installed in the system (which should be the case after
 installing the more common `texlive-*` packages from the official Arch
-repository) Some external dependencies might be needed for the font
+repository). Some external dependencies might be needed for the font
 configuration to function. For additional details, see the
 [`texmf/tex/latex/README`](texmf/tex/latex).
 
