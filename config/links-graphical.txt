@@ -1,3 +1,4 @@
 # Links for graphical program configurations
 #
-./ghostty/ $HOME/.config/ghostty
+./ghostty/                        $HOME/.config/ghostty
+./zen/zen-keyboard-shortcuts.json $HOME/.zen/enscProfile/zen-keyboard-shortcuts.json

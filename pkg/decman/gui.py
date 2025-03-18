@@ -1,6 +1,8 @@
+import hashlib
 import os
 
 import decman
+import decman_utils
 
 from ._common import user
 
@@ -25,20 +27,48 @@ class Core(decman.Module):
         deps = ["zen-browser-bin"]
         return deps
 
+    def files(self):
+        """
+        The zen browser profile requires that creation of the a profiles that
+        is based on the user name and a pseudo random string associated with
+        the install. This will be dynamically generated, but you will have to run the .
+        """
+        zen_install_path = os.path.join(user.home_path, ".zen/installs.ini")
+        zen_profile_path = os.path.join(user.home_path, ".zen/profiles.ini")
+        ## How is this generate???
+        user_hash = "15B76BAA26BA15E7"
+        user_profile = f"{user.username}Profile"
+        zen_install = decman_utils.ConfExp(
+            target_path=zen_install_path, user=user.username
+        )
+        zen_install[user_hash] = {"Default": f"{user.username}Profile", "Locked": "1"}
+        zen_profile = decman_utils.ConfExp(
+            target_path=zen_profile_path, user=user.username
+        )
+        zen_profile["Profile0"] = {
+            "Name": user_profile,
+            "IsRelative": "1",
+            "Path": user_profile,
+            "Default": "1",
+        }
+        zen_profile["General"] = {"StartWithLastProfile": "1", "Version": "2"}
+        zen_profile[f"Install{user_hash}"] = {"Default": user_profile, "Locked": "1"}
+        return {**zen_install.to_decman(), **zen_profile.to_decman()}
+
 
 class Office(decman.Module):
     def __init__(self):
         super().__init__(name="gui-office", enabled=True, version="1")
 
     def pacman_packages(self):
-        # Libreoffice and plugins
+        # LibreOffice and plugins
         deps = ["libreoffice-fresh", "libreoffice-extension-texmaths"]
         # PDF browsers
         deps += ["okular", "evince"]
         return deps
 
     def aur_packages(self):
-        # Additional libreoffice plugins in the AUR
+        # Additional LibreOffice plugins in the AUR
         deps = ["libreoffice-extension-languagetool"]
         # Alternate office suite
         deps += ["wps-office-bin"]
