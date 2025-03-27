@@ -20,7 +20,7 @@ return { -- Fuzzy finder telescope
           'site-packages/*',
           -- Commonly used data/image/non-text files that will likely be dumped
           -- in the work spaces similar to the code files
-          '**/*.root',
+          -- '**/*.root', # This is not needed and causes things to break??
           '**/*.pdf',
           '**/*.png',
         },
