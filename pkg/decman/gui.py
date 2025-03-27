@@ -25,6 +25,8 @@ class Core(decman.Module):
     def aur_packages(self):
         # My browser of choice
         deps = ["zen-browser-bin"]
+        # For screen recording
+        deps += ["showmethekey"]
         return deps
 
     def files(self):
