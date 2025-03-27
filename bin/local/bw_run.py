@@ -83,11 +83,6 @@ scriptizer = scriptize.Scriptizer(
 )
 
 
-def args_kinit(parsers: argparse.ArgumentParser):
-    kinit_parser = parsers.add_parser("kinit", help="Create kerberos ticket")
-    return kinit_parser
-
-
 @scriptizer.register_function
 def kinit():
     """
@@ -135,7 +130,7 @@ def kinit():
 
 
 @scriptizer.register_function
-def run_voms():
+def voms():
     """
     Activating VOMS certificates on ssh hosts
 
@@ -159,7 +154,7 @@ def run_voms():
                     "--valid",
                     "192:00",  # Valid time (8 days by default)
                     "--out",
-                    # proxy file in single quotes for env expansion
+                    # proxy file in single quotes for env expansion to be handled by the server-side
                     "'${HOME}/x509up_u${UID}'",
                 ]
                 cmd = " ".join(ssh_cmd + voms_cmd)
