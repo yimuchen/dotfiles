@@ -76,7 +76,7 @@ class Themes(decman.Module):
             ref_path=os.path.join(user.config_path, "kcminputrc")
         )
         kcminputrc["Keyboard"] = {"NumLock": "0"}
-        kcminputrc["Mouse"] = {"cursorSize": "24", "cursorTheme": "Adwaita"}
+        kcminputrc["Mouse"] = {"cursorSize": "24", "cursorTheme": "Breeze_Light"}
 
         return {
             **user.filemgr_config.create_decman_list(
@@ -86,42 +86,6 @@ class Themes(decman.Module):
                 ["konsole/pinned.profile", "konsole/Breeze.colorscheme"]
             ),
             **kcminputrc.to_decman(),
-        }
-
-
-class Applications(decman.Module):
-    """
-    Methods for generating application files to launch programs with custom
-    configurations.
-    """
-
-    def __init__(self):
-        super().__init__(name="plasma-application", enabled=True, version="1")
-
-    def files(self):
-        ff_ppath = os.path.join(user.home_path, ".mozilla/firefox/profiles.ini")
-        firefox_profile = user.create_confexp(ref_path=ff_ppath)
-        firefox_profile["Profile0"] = {
-            "Default": "1",
-            "IsRelative": "1",
-            "Name": "casual",
-            "Path": "casual",
-        }
-        firefox_profile["Profile2"] = {
-            "Default": "0",
-            "IsRelative": "1",
-            "Name": "work",
-            "Path": "work",
-        }
-
-        return {
-            **firefox_profile.to_decman(),
-            **user.filemgr_share.create_decman_list(
-                [
-                    "applications/firefox.work.desktop",
-                    "applications/firefox.default.desktop",
-                ]
-            ),
         }
 
 
