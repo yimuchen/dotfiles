@@ -28,7 +28,7 @@ export KRB5CCNAME="DIR:${HOME}/.temp.persist"
 
 # Helper function to avoid excessively appending paths
 function append_path(){
-  if [[ $PATH != *":$1"* ]]; then
+  if [[ $PATH != *":$1:"* && $PATH != *":$1" ]]; then
     export PATH="$PATH:$1"
   fi
 }
