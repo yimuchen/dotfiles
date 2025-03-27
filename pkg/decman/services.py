@@ -1,3 +1,5 @@
+import socket
+
 import decman
 
 from ._common import user
@@ -32,3 +34,26 @@ class RcbListener(decman.Module):
 
     def systemd_user_units(self):
         return self.rcb_service.add_service()
+
+
+class LLMService(decman.Module):
+    def __init__(self):
+        super().__init__(name="llm_service", enabled=True, version="1")
+        self.ollama_service = user.create_service(service_name="ollama.service")
+        self.ollama_service["Install"] = {"WantedBy": "default.target"}
+        self.ollama_service["Service"] = {"ExecStart": "ollama serve"}
+        self.ollama_service["Unit"] = {"Description": "Starting the base ollama server"}
+
+    def pacman_packages(self):
+        deps = ["ollama-docs"]
+        if socket.gethostname() == "enscAMDPC":
+            deps += ["ollama-cuda"]
+        else:
+            deps += ["ollama"]
+        return deps
+
+    def files(self):
+        return self.ollama_service.to_decman()
+
+    def systemd_user_units(self):
+        return self.ollama_service.add_service()
