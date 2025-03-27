@@ -24,7 +24,7 @@ class Neovim(decman.Module):
 
     def aur_packages(self):
         # This package is stuck in the AUR for some reason?
-        return ["ltex-ls-bin"]
+        return ["python-lsp-ruff"]
 
 
 class ScriptsDep(decman.Module):
