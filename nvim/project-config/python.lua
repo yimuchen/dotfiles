@@ -57,11 +57,4 @@ else
   if vim.fn.executable 'pylsp' ~= 0 then
     require('lspconfig').pylsp.setup { settings = pylsp_settings }
   end
-
-  if vim.fn.executable 'ruff' ~= 0 then
-    -- Using ruff-lsp as a the primary language server for linting. This should
-    -- be made available in your language configurations.
-    require('conform').formatters_by_ft['python'] = { 'ruff_format', 'ruff_organize_imports' }
-  end
 end
--- Formatting methods

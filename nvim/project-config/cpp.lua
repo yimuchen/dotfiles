@@ -12,14 +12,7 @@ if modexec.current_config.cmssw ~= nil then
       return cmssw_path
     end,
   })
-  require('conform').formatters_by_ft.cpp = {
-    modexec.mod.conform_formatter('clang-format', {
-      cmd_prefix = {'_cmsexec'},
-      cmd_postfix = { '--style=file' },
-    }),
-  }
 elseif vim.fn.executable 'clangd' ~= 0 then
   -- Vanilla setup of clangd exists
   require('lspconfig').clangd.setup {}
-  require('conform').formatters_by_ft.cpp = { 'clang-format' }
 end
