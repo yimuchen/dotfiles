@@ -24,7 +24,11 @@ return {
 
       -- Setting up functions for formatting
       local format_buffer = function()
-        conform.format { async = true, lsp_fallback = false }
+        -- In most cases, the LSP should be configured to be the formatter
+        -- (similar to calling vim.lsp.buf.format())
+        conform.format { async = true, lsp_fallback = true }
+        -- Always try to trim whitespace
+        conform.format { formatters = { 'trim_whitespace' } }
       end
       local format_whitespace = function()
         conform.format { formatters = { 'trim_whitespace' } }
