@@ -98,12 +98,12 @@ return { -- LSP configurations and language related plugins
       library = {
         -- Library items can be absolute paths
         -- "~/projects/my-awesome-lib",
-        -- When relative, you can also provide a path to the library in the plugin dir
+        -- When relative, you can also provide a path to the library in the plugin directory
         'luvit-meta/library', -- see below
       },
     },
     dependencies = {
-      { 'Bilal2453/luvit-meta', lazy = true }, -- optional `vim.uv` typings
+      { 'Bilal2453/luvit-meta', lazy = true }, -- optional `vim.uv` typing
     },
   },
   {
@@ -118,11 +118,11 @@ return { -- LSP configurations and language related plugins
     dependencies = { 'jmbuhr/otter.nvim' },
     config = function()
       require('jupytext').setup {
-        custom_language_formatting = { -- Setting notebook files to look like markdown
+        custom_language_formatting = { -- Setting notebook files to look like Markdown
           python = {
             extension = 'md',
             style = 'markdown',
-            force_ft = 'markdown', -- you can set whatever filetype you want here
+            force_ft = 'markdown',
           },
         },
       }
