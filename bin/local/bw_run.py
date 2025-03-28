@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import argparse
 import getpass
 import json
 import logging
@@ -11,11 +10,19 @@ from typing import Any, Callable, Dict, List, Optional
 import argcomplete
 import scriptize
 
-"""
-General functions for selecting credentials from bw
-"""
-_log = logging.getLogger("bw_run")
+scriptizer = scriptize.Scriptizer(
+    prog=os.path.basename(__file__),
+    description="""
+        Using the credentials stored in a bitwarden vault to perform predefined
+        operations. This script assumes that you have access to the `bw`
+        command, and that you have already logged in to a vault of interest
+        with the `bw login` method. """,
+)
 
+"""
+General functions for selecting credentials from bw CLI method. These will not
+be exposed for user interaction
+"""
 
 def obtain_bw_items(item_filter: Optional[Callable] = None) -> List[Dict]:
     """
@@ -34,7 +41,7 @@ def obtain_bw_items(item_filter: Optional[Callable] = None) -> List[Dict]:
     try:
         items_list = json.loads(stdout)
     except:
-        _log.error(
+        scriptizer.log.error(
             "Bitwarden did not return a valid response, make sure you provided the correct master password"
         )
         sys.exit(1)
@@ -73,14 +80,6 @@ def get_protocols(item: Dict[str, Any], protocol: str):
     ]
 
 
-scriptizer = scriptize.Scriptizer(
-    prog=os.path.basename(__file__),
-    description="""
-        Using the credentials stored in a bitwarden vault to perform predefined
-        operations. This script assumes that you have access to the `bw`
-        command, and that you have already logged in to a vault of interest
-        with the `bw login` method. """,
-)
 
 
 @scriptizer.register_function
@@ -111,7 +110,7 @@ def kinit():
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
-            _log.info(f"Created kerberos ticket for {username}@{server}")
+            scriptizer.log.info(f"Created kerberos ticket for {username}@{server}")
 
     for item in [x for x in kinit_items if protocol_filter("ssh_kerberos")(x)]:
         username = item["login"]["username"]
@@ -124,7 +123,7 @@ def kinit():
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
-            _log.info(
+            scriptizer.log.info(
                 f"Created kerberos ticket for {username}@{server} at ssh host {ssh}"
             )
 
@@ -143,7 +142,7 @@ def voms():
     for item in obtain_bw_items(protocol_filter(["cert_voms"])):
         for ssh_host in get_protocols(item, "cert_voms"):
             try:
-                _log.info(
+                scriptizer.log.info(
                     f"Running voms-proxy-init using certificate [{item['name']}] at ssh host [{ssh_host}]"
                 )
                 ssh_cmd = ["ssh", ssh_host]
@@ -168,11 +167,11 @@ def voms():
                 p.communicate(input=str.encode(item["login"]["password"] + "\n"))
                 p.wait()
             except Exception as err:
-                _log.error("Error when running voms", err)
+                scriptizer.log.error("Error when running voms", err)
 
 
 if __name__ == "__main__":
     logging.basicConfig()
-    _log.setLevel(logging.DEBUG)
+    scriptizer.log.setLevel(logging.DEBUG)
     argcomplete.autocomplete(scriptizer.main_parser)
     scriptizer.run_interactive()
