@@ -26,7 +26,7 @@ return {
       local format_buffer = function()
         -- In most cases, the LSP should be configured to be the formatter
         -- (similar to calling vim.lsp.buf.format())
-        conform.format { async = true, lsp_fallback = true }
+        conform.format { lsp_format = "first", timeout_ms = 3000 }
         -- Always try to trim whitespace
         conform.format { formatters = { 'trim_whitespace' } }
       end
@@ -47,14 +47,14 @@ return {
       local toggle_comment = call_mini 'gcc'
 
       wk.add {
-        { '<leader>f', group = 'format' },
-        { '<leader>fb', format_buffer, desc = '[F]ormat [B]uffer' },
-        { '<leader>fw', format_whitespace, desc = '[F]ormat [W]hitespace' },
-        { '<leader>fp', 'gwap', desc = '[F]ormat [P]aragraph' },
-        { '<leader>fm', format_multiline_str, desc = '[F]ormat [M]ultiline string' },
+        { '<leader>f',  group = 'format' },
+        { '<leader>fb', format_buffer,            desc = '[F]ormat [B]uffer' },
+        { '<leader>fw', format_whitespace,        desc = '[F]ormat [W]hitespace' },
+        { '<leader>fp', 'gwap',                   desc = '[F]ormat [P]aragraph' },
+        { '<leader>fm', format_multiline_str,     desc = '[F]ormat [M]ultiline string' },
         { '<leader>fc', format_multiline_comment, desc = '[F]ormat, [C]omment' },
         -- Toggling code on/off I will technically classify as formatting
-        { '<leader>/', toggle_comment, desc = 'Toggle comment', mode = 'nx' },
+        { '<leader>/',  toggle_comment,           desc = 'Toggle comment',             mode = 'nx' },
       }
 
       -- Running a custom formatter directly by name
