@@ -31,14 +31,15 @@ class Neovim(decman.Module):
         # Installing the tools for python (mainly mdformat variants)
         python_env = os.path.join(user.home_path, ".cli-python")
         if not os.path.isdir(python_env):
-            decman.sh(
-                ["uv", "venv", "--system-site-packages", python_env], user=user.username
+            decman.prg(
+                ["uv", "venv", "--system-site-packages", python_env],
+                user=user.username,
             )
 
         python_req = os.path.join(user.config_source_dir, "pkg/cli-python.txt")
-        decman.sh(
-            ["uv", "pip", "install", "--requirements", python_req],
-            # user=user.username,
+        decman.prg(
+            ["uv", "pip", "install", "--upgrade", "--no-cache", "-r", python_req],
+            user=user.username,
             env_overrides={"VIRTUAL_ENV": python_env},
         )
 

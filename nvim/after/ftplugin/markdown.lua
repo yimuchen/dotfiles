@@ -3,7 +3,7 @@ local conform = require("conform")
 conform.formatters['py_mdformat'] = {
   command = vim.env.HOME .. "/.cli-python/bin/mdformat",
   args = {
-    "--wrap=120",
+    "--wrap=" .. vim.opt.colorcolumn._value,
     "--end-of-line=keep",
     "-" },
 }
