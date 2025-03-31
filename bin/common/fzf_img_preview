@@ -3,8 +3,8 @@
 # method, or be used standalone for single image viewing. Including additional
 # wrapper to cast common image formats to be compatible with the kitty image
 # protocol.
-if [[ $# == 0 ]]; then
-  echo "Requires at least 1 argument for input"
+if [[ $# != 1 ]]; then
+  echo "Requires exactly 1 argument for input"
   exit 0
 fi
 
@@ -20,6 +20,7 @@ realpath_msg="Full path: [$(realpath $preview_file)] | Detected filetype: [$type
 
 EXEC_GS="${NIX_EXEC_GS:=gs}"
 EXEC_KITTEN="${NIX_EXEC_KITTEN:=kitten}"
+EXEC_MAGICK="${NIX_EXEC_MAGICK:=magick}"
 
 kitty_common="--clear --transfer-mode=stream --unicode-placeholder"
 
@@ -32,7 +33,7 @@ if [[ "$type" =~ "application/pdf" ]]; then
   $EXEC_GS -sDEVICE=png256 -o %stdout -r200 -dBATCH -dNOPAUSE -dQUIET "$1" |
     $EXEC_KITTEN icat ${kitty_common} ${place_args}
 elif [[ "$type" =~ "image/svg" ]]; then
-  magick $preview_file "/tmp/svg_preview.png"
+  $EXEC_MAGICK $preview_file "/tmp/svg_preview.png"
   $EXEC_KITTEN icat ${kitty_common} --stdin=no "/tmp/svg_preview.png"
 elif [[ "$type" =~ "image/" ]]; then
   $EXEC_KITTEN icat ${kitty_common} --stdin=no $preview_file
