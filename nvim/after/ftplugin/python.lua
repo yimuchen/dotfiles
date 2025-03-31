@@ -1,3 +1,7 @@
+--- Settings specific to python
+vim.lsp.enable('pylsp')
+
+
 --- Adding multiline strings to mini.ai
 require('mini.ai').config.custom_textobjects['M'] = function()
   return { string.format('%s().-()%s', '"""\n', '\n *"""\n') }

@@ -2,5 +2,5 @@
 
 # Getting the CMSSW_X_Y_Z/src path of the current working directory.
 # This will generate a empty string if the CMSSW path is not detected.
-echo $(pwd) | grep -o '.*/CMSSW_[0-9_patch]*\/src'
+echo $(pwd) | grep -o '.*/CMSSW_[0-9_patch]*/src'
 

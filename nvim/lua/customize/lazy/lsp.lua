@@ -24,28 +24,34 @@ return { -- LSP configurations and language related plugins
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
+          local diag_jump = function(dir)
+            return function()
+              vim.diagnostic.jump { count = dir, float = true }
+            end
+          end
+
           -- Navigation based on lsp related functions. For multiple items, we will be
           -- using telescope
           wk.add {
             -- Additional navigation keybind
-            { '[d', vim.diagnostic.goto_next, desc = 'Go to previous [d]iagnostic' },
-            { ']d', vim.diagnostic.goto_prev, desc = 'Go to next [d]iagnostic' },
-            { 'gd', ts_builtin.lsp_definitions, desc = '[G]oto definition' },
-            { 'gb', ':e#<CR>', desc = '[G]o [b]ack to previous' },
-            { 'gr', ts_builtin.lsp_references, desc = '[G]oto [R]eferences' },
-            { 'gI', ts_builtin.lsp_implementations, desc = '[G]oto [I]mplementation' },
+            { '[d',          diag_jump(1),                             desc = 'Go to previous [d]iagnostic' },
+            { ']d',          diag_jump(-1),                            desc = 'Go to next [d]iagnostic' },
+            { 'gd',          ts_builtin.lsp_definitions,               desc = '[G]oto definition' },
+            { 'gb',          ':e#<CR>',                                desc = '[G]o [b]ack to previous' },
+            { 'gr',          ts_builtin.lsp_references,                desc = '[G]oto [R]eferences' },
+            { 'gI',          ts_builtin.lsp_implementations,           desc = '[G]oto [I]mplementation' },
             -- Additional search items
-            { '<leader>ssd', ts_builtin.lsp_document_symbols, desc = '[S]search [S]ymbols in [D]ocument' },
+            { '<leader>ssd', ts_builtin.lsp_document_symbols,          desc = '[S]search [S]ymbols in [D]ocument' },
             { '<leader>ssw', ts_builtin.lsp_dynamic_workspace_symbols, desc = '[S]earch [S]ymbols in [W]orkspace' },
-            { '<leader>sd', ts_builtin.diagnostics, desc = '[S]earch [D]iagnostics' },
+            { '<leader>sd',  ts_builtin.diagnostics,                   desc = '[S]earch [D]iagnostics' },
             -- Opening preview buffers - Use CTRLs as modifier!
-            { '<C-h>', vim.lsp.buf.hover, desc = '[H]over Documentation', mode = 'ni' },
-            { '<C-e>', vim.diagnostic.open_float, desc = 'Show diagnostic [E]rror messages', mode = 'ni' },
+            { '<C-h>',       vim.lsp.buf.hover,                        desc = '[H]over Documentation',            mode = 'ni' },
+            { '<C-e>',       vim.diagnostic.open_float,                desc = 'Show diagnostic [E]rror messages', mode = 'ni' },
             -- Actions that will directly modify the text buffer
-            { '<leader>a', group = '[A]lter' },
-            { '<leader>ar', vim.lsp.buf.rename, desc = '[A]ction [R]ename' },
+            { '<leader>a',   group = '[A]lter' },
+            { '<leader>ar',  vim.lsp.buf.rename,                       desc = '[A]ction [R]ename' },
             -- { '<leader>af', vim.lsp.buf.code_action, desc = '[A]ction LSP [F]ix' },
-          }
+         }
 
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
@@ -93,7 +99,7 @@ return { -- LSP configurations and language related plugins
   },
   {
     'folke/lazydev.nvim', -- For additional LSP configurations when for neovim configuration
-    ft = 'lua', -- only load on lua files
+    ft = 'lua',           -- only load on lua files
     opts = {
       library = {
         -- Library items can be absolute paths

@@ -1,4 +1,3 @@
--- Additional methods for formatting (Use spaces rather than tabs)
 local conform = require 'conform'
 conform.formatters.shfmt = {
   prepend_args = function()

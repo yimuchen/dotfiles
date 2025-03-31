@@ -1,3 +1,6 @@
+-- Common setups to alwasy run
+vim.lsp.enable('harper_ls')
+
 -- Check if a local neovim configuration exists if it exists load that
 -- If not, load all the default configurations in the library
 local project_config = vim.fs.root(0, '.nvim/init.lua')
