@@ -23,8 +23,10 @@ class Neovim(decman.Module):
         return deps
 
     def aur_packages(self):
-        # This package is stuck in the AUR for some reason?
-        return ["python-lsp-ruff"]
+        # Additional language servers/formatters that are only available in the AUR
+        deps = ["python-lsp-ruff"]
+        deps += ["nixd", "nixfmt"]
+        return deps
 
 
 class ScriptsDep(decman.Module):
