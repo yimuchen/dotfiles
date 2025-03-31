@@ -50,14 +50,15 @@ function cmssw-make() {
   # Standard make methods
   #
   # Always move to base path to compile everything
-  cd $(_cmssw_src_path)
+  cmssw_src=$(_cmssw_src_path)
+  cd ${cmssw_src}
 
   # Compile with half the available cores
   _cmsexec scram b -j $(($(nproc) / 2))
 
   # Generate the compile commands and link it to the src base path
   _cmsexec scram b llvm-ccdb
-  ln -sf ../compile_commands.json ./
+  ln -sf ${cmssw_src}/../compile_commands.json ./
 
   # Moving back to whatever working directory was used
   cd -
@@ -99,11 +100,3 @@ function manage_cache() {
   done
 }
 
-function clean_nix() {
-  # Function to help with running nix garbage collection
-  if [[ "$HOST" == "lxplus"* ]]; then
-    nix-collect-garbage -d
-  else
-    nix-collect-garbage -d
-  fi
-}
