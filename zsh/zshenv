@@ -33,6 +33,11 @@ function append_path(){
   fi
 }
 
+# Common working paths for system tools that are installed by some
+# language-specific tool instead of the
+append_path "$HOME/.cargo/bin/"
+append_path "$HOME/.cli-python/bin/"
+
 # Local configurations for personal machines
 if [[ "$HOST" == "ensc"* ]]; then
   append_path "$HOME/.config/dot-bin/local/"
@@ -51,7 +56,6 @@ else
     append_path "$HOME/.config/dot-bin/remote/cmssw/"
   fi
   append_path "$HOME/.config/dot-bin/remote/"
-  append_path "$HOME/.cargo/bin/"
   export MACHINE_TYPE_SIMPLE="remote"
 
   if [[ -z $LANG ]]; then

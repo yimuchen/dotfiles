@@ -13,3 +13,5 @@ kitty
 sys-apps/ripgrep
 neovim
 dev-util/sh
+dev-python/uv
+dev-lang/rust
