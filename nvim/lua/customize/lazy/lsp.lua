@@ -1,8 +1,13 @@
-return { -- LSP configurations and language related plugins
+return {
+  -- Additional plugins to better enhance the LSP interactions
+
+  -- For LSP support in embedded documents. No additional settings will be placed here
+  { 'nvim-treesitter/nvim-treesitter' },
+
+  -- Auto-completion engine
   {
-    'neovim/nvim-lspconfig',
+    'hrsh7th/nvim-cmp',
     dependencies = {
-      'hrsh7th/nvim-cmp', -- Autocompletion engine
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-nvim-lsp',
@@ -12,64 +17,9 @@ return { -- LSP configurations and language related plugins
         version = 'v2.*',
         build = 'make install_jsregexp',
       },
-      -- For LSP support in embedded documents
       'jmbuhr/otter.nvim',
-      'nvim-treesitter/nvim-treesitter',
     },
     config = function()
-      local ts_builtin = require 'telescope.builtin'
-      local wk = require 'which-key'
-
-      -- LSP related mappings definitions
-      vim.api.nvim_create_autocmd('LspAttach', {
-        group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
-        callback = function(event)
-          local diag_jump = function(dir)
-            return function()
-              vim.diagnostic.jump { count = dir, float = true }
-            end
-          end
-
-          -- Navigation based on lsp related functions. For multiple items, we will be
-          -- using telescope
-          wk.add {
-            -- Additional navigation keybind
-            { '[d',          diag_jump(1),                             desc = 'Go to previous [d]iagnostic' },
-            { ']d',          diag_jump(-1),                            desc = 'Go to next [d]iagnostic' },
-            { 'gd',          ts_builtin.lsp_definitions,               desc = '[G]oto definition' },
-            { 'gb',          ':e#<CR>',                                desc = '[G]o [b]ack to previous' },
-            { 'gr',          ts_builtin.lsp_references,                desc = '[G]oto [R]eferences' },
-            { 'gI',          ts_builtin.lsp_implementations,           desc = '[G]oto [I]mplementation' },
-            -- Additional search items
-            { '<leader>ssd', ts_builtin.lsp_document_symbols,          desc = '[S]search [S]ymbols in [D]ocument' },
-            { '<leader>ssw', ts_builtin.lsp_dynamic_workspace_symbols, desc = '[S]earch [S]ymbols in [W]orkspace' },
-            { '<leader>sd',  ts_builtin.diagnostics,                   desc = '[S]earch [D]iagnostics' },
-            -- Opening preview buffers - Use CTRLs as modifier!
-            { '<C-h>',       vim.lsp.buf.hover,                        desc = '[H]over Documentation',            mode = 'ni' },
-            { '<C-e>',       vim.diagnostic.open_float,                desc = 'Show diagnostic [E]rror messages', mode = 'ni' },
-            -- Actions that will directly modify the text buffer
-            { '<leader>a',   group = '[A]lter' },
-            { '<leader>ar',  vim.lsp.buf.rename,                       desc = '[A]ction [R]ename' },
-            -- { '<leader>af', vim.lsp.buf.code_action, desc = '[A]ction LSP [F]ix' },
-         }
-
-          -- The following two autocommands are used to highlight references of the
-          -- word under your cursor when your cursor rests there for a little while.
-          -- When you move your cursor, the highlights will be cleared (the second autocommand).
-          local client = vim.lsp.get_client_by_id(event.data.client_id)
-          if client and client.server_capabilities.documentHighlightProvider then
-            vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-              buffer = event.buf,
-              callback = vim.lsp.buf.document_highlight,
-            })
-            vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-              buffer = event.buf,
-              callback = vim.lsp.buf.clear_references,
-            })
-          end
-        end,
-      })
-
       -- Autocomplete configuration
       local cmp = require 'cmp'
       local cmp_select = { behavior = cmp.SelectBehavior.Select }
@@ -97,21 +47,16 @@ return { -- LSP configurations and language related plugins
       }
     end,
   },
+
+  -- For additional lua LSP when editing neovim configurations
   {
-    'folke/lazydev.nvim', -- For additional LSP configurations when for neovim configuration
-    ft = 'lua',           -- only load on lua files
-    opts = {
-      library = {
-        -- Library items can be absolute paths
-        -- "~/projects/my-awesome-lib",
-        -- When relative, you can also provide a path to the library in the plugin directory
-        'luvit-meta/library', -- see below
-      },
-    },
-    dependencies = {
-      { 'Bilal2453/luvit-meta', lazy = true }, -- optional `vim.uv` typing
-    },
+    'folke/lazydev.nvim',
+    ft = 'lua',
+    opts = { library = { 'luvit-meta/library' }, },
+    dependencies = { { 'Bilal2453/luvit-meta', lazy = true } },
   },
+
+  -- Document outline
   {
     'hedyhli/outline.nvim',
     config = function()
@@ -119,6 +64,8 @@ return { -- LSP configurations and language related plugins
       require('outline').setup {}
     end,
   },
+
+  -- Jupyter notebook editing
   {
     'GCBallesteros/jupytext.nvim',
     dependencies = { 'jmbuhr/otter.nvim' },
@@ -134,4 +81,5 @@ return { -- LSP configurations and language related plugins
       }
     end,
   },
+
 }
