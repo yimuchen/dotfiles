@@ -11,9 +11,9 @@ return {
       end,
       desc = 'Keymaps explorer',
     },
-    { 'g', group = 'Goto' },
+    { 'g',         group = 'Goto' },
     -- Common aliases for starting the command prompt with exiting prefixes
-    { '<leader>x', ':lua ', desc='Starting lua executor' },
-    { '<leader>c', ':! ', desc='Starting command executor' },
+    { '<leader>x', ':lua ',       desc = 'Starting lua executor' },
+    { '<leader>c', ':! ',         desc = 'Starting command executor' },
   },
 }
