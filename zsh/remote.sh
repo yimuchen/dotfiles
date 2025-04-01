@@ -21,7 +21,16 @@ function cert_cern_gen() {
 }
 
 function environment_update() {
+  # Upgrading everything that is managed by the gentoo/emerge
   emaint --auto sync
   emerge --ask --verbose --update --deep --newuse @world
   emerge --depclean
+  # Upgrading everything that is managed by python-uv
+  if [[ ! -d $HOME/.cli-python ]]; then
+    uv venv --system-site-packages $HOME/.cli-python
+  fi
+  VIRTUAL_ENV=$HOME/.cli-python uv pip install --upgrade --requirements $HOME/tools_config/pkg/cli-python-remote.txt
+
+  # Upgrading everything that is managed by cargo
+  cargo install $(cat $HOME/tools_config/pkg/cli-cargo-remote.txt) --locked
 }
