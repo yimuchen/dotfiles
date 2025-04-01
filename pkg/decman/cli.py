@@ -30,9 +30,18 @@ class Neovim(decman.Module):
     def after_update(self):
         # Installing the tools for python (mainly mdformat variants)
         python_env = os.path.join(user.home_path, ".cli-python")
+        cache_dir = os.path.join(user.home_path, ".local/share/uv/python")
         if not os.path.isdir(python_env):
             decman.prg(
-                ["uv", "venv", "--system-site-packages", python_env],
+                [
+                    "uv",
+                    "venv",
+                    "--cache-dir",
+                    cache_dir,
+                    "--no-managed-python",
+                    "--system-site-packages",
+                    python_env,
+                ],
                 user=user.username,
             )
 
