@@ -1,4 +1,3 @@
--- modexec = require("modexec")
 local cmd_prefix = ''
 
 -- Adding an explicit prefix to where the pylsp server should be activated
@@ -7,6 +6,8 @@ if vim.fn.executable('_cmssw_src_path') ~= 0 and vim.fn.system("_cmssw_src_path"
   cmd_prefix = vim.env.HOME .. "/.config/dot-bin/remote/cmssw/cmssw-"
 elseif vim.env.CONDA_PREFIX ~= nil then
   cmd_prefix = vim.env.CONDA_PREFIX .. "/bin/"
+elseif vim.fs.root(0, { ".apptainer-pylsp" }) ~= nil then
+  cmd_prefix = vim.fs.root(0, { ".apptainer-pylsp" }) .. "/.apptainer-"
 end
 
 return {
@@ -24,8 +25,8 @@ return {
       ruff = {
         enabled = true,
         formatEnabled = true,
-        format = { 'I' },   -- Attempt to sort imports if possible
-        lineLength = 88,    -- Default line, will be overwritten by anything in pyproject.toml or similar
+        format = { 'I' }, -- Attempt to sort imports if possible
+        lineLength = 88,  -- Default line, will be overwritten by anything in pyproject.toml or similar
       },
     },
   }

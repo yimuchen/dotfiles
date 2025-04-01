@@ -16,23 +16,6 @@ add_local_plugin('rsync', {
   end,
 })
 
--- For modifying LSP related executable base on the detected environment
-add_local_plugin('modexec', {
-  config = function()
-    local modexec = require 'modexec'
-    modexec.setup {
-      detect = function()
-        return {
-          cmssw = modexec.env.cmssw(),
-          conda = modexec.env.conda(),
-          apptainer = modexec.env.apptainer(),
-        }
-      end,
-      auto_switch = true,
-    }
-  end,
-})
-
 -- For adding a REPL-like interaction in a accompanying tmux session's
 -- dettachable pane
 add_local_plugin('tmux-repl', {
@@ -59,16 +42,16 @@ add_local_plugin('tmux-repl', {
 
     local wk = require 'which-key'
     wk.add {
-      { '<leader>r', group = '[R]EPL' },
-      { '<leader>rt', repl.repl_pane_toggle, desc = '[R]EPL [T]ermial' },
-      { '<leader>rk', repl.repl_pane_close, desc = '[R]EPL [K]ill session' },
-      { '<leader>rp', repl.repl_pass_visual, desc = '[R]EPL [P]ass selection', mode = 'v' },
+      { '<leader>r',   group = '[R]EPL' },
+      { '<leader>rt',  repl.repl_pane_toggle,      desc = '[R]EPL [T]ermial' },
+      { '<leader>rk',  repl.repl_pane_close,       desc = '[R]EPL [K]ill session' },
+      { '<leader>rp',  repl.repl_pass_visual,      desc = '[R]EPL [P]ass selection',      mode = 'v' },
       -- Generic functions that can be used
-      { '<leader>re', group = '[R]EPL [E]valuate' },
-      { '<leader>rel', pass_selection 'V', desc = '[R]EPL [E]valuate [L]ine' },
-      { '<leader>red', pass_selection 'ggVG', desc = '[R]EPL [E]valuate [D]ocument' },
-      { '<leader>ref', pass_selection 'vaF', desc = '[R]EPL [E]valuate [F]function' },
-      { '<leader>rec', pass_selection 'vaC', desc = '[R]EPL [E]valuate [C]lass' },
+      { '<leader>re',  group = '[R]EPL [E]valuate' },
+      { '<leader>rel', pass_selection 'V',         desc = '[R]EPL [E]valuate [L]ine' },
+      { '<leader>red', pass_selection 'ggVG',      desc = '[R]EPL [E]valuate [D]ocument' },
+      { '<leader>ref', pass_selection 'vaF',       desc = '[R]EPL [E]valuate [F]function' },
+      { '<leader>rec', pass_selection 'vaC',       desc = '[R]EPL [E]valuate [C]lass' },
     }
   end,
 })
