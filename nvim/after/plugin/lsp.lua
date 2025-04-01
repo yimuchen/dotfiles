@@ -1,10 +1,14 @@
-local ts_builtin = require 'telescope.builtin'
-local wk = require 'which-key'
+-- Common lsp to load for multiple languages
+vim.lsp.enable("harper_ls")
+
 
 -- Additional settings that will be enabled if LSP is available
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
   callback = function(event)
+    local ts_builtin = require 'telescope.builtin'
+    local wk = require 'which-key'
+
     local diag_jump = function(dir)
       return function()
         vim.diagnostic.jump { count = dir, float = true }
