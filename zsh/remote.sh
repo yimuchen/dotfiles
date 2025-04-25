@@ -31,6 +31,12 @@ function environment_update() {
   fi
   VIRTUAL_ENV=$HOME/.cli-python uv pip install --upgrade --requirements $HOME/tools_config/pkg/cli-python-remote.txt
 
-  # Upgrading everything that is managed by cargo
+  # Cargo package management
+  if [[ ! -f $HOME/bin/cargo-install-update ]]; then
+    cargo install cargo-update
+  fi
+  # Ensure everything is installed
   cargo install $(cat $HOME/tools_config/pkg/cli-cargo-remote.txt) --locked
+  # Update all cargo tools
+  cargo install-update -a
 }
