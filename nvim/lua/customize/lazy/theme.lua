@@ -111,8 +111,26 @@ return {
       'rcarriga/nvim-notify',
     },
     config = function()
-      require('noice').setup {}
       require('notify').setup { background_colour = '#000000', stages = 'static' }
+      require('noice').setup {
+        views = {
+          hover = { border = { style = "rounded", } }
+        },
+        lsp = {
+          documentation = {
+            view = "hover",
+            opts = {
+              position = { row = 0, col = 10 },
+              size = {
+                max_height = math.floor(0.8 * vim.api.nvim_win_get_height(0)),
+                max_width = math.floor(0.7 * vim.api.nvim_win_get_width(0)),
+              },
+              background_color = '#FFF',
+              border = { style = "rounded", color = "#FFF" }
+            }
+          },
+        }
+      }
     end,
   },
 }
