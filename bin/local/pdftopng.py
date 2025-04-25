@@ -45,7 +45,6 @@ def _run_loop(file_list: List[str], density: int):
 
 if __name__ == "__main__":
     import argparse
-
     import argcomplete
 
     parser = argparse.ArgumentParser(
