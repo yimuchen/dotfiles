@@ -91,7 +91,7 @@ class CliTools(decman.Module):
         # Core tools
         deps = ["git", "fzf", "parallel"]
         # Session management and monitoring
-        deps += ["tmux", "htop", "speedtest-cli", "tree"]
+        deps += ["tmux", "htop", "btop", "speedtest-cli", "tree"]
         # Configure file parsing
         deps += ["jq", "go-yq"]
         # Additional compression formats
