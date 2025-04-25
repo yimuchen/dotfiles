@@ -6,6 +6,11 @@ alias -- ssh='ssh -F ~/.ssh/config'
 export CLUSTER_SESSION_TMUX_SSH_ARGS="-R 9543:localhost:9543"
 export CLUSTER_SESSION_TMUX_REMOTE_TMUX_CMD=".portage/usr/bin/tmux attach-session -t __SESSION_NAME__"
 
+# Loading additional tools that are available on the server dies
+if [[ "$MACHINE_TYPE_DETAIL" == "cmslpc" ]]; then
+  source /etc/profile.d/eos_aliases.sh
+fi
+
 function cert_cern_gen() {
   # Helper commands for a way to consistently generate user tokens that is
   # required for analysis work.
