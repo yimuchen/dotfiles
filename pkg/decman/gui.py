@@ -1,4 +1,3 @@
-import hashlib
 import os
 
 import decman
@@ -20,6 +19,8 @@ class Core(decman.Module):
         deps += ["thunderbird", "korganizer"]
         # Terminal of preference
         deps += ["ghostty", "yakuake"]
+        # For personal not taking
+        deps += ["obsidian"]
         return deps
 
     def aur_packages(self):
@@ -65,6 +66,26 @@ class Office(decman.Module):
     def pacman_packages(self):
         # LibreOffice and plugins
         deps = ["libreoffice-fresh", "libreoffice-extension-texmaths"]
+        # Additional items for document creation
+        deps += [
+            "texlive-bin",
+            "texlive-binextra",
+            "texlive-fontsextra",
+            "texlive-fontsrecommended",
+            "texlive-fontutils",
+            "texlive-mathscience",
+            "texlive-bibtexextra",
+            "texlive-pictures",
+            "texlive-latex",
+            "texlive-latexextra",
+            "texlive-latexrecommended",
+            "texlive-xetex",
+            "texlive-langchinese",
+            "texlive-langenglish",
+            "texlive-langgerman",
+            "texlab",
+        ]  # latex
+        deps += ["typst", "tinymist"]  # typst
         # PDF browsers
         deps += ["okular", "evince"]
         return deps
@@ -74,6 +95,9 @@ class Office(decman.Module):
         deps = ["libreoffice-extension-languagetool"]
         # Alternate office suite
         deps += ["wps-office-bin"]
+        # Additional packages required for markup document compiling
+        deps += ["typstyle-bin"]
+
         return deps
 
 
@@ -131,7 +155,7 @@ class Gaming(decman.Module):
         return deps
 
     def aur_packages(self):
-        return ["r2modman-bin", "proton-ge-custom-bin"]
+        return ["r2modman-bin", "proton-ge-custom-bin", "shadps4-bin"]
 
 
 class Symlink(decman.Module):
