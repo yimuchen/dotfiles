@@ -98,15 +98,47 @@ class ShortCuts(decman.Module):
         super().__init__(name="plasma-shortcuts", enabled=True, version="1")
 
     def files(self):
+        # Modifying panels to always include specific items
+        panels = user.create_confexp(
+            ref_path=os.path.join(
+                user.config_path, "plasma-org.kde.plasma.desktop-appletsrc"
+            )
+        )
+        application_list = [
+            "applications:com.mitchellh.ghostty.desktop",
+            "applications:zen.desktop",
+            "applications:org.mozilla.Thunderbird.desktop",
+            "applications:org.kde.dolphin.desktop",
+            "applications:org.kde.korganizer.desktop",
+            "applications:systemsettings.desktop",
+            "file:///usr/share/applications/libreoffice-startcenter.desktop",
+            "applications:bitwarden.desktop",
+            "applications:virt-manager.desktop",
+            "applications:org.kicad.kicad.desktop",
+            "applications:org.musescore.MuseScore.desktop",
+        ]
+        for section in panels.sections():
+            if "launchers" in panels[section].keys():
+                panels[section]["launchers"] = ",".join(application_list)
+
+        # Method for ensuring picking out particular shortcuts
         shortcutsrc = user.create_confexp(
             ref_path=os.path.join(user.config_path, "kglobalshortcutsrc")
         )
-        # Odd notation for getting the various entries to work?
-        shortcutsrc["services][com.mitchellh.ghostty.desktop"] = {"_launch": "Meta+T"}
+        # Items additonal binding for stuff that is on the main panel
+        shortcutsrc["plasmashell"]["activate task manager entry 1"] = (
+            "Meta+T\tMeta+1,Meta+1,Activate Task Manager Entry 1"
+        )
+        shortcutsrc["plasmashell"]["activate task manager entry 2"] = (
+            "Meta+B\tMeta+2,Meta+2,Activate Task Manager Entry 2"
+        )
+        shortcutsrc["plasmashell"]["activate task manager entry 3"] = (
+            "Meta+B\tMeta+3,Meta+3,Activate Task Manager Entry 1"
+        )
+
         # Explicitly disabling console for now
         shortcutsrc["services][org.kde.konsole.desktop"] = {"_launch": "none"}
-        shortcutsrc["services][firefox.default.desktop"] = {"_launch": "Meta+B"}
-        shortcutsrc["services][firefox.work.desktop"] = {"_launch": "Meta+Shift+B"}
+        # Setting K-runner hotkey to juet meta
         shortcutsrc["services][org.kde.krunner.desktop"] = {"_launch": "Meta"}
 
         # Yakuake is just different from everyone else:
@@ -122,4 +154,4 @@ class ShortCuts(decman.Module):
         shortcutsrc["kwin"]["Walk Through Windows"] = (
             "Meta+Tab,Alt+Tab,Walk Through Windows"
         )
-        return shortcutsrc.to_decman()
+        return {**panels.to_decman(), **shortcutsrc.to_decman()}
