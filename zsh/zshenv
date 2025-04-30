@@ -15,7 +15,7 @@ if [[ -z "${DOMAIN_NAME}" ]]; then
   if command -v domainname 2>&1 >/dev/null
   then
       export DOMAIN_NAME=$(domainname -d)
-   fi
+  fi
 fi
 
 export PATH="$PATH:$HOME/.config/dot-bin/common/"
