@@ -5,7 +5,7 @@ auto-update = off
 background-opacity = 0.93
 # Forcing the cursor and disabling shell-integration
 cursor-style = block
-shell-integration-features = no-cursor
+shell-integration-features = no-cursor,no-title
 # Removing title bar
 window-decoration = auto
 gtk-titlebar = true

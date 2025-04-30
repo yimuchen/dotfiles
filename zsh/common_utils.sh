@@ -63,6 +63,53 @@ function show_colors256() {
 # Helper functions for getting tmux spin up
 alias -- ctmux="$HOME/.config/tmux-plugins-custom/cluster-session/scripts/ctmux attach-session"
 
+#################################################################################
+# Functions for setting the title of tabs as they appear in terminal emulators
+DISABLE_AUTO_TITLE="true"
+
+function host_display_() {
+  if [[ $MACHINE_TYPE_DETAIL == "personal" ]]; then
+    echo "🏠"
+  elif [[ $MACHINE_TYPE_DETAIL == "kit" ]]; then
+    echo "🌐 ${HOST}.${DOMAIN_NAME}:"
+  else
+    echo "🌐 ${HOST}:"
+  fi
+}
+
+function precmd() {
+  # Determine the string for when the system is idle. The escape string will is
+  # used to pass this information to the terminal header handler rather than it
+  # being a std streams. Notice that tmux will intrinsically mask this process
+  local path_display=$(print -rD $PWD)
+  echo -ne "\033]0;$(host_display_)${path_display}\007"
+}
+precmd
+
+function preexec() {
+  # Determining the item for when running a command. This should be transient,
+  # and should only be held if there are long running commands that the user
+  # should be aware of
+  local host=$(host_display_)
+  local path_display=$(print -rD $PWD)
+  local cmd=""
+  # SPeical
+  if [[ "$1" == "nvim"* ]]; then
+    cmd="🗒️ nvim"
+  elif [[ "$1" == "ctmux"* ]]; then
+    full_cmd=($1)
+    if [[ ${#full_cmd[@]} == "1" ]]; then
+      cmd="💾 ctmux $(basename $PWD)"
+    else
+      cmd="💾 $1"
+    fi
+    path_display=""
+  else
+    cmd="🚀 $1"
+  fi
+  print -Pn "\e]0;${host}${path_display} | ${cmd}\a"
+}
+
 ####################################
 ## Functions for modifying command line behavior
 
