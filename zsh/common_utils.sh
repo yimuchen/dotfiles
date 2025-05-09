@@ -97,11 +97,11 @@ function preexec() {
   if [[ "$1" == "nvim"* ]]; then
     cmd="🗒️ nvim"
   elif [[ "$1" == "ctmux"* ]]; then
-    full_cmd=($1)
-    if [[ ${#full_cmd[@]} == "1" ]]; then
+    target=$(echo $1 | awk -F ' ' '{print $2}')
+    if [[ $target == "" ]]; then
       cmd="💾 ctmux $(basename $PWD)"
     else
-      cmd="💾 $1"
+      cmd="💾 ctmux $target"
     fi
     path_display=""
   else
