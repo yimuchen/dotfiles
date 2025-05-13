@@ -8,6 +8,18 @@ import decman
 
 from ._common import user
 
+"""
+Helper functions for generation file paths
+"""
+
+
+def _conf_target(path: str):
+    return os.path.join(user.config_path, path)
+
+
+def _frag_target(path: str):
+    return os.path.join(user.config_source_dir, f"config/fragments/{path}")
+
 
 class Fonts(decman.Module):
     def __init__(self):
@@ -47,10 +59,8 @@ class Input(decman.Module):
         return deps
 
     def files(self):
-        kwinrc = user.create_confexp(ref_path=os.path.join(user.config_path, "kwinrc"))
-        kwinrc["Wayland"] = {  # Pinning the input method
-            "InputMethod[$e]": "/usr/share/applications/fcitx5-wayland-launcher.desktop"
-        }
+        kwinrc = user.create_confexp(ref_path=_conf_target("kwinrc"))
+        kwinrc.update_from_fragment(ref_path=_frag_target("kwinrc"))
         return {
             **user.filemgr_config.create_decman_list(
                 ["kxkbrc", "fcitx5/profile", "fcitx5/config"]
@@ -72,11 +82,8 @@ class Themes(decman.Module):
 
     def files(self):
         """Theming that are likely not chancing for a long time"""
-        kcminputrc = user.create_confexp(
-            ref_path=os.path.join(user.config_path, "kcminputrc")
-        )
-        kcminputrc["Keyboard"] = {"NumLock": "0"}
-        kcminputrc["Mouse"] = {"cursorSize": "24", "cursorTheme": "Breeze_Light"}
+        kcminputrc = user.create_confexp(ref_path=_conf_target("kcminputrc"))
+        kcminputrc.update_from_fragment(ref_path=_frag_target("kcminputrc"))
 
         return {
             **user.filemgr_config.create_decman_list(
@@ -100,58 +107,13 @@ class ShortCuts(decman.Module):
     def files(self):
         # Modifying panels to always include specific items
         panels = user.create_confexp(
-            ref_path=os.path.join(
-                user.config_path, "plasma-org.kde.plasma.desktop-appletsrc"
-            )
+            ref_path=_conf_target("plasma-org.kde.plasma.desktop-appletsrc")
         )
-        application_list = [
-            "applications:com.mitchellh.ghostty.desktop",
-            "applications:zen.desktop",
-            "applications:org.mozilla.Thunderbird.desktop",
-            "applications:org.kde.dolphin.desktop",
-            "applications:org.kde.korganizer.desktop",
-            "applications:systemsettings.desktop",
-            "file:///usr/share/applications/libreoffice-startcenter.desktop",
-            "applications:bitwarden.desktop",
-            "applications:virt-manager.desktop",
-            "applications:org.kicad.kicad.desktop",
-            "applications:org.musescore.MuseScore.desktop",
-        ]
-        for section in panels.sections():
-            if "launchers" in panels[section].keys():
-                panels[section]["launchers"] = ",".join(application_list)
+        panels.update_from_fragment(
+            ref_path=_frag_target("plasma-org.kde.plasma.desktop-appletsrc")
+        )
 
         # Method for ensuring picking out particular shortcuts
-        shortcutsrc = user.create_confexp(
-            ref_path=os.path.join(user.config_path, "kglobalshortcutsrc")
-        )
-        # Items additonal binding for stuff that is on the main panel
-        shortcutsrc["plasmashell"]["activate task manager entry 1"] = (
-            "Meta+T\tMeta+1,Meta+1,Activate Task Manager Entry 1"
-        )
-        shortcutsrc["plasmashell"]["activate task manager entry 2"] = (
-            "Meta+B\tMeta+2,Meta+2,Activate Task Manager Entry 2"
-        )
-        shortcutsrc["plasmashell"]["activate task manager entry 3"] = (
-            "Meta+B\tMeta+3,Meta+3,Activate Task Manager Entry 1"
-        )
-
-        # Explicitly disabling console for now
-        shortcutsrc["services][org.kde.konsole.desktop"] = {"_launch": "none"}
-        # Setting K-runner hotkey to juet meta
-        shortcutsrc["services][org.kde.krunner.desktop"] = {"_launch": "Meta"}
-
-        # Yakuake is just different from everyone else:
-        shortcutsrc["yakuake"] = {
-            "_k_friendly_name": "Yakuake",
-            "toggle-window-state": "Meta+X,F12,Open/Retract Yakuake",
-        }
-
-        # Modifying shortcuts for quickly cycling between window
-        shortcutsrc["kwin"]["Expose"] = (
-            "Meta+Q,Ctrl+F9,Toggle Present Windows (Current desktop)"
-        )
-        shortcutsrc["kwin"]["Walk Through Windows"] = (
-            "Meta+Tab,Alt+Tab,Walk Through Windows"
-        )
+        shortcutsrc = user.create_confexp(ref_path=_conf_target("kglobalshortcutsrc"))
+        shortcutsrc.update_from_fragment(ref_path=_frag_target("kglobalshortcutsrc"))
         return {**panels.to_decman(), **shortcutsrc.to_decman()}
