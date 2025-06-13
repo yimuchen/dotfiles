@@ -1,7 +1,7 @@
 [plasmashell]
-activate task manager entry 1=Meta+T    Meta+1,Meta+1,Activate Task Manager Entry 1
-activate task manager entry 2=Meta+B    Meta+2,Meta+2,Activate Task Manager Entry 2
-activate task manager entry 3=Meta+M    Meta+3,Meta+3,Activate Task Manager Entry 3
+activate task manager entry 1=Meta+T\tMeta+1,Meta+1,Activate Task Manager Entry 1
+activate task manager entry 2=Meta+B\tMeta+2,Meta+2,Activate Task Manager Entry 2
+activate task manager entry 3=Meta+M\tMeta+3,Meta+3,Activate Task Manager Entry 3
 
 [services][org.kde.konsole.desktop]
 _launch=none
