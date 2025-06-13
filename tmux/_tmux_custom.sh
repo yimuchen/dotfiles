@@ -6,10 +6,11 @@ explore_window() {
   local session_name=$1
   local window_index=${session_name}:0
 
+  explore_title=${TMUX_EXPLORE_TITLE:-Explore}
   if ! tmux has-session -t "${window_index}" 2>/dev/null; then
-    tmux new-window -n "Explore" -t ${window_index}
+    tmux new-window -n "${explore_title}" -t ${window_index}
   fi
-  tmux rename-window -t ${window_index} "Explore"
+  tmux rename-window -t ${window_index} "${explore_title}"
 }
 
 # Operation - opening the editor window. The editor window Will always be
@@ -19,10 +20,12 @@ _editor_idx() {
   echo "${1}:1"
 }
 
+
 editor_window() {
   local editor_idx=$(_editor_idx $1)
   if ! tmux has-session -t "${editor_idx}" 2>/dev/null; then
-    tmux new-window -n "Editor" -t "${editor_idx}"
+    editor_title="${TMUX_EDITOR_TITLE:-Editor}"
+    tmux new-window -n "${editor_title}" -t "${editor_idx}"
     # When closing the editor, always try to close the repl pane to ensure the
     # editor is always pane 0
     tmux respawn-pane -t ${editor_idx}.0 -k "zsh  --login -c 'nvim .'"
@@ -35,7 +38,8 @@ editor_window() {
 monitor_window() {
   local session_name=$1
   if ! tmux has-session -t "${session_name}:2" &>/dev/null; then
-    tmux new-window -n "Monitor" -t ${session_name}:2
+    monitor_title="${TMUX_MONITOR_TITLE:-Monitor}"
+    tmux new-window -n "${monitor_title}" -t ${session_name}:2
   fi
   # Always attempt to respawn the panes
   if ! command -v "condor_q" &>/dev/null; then
