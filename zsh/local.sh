@@ -40,6 +40,12 @@ function root_browse() {
   fi
 }
 
+function terminfo_copy() {
+  # Solution taken from here:
+  # https://sw.kovidgoyal.net/kitty/kittens/ssh/#manual-terminfo-copy
+  echo "infocmp -a $TERM | ssh myserver tic -x -o \~/.terminfo /dev/stdin"
+}
+
 # Enabling conda if it exists
 if [[ -f /opt/miniconda3/etc/profile.d/conda.sh ]]; then
   source /opt/miniconda3/etc/profile.d/conda.sh
