@@ -1,6 +1,9 @@
 # Alias
 alias -- ssh='ssh -F ~/.ssh/config'
 
+# Making sure the remote session understands ghostty
+export TERMINFO=$HOME/.terminfo
+
 # Additional configuration to ensure that the customized ctmux command will
 # generate a custom command to account for the nix/zsh environment
 export CLUSTER_SESSION_TMUX_SSH_ARGS="-R 9543:localhost:9543"
@@ -32,6 +35,8 @@ function environment_update() {
   emerge --depclean
   # Upgrading everything that is managed by python-uv
   if [[ ! -d $HOME/.cli-python ]]; then
+    uv venv --system-site-packages $HOME/.cli-python
+  elif [[ ! -f $(realpath $HOME/.cli-python/bin/python) ]]; then
     uv venv --system-site-packages $HOME/.cli-python
   fi
   VIRTUAL_ENV=$HOME/.cli-python uv pip install --upgrade --requirements $HOME/tools_config/pkg/cli-python-remote.txt
