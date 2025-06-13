@@ -15,11 +15,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
       end
     end
 
-    -- Slightly nicer hover
-    local hover_override = function()
-      vim.lsp.buf.hover({ border = "rounded" })
-    end
-
     -- Navigation based on LSP related functions. For multiple items, we will be
     -- using telescope
     wk.add {
@@ -35,7 +30,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
       { '<leader>ssw', ts_builtin.lsp_dynamic_workspace_symbols, desc = '[S]earch [S]ymbols in [W]orkspace' },
       { '<leader>sd',  ts_builtin.diagnostics,                   desc = '[S]earch [D]iagnostics' },
       -- Opening preview buffers - Use ctrl key as modifier
-      { '<C-h>',       hover_override,                           desc = '[H]over Documentation',            mode = 'ni' },
+      { '<C-h>',       vim.lsp.buf.hover,                        desc = '[H]over Documentation',            mode = 'ni' },
       { '<C-e>',       vim.diagnostic.open_float,                desc = 'Show diagnostic [E]rror messages', mode = 'ni' },
     }
 
