@@ -24,26 +24,27 @@ class Neovim(decman.Module):
     def aur_packages(self):
         # Additional language servers/formatters that are only available in the AUR
         deps = ["python-lsp-ruff"]
-        # deps += ["nixfmt"]
+        deps += ["nixfmt"]
         return deps
 
     def after_update(self):
         # Installing the tools for python (mainly mdformat variants)
         python_env = os.path.join(user.home_path, ".cli-python")
+        python_path = os.path.realpath(os.path.join(python_env, "bin/python"))
         cache_dir = os.path.join(user.home_path, ".local/share/uv/python")
+        create_env_cmd = [
+            "uv",
+            "venv",
+            "--cache-dir",
+            cache_dir,
+            "--no-managed-python",
+            "--system-site-packages",
+            python_env,
+        ]
         if not os.path.isdir(python_env):
-            decman.prg(
-                [
-                    "uv",
-                    "venv",
-                    "--cache-dir",
-                    cache_dir,
-                    "--no-managed-python",
-                    "--system-site-packages",
-                    python_env,
-                ],
-                user=user.username,
-            )
+            decman.prg(create_env_cmd, user=user.username)
+        elif not os.path.isfile(python_path):
+            decman.prg(create_env_cmd, user=user.username)
 
         python_req = os.path.join(user.config_source_dir, "pkg/cli-python.txt")
         decman.prg(
