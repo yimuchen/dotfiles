@@ -1,5 +1,6 @@
 --- Settings specific to python
 vim.lsp.enable('pylsp')
+vim.lsp.enable('ruff')
 
 
 --- Adding multiline strings to mini.ai
