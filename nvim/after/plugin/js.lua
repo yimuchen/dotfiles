@@ -18,8 +18,10 @@ vim.lsp.config['cssls'] = {
 }
 vim.lsp.enable("cssls")
 
+vim.lsp.enable("ts_ls")
+
 -- Format settings: using the prettier that is installed in the node
--- environment instead of requiring a global prettier to exit
+-- environment instead of requiring a global prettier to exist
 local conform = require 'conform'
 conform.formatters.npx_prettier = {
   command = 'npx',
