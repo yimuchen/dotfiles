@@ -17,6 +17,7 @@ class Neovim(decman.Module):
         deps += ["lua-language-server", "stylua"]
         deps += ["shfmt", "bash-language-server"]
         deps += ["harper"]
+        deps += ["typescript-language-server"]
         # For fuzzy finder
         deps += ["ripgrep"]
         return deps
