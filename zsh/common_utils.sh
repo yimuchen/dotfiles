@@ -99,9 +99,14 @@ function preexec() {
   elif [[ "$1" == "ctmux"* ]]; then
     target=$(echo $1 | awk -F ' ' '{print $2}')
     if [[ $target == "" ]]; then
-      cmd="💾 ctmux $(basename $PWD)"
-    else
-      cmd="💾 ctmux $target"
+      target="$(basename $PWD)"
+    fi
+    cmd="💾 ctmux $target"
+    # Overriding host to match the machine that is serving the tmux session
+    cache_dir=${CLUSTER_SESSION_TMUX_CACHE_DIR:=$HOME/.local/state/tmux-cluster-session/}
+    cache_file=${cache_dir}/tmux.session.${target}
+    if [[ -f ${cache_file} ]]; then
+      host=$(cat ${cache_file})
     fi
     path_display=""
   else
