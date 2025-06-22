@@ -23,6 +23,7 @@ return { -- Fuzzy finder telescope
           -- '**/*.root', -- This is not needed and causes things to break??
           '**/*.pdf',
           '**/*.png',
+          '**/.pkl',
         },
       },
     }
