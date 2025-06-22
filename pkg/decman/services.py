@@ -19,6 +19,17 @@ class Syncthing(decman.Module):
         return [f"syncthing@{user.username}.service"]
 
 
+class LanguageTool(decman.Module):
+    def __init__(self):
+        super().__init__(name="languagetool", enabled=True, version="1")
+
+    def pacman_packages(self):
+        return ["languagetool"]
+
+    def systemd_units(self):
+        return ["languagetool.service"]
+
+
 class RcbListener(decman.Module):
     def __init__(self):
         super().__init__(name="rcb_listener", enabled=True, version="1")

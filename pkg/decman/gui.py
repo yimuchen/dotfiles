@@ -91,10 +91,8 @@ class Office(decman.Module):
         return deps
 
     def aur_packages(self):
-        # Additional LibreOffice plugins in the AUR
-        deps = ["libreoffice-extension-languagetool"]
         # Alternate office suite
-        deps += ["wps-office-bin"]
+        deps = ["wps-office-bin"]
         # Additional packages required for markup document compiling
         deps += ["typstyle-bin"]
 
