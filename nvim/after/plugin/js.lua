@@ -34,3 +34,9 @@ conform.formatters_by_ft.svelte = { 'npx_prettier' }
 
 -- Setting a separate parser for JSON using JQ (which is always available for nix-based installs)
 conform.formatters_by_ft.json = { 'jq' }
+
+conform.formatters.sqlfmt_m = {
+  command = 'sqlfmt',
+  args = { '-l', '120', '-' }
+}
+conform.formatters_by_ft.sql = { 'sqlfmt' }
