@@ -158,6 +158,9 @@ class Gaming(decman.Module):
     def aur_packages(self):
         return ["r2modman-bin", "proton-ge-custom-bin", "shadps4-bin"]
 
+    def on_enable(self):
+        decman.prg(["gpasswd", "-a", user.username, "games"])
+
 
 class Symlink(decman.Module):
     """
