@@ -28,6 +28,13 @@ function system_update() {
   sudo decman --source $HOME/configurations/systems/decman-source.py
 }
 
+function paruf() {
+  # Listing all packages and quickly install via a search
+  paru -Slq | \
+    fzf --multi --preview 'paru -Sii {1}' --preview-window=right:75% | \
+    xargs -ro paru -S
+}
+
 EXEC_ROOTBROWSE="${NIX_EXEC_ROOTBROWSE:=rootbrowse}"
 function root_browse() {
   input="$1"
