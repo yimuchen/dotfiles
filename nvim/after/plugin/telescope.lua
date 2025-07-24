@@ -15,7 +15,7 @@ end
 local wk = require 'which-key'
 wk.add {
   -- Actions to perform on the specific item variable
-  { '<leader>a',  group = '[A]ction' },
-  { '<leader>af', lsp_action,         desc = '[A]ction LSP [F]ix' },
-  { '<leader>ar', vim.lsp.buf.rename, desc = '[A]ction [R]ename' },
+  { '<leader>l',  group = '[L]SP' },
+  { '<leader>la', lsp_action,         desc = '[L]SP [A]ction' },
+  { '<leader>lr', vim.lsp.buf.rename, desc = '[L]SP [R]ename' },
 }
