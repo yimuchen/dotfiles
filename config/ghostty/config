@@ -3,6 +3,7 @@ theme = "Breeze"
 font-family = "JetBrainsMono Nerd Font"
 auto-update = off
 background-opacity = 0.93
+maximize = true
 # Forcing the cursor and disabling shell-integration
 cursor-style = block
 shell-integration-features = no-cursor,no-title

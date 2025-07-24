@@ -124,7 +124,7 @@ class MiscTools(decman.Module):
 
     def pacman_packages(self):
         # Alternate browsers
-        deps = ["thunderbird"]
+        deps = ["thunderbird", "signal-desktop"]
         # Related to hardware design
         deps += [
             "freecad",
