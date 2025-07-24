@@ -24,6 +24,7 @@ General functions for selecting credentials from bw CLI method. These will not
 be exposed for user interaction
 """
 
+
 def obtain_bw_items(item_filter: Optional[Callable] = None) -> List[Dict]:
     """
     Getting the list of vault items in the default BitWarden vault. You can
@@ -78,8 +79,6 @@ def get_protocols(item: Dict[str, Any], protocol: str):
         for x in item["login"]["uris"]
         if x["uri"].startswith(protocol + "://")
     ]
-
-
 
 
 @scriptizer.register_function
