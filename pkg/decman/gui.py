@@ -115,7 +115,7 @@ class Media(decman.Module):
         return deps
 
     def aur_packages(self):
-        return ["musescore-bin"]
+        return ["musescore-bin", "wl-color-picker", "droidcam"]
 
 
 class MiscTools(decman.Module):
