@@ -5,6 +5,8 @@ import logging
 import os
 import subprocess
 import sys
+import tempfile
+import time
 from typing import Any, Callable, Dict, List, Optional
 
 import argcomplete
@@ -167,6 +169,74 @@ def voms():
                 p.wait()
             except Exception as err:
                 scriptizer.log.error("Error when running voms", err)
+
+
+@scriptizer.register_function
+def copypass():
+    """
+    Browsing through the login credentials, copying the password to thw wayland clipboard
+    """
+    logins = obtain_bw_items(lambda x: "login" in x)
+
+    def make_display(login):
+        return {
+            "name": login["name"],
+            "username": login["login"]["username"],
+            "identifiers": [x["uri"] for x in login["login"]["uris"]],
+        }
+
+    select = None
+    with tempfile.NamedTemporaryFile("w") as temp:
+        temp.write(json.dumps([make_display(login) for login in logins]))
+
+        fzf_process = subprocess.Popen(
+            [
+                "fzf",
+                "--reverse",
+                "--preview",
+                "jq '.[] | select(.name == \"{}\")' " + temp.name,
+            ],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+        )
+        fzf_process.stdin.write(
+            "\n".join([x["name"] for x in logins]).encode("utf8")
+        )  # Writing opens
+        fzf_process.stdin.close()
+        select = fzf_process.stdout.read().splitlines()
+        if len(select) == 0:
+            return  # Early exit with no error
+        select = select[0].decode("utf8")
+
+    login = [x for x in logins if x["name"] == select][0]
+    copy_process = subprocess.Popen("wl-copy", stdin=subprocess.PIPE)
+    copy_process.stdin.write(login["login"]["password"].encode("utf8"))
+    copy_process.stdin.close()
+    try:
+        for t in range(20, 0, -1):
+            print(
+                f"\rCopied password of [{select}], clearing clipboard in {t} seconds...",
+                end="",
+            )
+            time.sleep(1)
+    except KeyboardInterrupt:
+        pass
+    finally:  # Ensuring that wl-copy is always used
+        print("Clearing.")
+        subprocess.Popen(["wl-copy", "--clear"])
+        subprocess.Popen(
+            [
+                "gdbus",
+                "call",
+                "--session",
+                "--dest",
+                "org.kde.klipper",
+                "--object-path",
+                "/klipper",
+                "--method",
+                "org.kde.klipper.klipper.clearClipboardHistory",
+            ]
+        )
 
 
 if __name__ == "__main__":
