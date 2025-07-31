@@ -188,13 +188,16 @@ def copypass():
     select = None
     with tempfile.NamedTemporaryFile("w") as temp:
         temp.write(json.dumps([make_display(login) for login in logins]))
-
         fzf_process = subprocess.Popen(
             [
                 "fzf",
-                "--reverse",
+                "--layout",
+                "reverse",
+                "--border",
+                "--height",
+                "15",
                 "--preview",
-                "jq '.[] | select(.name == \"{}\")' " + temp.name,
+                "jq --arg a {} -C -r '.[] | select(.name == $a)'  " + temp.name,
             ],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
