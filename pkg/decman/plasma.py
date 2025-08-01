@@ -78,21 +78,27 @@ class Themes(decman.Module):
         return ["papirus-icon-theme", "fcitx5-breeze"]
 
     def aur_packages(self):
-        return ["arc-kde"]
+        return ["arc-kde", "rose-pine-cursor"]
 
     def files(self):
         """Theming that are likely not chancing for a long time"""
         kcminputrc = user.create_confexp(ref_path=_conf_target("kcminputrc"))
         kcminputrc.update_from_fragment(ref_path=_frag_target("kcminputrc"))
 
+        konsolerc = user.create_confexp(ref_path=_conf_target("konsolerc"))
+        konsolerc.update_from_fragment(ref_path=_frag_target("konsolerc"))
         return {
             **user.filemgr_config.create_decman_list(
                 ["krunnerrc", "ktimezonedrc", "plasmarc", "yakuakerc"]
             ),
-            **user.filemgr_share.create_decman_list(
-                ["konsole/pinned.profile", "konsole/Breeze.colorscheme"]
+            **user.filemgr_share.create_decman_list(["konsole/rose-pine.profile"]),
+            os.path.join(
+                user.filemgr_share.target_prefix, "konsole/rose-pine-moon.colorscheme"
+            ): user.create_file_url(
+                "https://raw.githubusercontent.com/rose-pine/konsole/refs/heads/main/dist/rose-pine-moon.colorscheme"
             ),
             **kcminputrc.to_decman(),
+            **konsolerc.to_decman(),
         }
 
 

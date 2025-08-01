@@ -2,44 +2,12 @@ return {
   --
   -- A bunch of nice eye candy!
   --
-  { -- Monokai color scheme
-    'loctvl842/monokai-pro.nvim',
+  { -- Rose-pine color scheme
+    "rose-pine/neovim",
+    name = "rose-pine",
     config = function()
-      require('monokai-pro').setup {
-        transparent_background = true,
-        terminal_colors = true,
-        devicons = true, -- highlight the icons of `nvim-web-devicons`
-        styles = {
-          comment = { italic = true },
-          keyword = { italic = true },       -- any other keyword
-          type = { italic = true },          -- (preferred) int, long, char, etc
-          storageclass = { italic = true },  -- static, register, volatile, etc
-          structure = { italic = true },     -- struct, union, enum, etc
-          parameter = { italic = true },     -- parameter pass in function
-          annotation = { italic = true },
-          tag_attribute = { italic = true }, -- attribute of tag in reactjs
-        },
-        filter = 'pro',                      -- classic | octagon | pro | machine | ristretto | spectrum
-        day_night = { enable = false },
-        inc_search = 'background',           -- underline | background
-        background_clear = {
-          'toggleterm',
-          'telescope',
-          'which-key',
-          'renamer',
-          'notify',
-        },
-        plugins = {
-          indent_blankline = {
-            context_highlight = 'default',
-            context_start_underline = true,
-          },
-        },
-        override = function(_) end,
-      }
-
-      vim.cmd [[colorscheme monokai-pro]]
-    end,
+      vim.cmd("colorscheme rose-pine-moon")
+    end
   },
   { -- indent guides for scope this
     'lukas-reineke/indent-blankline.nvim',
@@ -74,7 +42,7 @@ return {
     config = function()
       require('lualine').setup {
         options = {
-          theme = 'monokai-pro',
+          theme = 'gruvbox',
         },
         sections = {
           lualine_a = { 'mode' },
