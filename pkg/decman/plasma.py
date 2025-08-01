@@ -78,7 +78,7 @@ class Themes(decman.Module):
         return ["papirus-icon-theme", "fcitx5-breeze"]
 
     def aur_packages(self):
-        return ["arc-kde", "rose-pine-cursor"]
+        return ["arc-kde", "rose-pine-cursor", "rose-pine-gtk-theme"]
 
     def files(self):
         """Theming that are likely not chancing for a long time"""
@@ -87,6 +87,12 @@ class Themes(decman.Module):
 
         konsolerc = user.create_confexp(ref_path=_conf_target("konsolerc"))
         konsolerc.update_from_fragment(ref_path=_frag_target("konsolerc"))
+
+        konsole_rosepine = user.create_file_url(
+            "https://raw.githubusercontent.com/rose-pine/konsole/refs/heads/main/dist/rose-pine-moon.colorscheme"
+        )
+        konsole_rosepine.content += "\nOpacity=0.87"
+
         return {
             **user.filemgr_config.create_decman_list(
                 ["krunnerrc", "ktimezonedrc", "plasmarc", "yakuakerc"]
@@ -94,9 +100,7 @@ class Themes(decman.Module):
             **user.filemgr_share.create_decman_list(["konsole/rose-pine.profile"]),
             os.path.join(
                 user.filemgr_share.target_prefix, "konsole/rose-pine-moon.colorscheme"
-            ): user.create_file_url(
-                "https://raw.githubusercontent.com/rose-pine/konsole/refs/heads/main/dist/rose-pine-moon.colorscheme"
-            ),
+            ): konsole_rosepine,
             **kcminputrc.to_decman(),
             **konsolerc.to_decman(),
         }
