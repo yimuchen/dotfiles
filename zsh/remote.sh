@@ -33,7 +33,7 @@ function environment_update() {
   if [[ $MACHINE_TYPE_DETAIL == "lxplus" ]]; then
     mkdir -p /tmp/$USER/portage/var/lib/portage
     mv $HOME/.portage/var/lib/portage/* /tmp/$USER/portage/var/lib/portage
-    rm -r $HOME/.portage/var/lib/portage/
+    rm -rf $HOME/.portage/var/lib/portage/
     ln -sf /tmp/$USER/portage/var/lib/portage $HOME/.portage/var/lib
   fi
   emaint --auto sync

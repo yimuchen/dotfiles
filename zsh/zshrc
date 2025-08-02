@@ -4,7 +4,7 @@
 # zsh session that was spawned with `zsh -l` or similar, to ensure that custom
 # shell functions can also be used in single-instance shell interactions (such
 # as calling shell functions within shell function neovim and tmux), the PATH
-# variable should be modified in the ~/.zshenv file instea 
+# variable should be modified in the ~/.zshenv file instea
 
 
 
@@ -49,6 +49,8 @@ if [[ $(($(date +%s) - $(stat -c "%Y" $HOME/.zcompdump))) -gt 86400 ]]; then
 else
   compinit -C
 fi
+zstyle ':completion:*:(ssh|scp|sftp):*' hosts # Special case for ssh completions
+
 
 # History options should be set in .zshrc and after oh-my-zsh sourcing.
 # See https://github.com/nix-community/home-manager/issues/177.

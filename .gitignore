@@ -2,3 +2,4 @@
 .rsync.json
 .nvim
 flake.lock
+zsh/zsh_plugins.zsh
