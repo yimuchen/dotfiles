@@ -23,7 +23,9 @@ class Neovim(decman.Module):
 
     def aur_packages(self):
         # Additional language servers/formatters that are only available in the AUR
-        deps = ["python-lsp-ruff"]
+        # For python
+        deps = ["python-lsp-ruff", "pyrefly-bin"]
+        # For nix
         deps += ["nixfmt"]
         return deps
 
@@ -99,6 +101,8 @@ class CliTools(decman.Module):
         deps += ["zip", "unzip", "lzip"]
         # For direct interactions with the wayland clipboard
         deps += ["wl-clipboard"]
+        # For zsh styling
+        deps += ["starship"]
         return deps
 
     def aur_packages(self):

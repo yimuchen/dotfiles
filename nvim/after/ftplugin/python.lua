@@ -1,6 +1,7 @@
 --- Settings specific to python
-vim.lsp.enable('pylsp')
+-- vim.lsp.enable('pylsp')
 vim.lsp.enable('ruff')
+vim.lsp.enable('pyrefly')
 
 --- Adding multi-line strings to mini.ai
 require('mini.ai').config.custom_textobjects['M'] = function()
