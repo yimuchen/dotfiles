@@ -1,0 +1,122 @@
+# Get editor completions based on the config schema
+# "$schema" = 'https://starship.rs/config-schema.json'
+
+# Inserts a blank line between shell prompts
+add_newline = true
+
+format = """
+$time\
+[](fg:white bg:purple)\
+$conda\
+[](fg:purple bg:yellow)\
+$directory\
+[](fg:yellow bg:blue)\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+[](fg:blue)\
+$fill\
+[\uE0B2](fg:white)\
+$cmd_duration\
+$status\
+${custom.hostlocal}\
+${custom.hostlpc}\
+${custom.hostkit}\
+$hostname\
+$os\
+\n$character"""
+
+
+[time]
+disabled=false
+format="[ 󰥔 $time ]($style)"
+style="fg:black bg:white"
+
+[conda]
+disabled=false
+format="[ $symbol$environment ]($style)"
+symbol=" "
+style="fg:black bg:purple"
+
+[directory]
+format="[ $read_only]($style)[ $path ]($style)"
+truncate_to_repo=false
+truncation_length=20
+style="fg:black bg:yellow"
+read_only=" "
+
+[git_branch]
+format='[ $symbol$branch(:$remote_branch) ]($style)'
+style="fg:black bg:blue"
+
+[git_commit]
+format='[\($hash$tag\)]($style)'
+style="fg:black bg:blue"
+
+[git_state]
+style="fg:black bg:blue"
+
+[git_status]
+format='([\[$all_status$ahead_behind\] ]($style))'
+style="fg:black bg:blue"
+
+
+[username]
+show_always=true
+
+[fill]
+symbol="─"
+style="fg:8"
+
+## Command execution status
+[cmd_duration]
+min_time=500
+format="[ 󱦟 $duration]($style)"
+style="fg:black bg:white"
+
+[status]
+disabled = false
+symbol = '[  ](fg:#FF0000 bg:white)' # If Failed
+success_symbol = '[ 󰸞 ](fg:#00AA00 bg:white)'
+sigint_symbol="[  ](fg:#FFBB00 bg:white)"
+not_found_symbol = '[  ](fg:#FF5500 bg:white)'
+format = '$symbol$maybe_int'
+map_symbol = true
+
+
+# Where we currently are, this unfortunately needs to be modeled per item
+[custom.hostlocal]
+command="echo ${USER}@$(cat /etc/hostname)"
+when='test $MACHINE_TYPE_SIMPLE = "local" '
+style="fg:black bg:blue"
+format='[ $symbol$output ]($style)'
+
+[custom.hostlpc]
+command="echo ${USER}@$(cat /etc/hostname)"
+when='test $MACHINE_TYPE_DETAIL = "cmslpc" '
+style="fg:black bg:yellow"
+format='[ $symbol$output ]($style)'
+
+[custom.hostkit]
+command="echo ${USER}@$(cat /etc/hostname)"
+when='test $MACHINE_TYPE_DETAIL = "kit" '
+style="fg:white bg:22"
+format='[ $symbol$output ]($style)'
+
+# Borrowing for the SSH detection and not much else
+[hostname]
+ssh_only=true
+ssh_symbol=' '
+format="[$ssh_symbol]($style)"
+style="fg:white bg:black"
+
+[os]
+format='[ $symbol]($style)'
+disabled=false
+style="fg:white bg:black"
+
+[os.symbols]
+AlmaLinux = ' '
+Gentoo = ' '
+Arch='󰣇 '

@@ -13,9 +13,9 @@
 ######
 
 # Instant prompt for powerlevel10k
-if [[ -r "$HOME/.cache/p10k-instant-prompt-${USER}.zsh" ]]; then
-  source "$HOME/.cache/p10k-instant-prompt-${USER}.zsh"
-fi
+# if [[ -r "$HOME/.cache/p10k-instant-prompt-${USER}.zsh" ]]; then
+#   source "$HOME/.cache/p10k-instant-prompt-${USER}.zsh"
+# fi
 
 typeset -U path cdpath fpath manpath
 
@@ -75,7 +75,8 @@ unsetopt EXTENDED_HISTORY
 eval "$(fzf --zsh)"
 
 # Setting the theme of the prompt
-source "$HOME/.config/zsh/p10k.zsh"
+# source "$HOME/.config/zsh/p10k.zshi"
+eval "$(starship init zsh)"
 # Additional command-line tools that uses common gnu-coreutils tools
 source "$HOME/.config/zsh/common_utils.sh"
 
@@ -98,43 +99,11 @@ else
   fi
 fi
 
-if [[ "$HOST" == "ensc"* ]]; then                # Personal machine
-  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=7   # White
-  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=232 # BLACK
-  typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=235 # DARK GRAY
-  typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=3   # Orange
-elif [[ "$MACHINE_TYPE_DETAIL" == "umdcms" ]]; then
-  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=7   # White
-  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=232 # BLACK
-  typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=235 # DARK GRAY
-  typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=3   # Orange
-elif [[ "$MACHINE_TYPE_DETAIL" == "cmslpc" ]]; then
-  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=3 # ORANGE
-  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=232
-  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=3 # ORANGE
-  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=232
-  # Domain name is defined by zshenv
-elif [[ "$MACHINE_TYPE_DETAIL" == "lxplus" ]]; then
-  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=19 # DEEP BLUE
-  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=7
-  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=19 # DEEP BLUE
-  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=7
+if [[ "$MACHINE_TYPE_DETAIL" == "lxplus" ]]; then
   # Additional setup required for portage compilation
   mkdir -p /tmp/${USER}/portage-var-lib
   mkdir -p /tmp/${USER}/portage-var-tmp
-elif [[ "$MACHINE_TYPE_DETAIL" == "kit" ]]; then # KIT RELATED MACHINES
-  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=22  # DEEP GREEN
-  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=7
-  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=22 # DEEP GREEN
-  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=7
-else
-  ## HOSTNAME NOT LISTED!!
-  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=1          # RED
-  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=232        # BLACK
-  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=1   # RED
-  typeset -g POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=232 # BLACK
 fi
-
 
 # Required for fixing keystrokes??
 bindkey  "^[[H"   beginning-of-line

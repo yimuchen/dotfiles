@@ -1,3 +1,2 @@
-romkatv/powerlevel10k
 zsh-users/zsh-syntax-highlighting
 conda-incubator/conda-zsh-completion

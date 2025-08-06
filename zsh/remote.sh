@@ -31,18 +31,13 @@ function cert_cern_gen() {
 function environment_update() {
   # Upgrading everything that is managed by the gentoo/emerge
   if [[ $MACHINE_TYPE_DETAIL == "lxplus" ]]; then
-    mkdir -p /tmp/$USER/portage/var/lib/portage
-    mv $HOME/.portage/var/lib/portage/* /tmp/$USER/portage/var/lib/portage
-    rm -rf $HOME/.portage/var/lib/portage/
-    ln -sf /tmp/$USER/portage/var/lib/portage $HOME/.portage/var/lib
+    cp $HOME/.portage/var-lib-portage $HOME/.portage/var/lib/portage
   fi
   emaint --auto sync
   emerge --ask --verbose --update --deep --newuse @world
   emerge --depclean
   if [[ $MACHINE_TYPE_DETAIL == "lxplus" ]]; then
-    rm $HOME/.portage/var/lib/portage
-    mkdir -p $HOMR/.portage/var/lib/portage
-    mv /tmp/$USER/portage/var/lib/portage $HOME/.portage/var/lib/portage
+    cp /tmp/$USER/portage/var/lib/portage/* $HOME/.portage/var-lib-portage
   fi
   # Upgrading everything that is managed by python-uv
   if [[ ! -d $HOME/.cli-python ]]; then
