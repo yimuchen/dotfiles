@@ -31,7 +31,7 @@ function cert_cern_gen() {
 function environment_update() {
   # Upgrading everything that is managed by the gentoo/emerge
   if [[ $MACHINE_TYPE_DETAIL == "lxplus" ]]; then
-    cp $HOME/.portage/var-lib-portage $HOME/.portage/var/lib/portage
+    cp $HOME/.portage/var-lib-portage/* $HOME/.portage/var/lib/portage
   fi
   emaint --auto sync
   emerge --ask --verbose --update --deep --newuse @world
