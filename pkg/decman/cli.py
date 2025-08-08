@@ -116,7 +116,12 @@ class CliTools(decman.Module):
         return {
             os.path.join(user.home_path, ".condarc"): decman.File(
                 content="\n".join(["auto_activate_base: false"])
-            )
+            ),
+            os.path.join(
+                user.config_path, "btop/themes/rose-pine-moon.theme"
+            ): user.create_file_url(
+                "https://raw.githubusercontent.com/rose-pine/btop/refs/heads/main/rose-pine-moon.theme"
+            ),
         }
 
 
