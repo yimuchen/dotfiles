@@ -101,6 +101,12 @@ class Themes(decman.Module):
             os.path.join(
                 user.filemgr_share.target_prefix, "konsole/rose-pine-moon.colorscheme"
             ): konsole_rosepine,
+            os.path.join(
+                user.filemgr_share.target_prefix,
+                "color-schemes/rose-pine-moon.colorscheme",
+            ): user.create_file_url(
+                "https://raw.githubusercontent.com/ashbork/kde/refs/heads/main/Rose%20Pine%20Moon/colorschemes/rose-pine-moon.colors"
+            ),
             **kcminputrc.to_decman(),
             **konsolerc.to_decman(),
         }
