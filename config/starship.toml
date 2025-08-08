@@ -21,9 +21,10 @@ $cmd_duration\
 $status\
 ${custom.hostlocal}\
 ${custom.hostlpc}\
+${custom.hostlxplus}\
 ${custom.hostkit}\
 $hostname\
-$os\
+$os \
 \n[└](fg:white)\
 $character"""
 
@@ -105,6 +106,12 @@ when='test $MACHINE_TYPE_DETAIL = "cmslpc" '
 style="fg:black bg:yellow"
 format='[ $symbol$output ]($style)'
 
+[custom.hostlxplus]
+command="echo ${USER}@$(cat /etc/hostname)"
+when='test $MACHINE_TYPE_DETAIL = "lxplus" '
+style="fg:white bg:21"
+format='[ $symbol$output ]($style)'
+
 [custom.hostkit]
 command="echo ${USER}@$(cat /etc/hostname)"
 when='test $MACHINE_TYPE_DETAIL = "kit" '
@@ -124,6 +131,6 @@ disabled=false
 style="fg:white bg:black"
 
 [os.symbols]
-AlmaLinux = ' '
-Gentoo = ' '
-Arch='󰣇 '
+AlmaLinux = ''
+Gentoo = ''
+Arch='󰣇'
