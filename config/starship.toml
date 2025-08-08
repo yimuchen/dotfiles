@@ -5,19 +5,18 @@
 add_newline = true
 
 format = """
+[┌](fg:white)\
+[\uE0B6](fg:white)\
 $time\
-[](fg:white bg:purple)\
 $conda\
-[](fg:purple bg:yellow)\
-$directory\
-[](fg:yellow bg:blue)\
 $git_branch\
 $git_commit\
 $git_state\
 $git_status\
-[](fg:blue)\
+$directory\
+[\uE0B4](fg:yellow)\
 $fill\
-[\uE0B2](fg:white)\
+[\uE0B6](fg:white)\
 $cmd_duration\
 $status\
 ${custom.hostlocal}\
@@ -25,12 +24,13 @@ ${custom.hostlpc}\
 ${custom.hostkit}\
 $hostname\
 $os\
-\n$character"""
+\n[└](fg:white)\
+$character"""
 
 
 [time]
 disabled=false
-format="[ 󰥔 $time ]($style)"
+format="[󰥔 $time  ]($style)"
 style="fg:black bg:white"
 
 [conda]
@@ -40,11 +40,12 @@ symbol=" "
 style="fg:black bg:purple"
 
 [directory]
-format="[ $read_only]($style)[ $path ]($style)"
+format="[  $path ]($style)[$read_only]($read_only_style)"
 truncate_to_repo=false
 truncation_length=20
 style="fg:black bg:yellow"
-read_only=" "
+read_only="  "
+read_only_style="fg:red bg:yellow"
 
 [git_branch]
 format='[ $symbol$branch(:$remote_branch) ]($style)'
@@ -59,6 +60,9 @@ style="fg:black bg:blue"
 
 [git_status]
 format='([\[$all_status$ahead_behind\] ]($style))'
+untracked=""
+stashed=""
+modified="*"
 style="fg:black bg:blue"
 
 
@@ -72,16 +76,19 @@ style="fg:8"
 ## Command execution status
 [cmd_duration]
 min_time=500
-format="[ 󱦟 $duration]($style)"
+format="[ 󱦟 $duration ]($style)"
 style="fg:black bg:white"
 
 [status]
 disabled = false
-symbol = '[  ](fg:#FF0000 bg:white)' # If Failed
-success_symbol = '[ 󰸞 ](fg:#00AA00 bg:white)'
-sigint_symbol="[  ](fg:#FFBB00 bg:white)"
-not_found_symbol = '[  ](fg:#FF5500 bg:white)'
+symbol = '[ ](fg:#FF0000 bg:white)' # If Failed
+success_symbol = '[󰸞 ](fg:#00AA00 bg:white)'
+sigint_symbol="[ ](fg:#FFBB00 bg:white)"
+signal_symbol="[󰞏 ](fg:#FFBB00 bg:white)"
+not_found_symbol = '[ ](fg:#FF5500 bg:white)'
 format = '$symbol$maybe_int'
+pipestatus = true
+pipestatus_format= '[║$pipestatus║$symbol](fg:black bg:white)'
 map_symbol = true
 
 
@@ -108,7 +115,7 @@ format='[ $symbol$output ]($style)'
 [hostname]
 ssh_only=true
 ssh_symbol=' '
-format="[$ssh_symbol]($style)"
+format="[ $ssh_symbol]($style)"
 style="fg:white bg:black"
 
 [os]
