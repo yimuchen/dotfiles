@@ -67,6 +67,10 @@ class LLMService(decman.Module):
             deps += ["ollama"]
         return deps
 
+    def aur_packages(self):
+        deps = ["opencode-bin"]
+        return deps
+
     def files(self):
         return self.ollama_service.to_decman()
 
