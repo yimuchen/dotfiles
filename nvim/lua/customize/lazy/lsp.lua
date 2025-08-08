@@ -1,9 +1,6 @@
 return {
-  -- Additional plugins to better enhance the LSP interactions
-
   -- For LSP support in embedded documents. No additional settings will be placed here
   { 'nvim-treesitter/nvim-treesitter' },
-
   -- Auto-completion engine
   {
     'hrsh7th/nvim-cmp',
@@ -37,6 +34,7 @@ return {
           { name = 'nvim_lsp' },
           { name = 'nvim_lua' },
           { name = 'luasnip' },
+          { name = 'minuet' },
         },
         mapping = cmp.mapping.preset.insert {
           ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
@@ -44,6 +42,9 @@ return {
           ['<C-y>'] = cmp.mapping.confirm { select = true },
           ['<C-space>'] = cmp.mapping.complete {},
         },
+        performance = {
+          fetching_timeout = 2000,
+        }
       }
     end,
   },
