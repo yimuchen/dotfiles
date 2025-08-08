@@ -74,14 +74,13 @@ unsetopt EXTENDED_HISTORY
 # FZF integration
 eval "$(fzf --zsh)"
 
+# Resourcing the zshenv environment (fixing path loading in gentoo prefix)
+source "$HOME/.zshenv"
 # Setting the theme of the prompt
-# source "$HOME/.config/zsh/p10k.zshi"
 eval "$(starship init zsh)"
 # Additional command-line tools that uses common gnu-coreutils tools
 source "$HOME/.config/zsh/common_utils.sh"
 
-# Resourcing the zshenv environment (fixing path loading in gentoo prefix)
-source "$HOME/.zshenv"
 
 # Additional theme based on host name
 if [[ "$HOST" == "ensc"* ]]; then                # Personal machine
