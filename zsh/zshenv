@@ -29,13 +29,13 @@ export KRB5CCNAME="DIR:${HOME}/.temp.persist"
 # Helper function to avoid excessively appending paths
 function append_path(){
   if [[ $PATH != *":$1:"* && $PATH != *":$1" ]]; then
-    export PATH="$PATH:$1"
+    export PATH="$1:$PATH"
   fi
 }
 
 # Common working paths for system tools that are installed by some
 # language-specific tool instead of the
-append_path "$HOME/.cargo/bin/"
+append_path "$HOME/.cargo/bin"
 append_path "$HOME/.cli-python/bin/"
 
 # Local configurations for personal machines
