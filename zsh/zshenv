@@ -29,7 +29,7 @@ export KRB5CCNAME="DIR:${HOME}/.temp.persist"
 # Helper function to avoid excessively appending paths
 function append_path(){
   if [[ $PATH != *":$1:"* && $PATH != *":$1" ]]; then
-    export PATH="$1:$PATH"
+    export PATH="$PATH:$1"
   fi
 }
 
@@ -48,6 +48,8 @@ if [[ "$HOST" == "ensc"* ]]; then
 
 # Common configurations for remote machines
 else
+  append_path "$HOME/.config/dot-bin/remote/"
+  export MACHINE_TYPE_SIMPLE="remote"
   if [[ -d $HOME/.nix-profile/bin ]] ; then
     append_path "$HOME/.nix-profile/bin/"
     export SSL_CERT_FILE="$HOME/.nix-profile/etc/ssl/certs/ca-bundle.crt"
@@ -55,18 +57,13 @@ else
   if [[ -d "/cvmfs/cms.cern.ch" ]]; then
     append_path "$HOME/.config/dot-bin/remote/cmssw/"
   fi
-  append_path "$HOME/.config/dot-bin/remote/"
-  export MACHINE_TYPE_SIMPLE="remote"
-
-  if [[ -z $LANG ]]; then
-    export LANG="en_US.UTF-8"
-  fi
-
   if [[ -d $HOME/.miniforge3/etc ]] ; then
     source $HOME/.miniforge3/etc/profile.d/conda.sh
   fi
+  if [[ -z $LANG ]]; then
+    export LANG="en_US.UTF-8"
+  fi
 fi
-
 
 # Machine specific path settings
 if [[ "$HOST" == "hepcms"* ]]; then
