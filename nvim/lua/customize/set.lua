@@ -69,7 +69,6 @@ vim.diagnostic.config { update_in_insert = false }
 -- Setting the shell to be using ZSH. For single-user neovim installs using
 -- nix, this should be in $HOME/.nix-profile/bin; otherwise it would be in the
 -- /etc/ profile directory
---
 if vim.fn.isdirectory(vim.env.HOME .. '/.nix-profile/bin') ~= 0 then
   vim.opt.shell = vim.env.HOME .. '/.nix-profile/bin/zsh'
 elseif vim.fn.isdirectory('/etc/profiles/per-user/' .. vim.env.USER) ~= 0 then
