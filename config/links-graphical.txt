@@ -1,4 +1,6 @@
 # Links for graphical program configurations
 #
 ./ghostty/                        $HOME/.config/ghostty
+./zen/chrome/userChrome.css       $HOME/.zen/enscProfile/chrome/userChrome.css
 ./zen/zen-keyboard-shortcuts.json $HOME/.zen/enscProfile/zen-keyboard-shortcuts.json
+./wezterm.lua                     $HOME/.wezterm.lua

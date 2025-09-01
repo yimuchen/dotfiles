@@ -68,11 +68,16 @@ class ScriptsDep(decman.Module):
         deps = ["python"]  # Main language used for helper scripts
         # Additional python helper libraries
         deps += [
+            # Required for handling the requests
             "python-argcomplete",
             "python-tqdm",
             "python-wand",
             "python-requests",
+            # Required for scriptize docstring parsing
             "python-numpydoc",
+            # Commonly used for on-off data analysis scripts
+            "python-numpy",
+            "python-scipy",
         ]
         # Image manipulations stuff
         deps += ["kitty", "ghostscript", "imagemagick"]
@@ -115,12 +120,7 @@ class CliTools(decman.Module):
     def files(self):
         return {
             os.path.join(user.home_path, ".condarc"): decman.File(
-                content="\n".join(["auto_activate_base: false"])
-            ),
-            os.path.join(
-                user.config_path, "btop/themes/rose-pine-moon.theme"
-            ): user.create_file_url(
-                "https://raw.githubusercontent.com/rose-pine/btop/refs/heads/main/rose-pine-moon.theme"
+                content="\n".join(["auto_activate_base: false", "changeps1: false"])
             ),
         }
 

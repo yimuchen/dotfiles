@@ -18,7 +18,7 @@ class Core(decman.Module):
         # For personal information management
         deps += ["thunderbird", "korganizer"]
         # Terminal of preference
-        deps += ["ghostty", "yakuake"]
+        deps += ["ghostty", "yakuake", "wezterm"]
         # For personal not taking
         deps += ["obsidian"]
         return deps
@@ -61,16 +61,6 @@ class Core(decman.Module):
         return {
             **zen_install.to_decman(),
             **zen_profile.to_decman(),
-            os.path.join(
-                zen_base, f"{user_profile}/chrome/userChrome.css"
-            ): user.create_file_url(
-                "https://raw.githubusercontent.com/rose-pine/zen-browser/refs/heads/main/dist/userChrome.css"
-            ),
-            os.path.join(
-                zen_base, f"{user_profile}/chrome/rose-pine-main.css"
-            ): user.create_file_url(
-                "https://raw.githubusercontent.com/rose-pine/zen-browser/refs/heads/main/dist/rose-pine-moon.css"
-            ),
         }
 
 
@@ -120,7 +110,7 @@ class Media(decman.Module):
 
     def pacman_packages(self):
         # Audio related
-        deps = ["vlc", "elisa", "audacity", "kid3"]
+        deps = ["vlc", "elisa", "audacity", "kid3", "musescore"]
         # Image related
         deps += ["inkscape", "gimp", "gwenview", "digikam"]
         # Additional dependencies of inkscape
@@ -130,7 +120,7 @@ class Media(decman.Module):
         return deps
 
     def aur_packages(self):
-        return ["musescore-bin", "wl-color-picker", "droidcam"]
+        return ["wl-color-picker", "droidcam"]
 
 
 class MiscTools(decman.Module):

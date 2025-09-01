@@ -2,24 +2,16 @@ return {
   --
   -- A bunch of nice eye candy!
   --
-  { -- Rose-pine color scheme
-    "rose-pine/neovim",
-    name = "rose-pine",
+  { -- nord colorscheme
+    "gbprod/nord.nvim",
+    lazy = false,
+    priority = 1000,
     config = function()
-      require("rose-pine").setup({
-        enable = {
-          terminal = true,
-          legacy_highlights = true,
-          migrations = true,
-        },
-        styles = {
-          bold = true,
-          italic = true,
-          transparency = true,
-        }
+      require("nord").setup({
+        transparent = true,
       })
-      vim.cmd("colorscheme rose-pine-moon")
-    end
+      vim.cmd.colorscheme("nord")
+    end,
   },
   { -- indent guides for scope this
     'lukas-reineke/indent-blankline.nvim',
@@ -30,8 +22,6 @@ return {
         'indent_guide_nonhl',
       }
       local hooks = require 'ibl.hooks'
-      -- create the highlight groups in the highlight setup hook, so they are
-      -- reset every time the color scheme changes
       hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
         vim.api.nvim_set_hl(0, 'indent_guide_nonhl', { fg = '#333333' })
       end)
@@ -53,7 +43,7 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('lualine').setup {
-        options = { theme = 'auto' },
+        options = { theme = 'nord' },
         sections = {
           lualine_a = { 'mode' },
           lualine_b = { 'branch', 'diff', 'diagnostics' },

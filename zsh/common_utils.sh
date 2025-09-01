@@ -11,12 +11,34 @@ alias -- rm='rm -i'
 alias -- root='root -l'
 alias -- wget='wget --continue'
 
+# Counting number of files
+function dir_count() {
+  for p in $(find . -maxdepth 1 -type d); do echo $(find $p -type f | wc -l) $p; done | sort -n
+}
+
+# Helper functions for fzf!
+
 # Image browser compound command will be written as a function instead
 alias -- icat='fzf_img_preview'
 
 function img-browse() {
   find . -name '*.pdf' -o -name '*.png' -o -name '*.jpg' -o -name '*.svg' |
     fzf --preview 'fzf_img_preview {}' --preview-window=right,65%
+}
+
+function gp_find_cmd() {
+  find . \( -path '*/.local/*' \
+    -o -path '*/.config/*' \
+    -o -path '*/.cache/*' \
+    -o -path '*/.cargo/*' \
+    -o -path '*/.portage/*' \
+    -o -path '*/portage/*' \
+    -o -path '*/nix-setup/*' \
+    \) -prune -o -type d -name .git -exec dirname {} \;
+}
+
+function gp() { # List all functions managed by git and go to it
+  cd $(gp_find_cmd | fzf)
 }
 
 # Additional utility for python develpment
@@ -33,13 +55,13 @@ function get_jupyter_url() {
   echo "http://localhost:${port}/?token=${token}"
 }
 
-# Rose-pine in fuzzy finder:
+# Theming the fuzzy finder:
 export FZF_DEFAULT_OPTS="
-	--color=fg:#908caa,bg:#191724,hl:#ebbcba
-	--color=fg+:#e0def4,bg+:#26233a,hl+:#ebbcba
-	--color=border:#403d52,header:#31748f,gutter:#191724
-	--color=spinner:#f6c177,info:#9ccfd8
-	--color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"
+	--color=fg:#e5e9f0,bg:#2e3440,hl:#81a1c1
+	--color=fg+:#eceff4,bg+:#434c5e,hl+:#81a1c1
+	--color=border:#4c566a,header:#8fbcbb,gutter:#2e3440
+	--color=spinner:#ebcb8b,info:#88c0d0
+	--color=pointer:#5e81ac,marker:#81a1c1,prompt:#e5e9f0"
 
 function show_colors256() {
   # Solution obtained here:
