@@ -5,7 +5,7 @@ Frames=10
 Skin=arc-dark
 
 [Desktop Entry]
-DefaultProfile=rose-pine.profile
+DefaultProfile=nord.profile
 
 [Dialogs]
 FirstRun=false
