@@ -12,9 +12,7 @@ alias init-voms='voms-proxy-init -voms cms --valid 192:00 --out ${X509_USER_PROX
 alias usecrab='source /cvmfs/cms.cern.ch/crab3/crab.sh'
 
 # Loading the cmssw settings if not already loaded
-if [[ -z "${SCRAM_ARCH}" ]]; then
-  source /cvmfs/cms.cern.ch/cmsset_default.sh
-fi
+source /cvmfs/cms.cern.ch/cmsset_default.sh
 
 # Additional bind paths for cmssw-elX. Notice that the paths will need to be
 # different for different cluster setups.
