@@ -30,9 +30,18 @@ function system_update() {
 
 function paruf() {
   # Listing all packages and quickly install via a search
-  paru -Slq | \
-    fzf --multi --preview 'paru -Sii {1}' --preview-window=right:75% | \
+  paru -Slq |
+    fzf --multi --preview 'paru -Sii {1}' --preview-window=right:75% |
     xargs -ro paru -S
+}
+
+function llm_launch() {
+  if [[ $# == 0 ]]; then
+    model="gpt-oss:20b"
+  else
+    model=$1
+  fi
+  ssh -t enscAMDPC ollama run $model
 }
 
 EXEC_ROOTBROWSE="${NIX_EXEC_ROOTBROWSE:=rootbrowse}"
