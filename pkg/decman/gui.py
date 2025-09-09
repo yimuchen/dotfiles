@@ -92,7 +92,7 @@ class Office(decman.Module):
         ]  # latex
         deps += ["typst", "tinymist"]  # typst
         # PDF browsers
-        deps += ["okular", "evince"]
+        deps += ["okular", "evince", "calibre"]
         return deps
 
     def aur_packages(self):
@@ -100,6 +100,8 @@ class Office(decman.Module):
         deps = ["wps-office-bin"]
         # Additional packages required for markup document compiling
         deps += ["typstyle-bin"]
+        # Additional
+        deps += ["calibre-plugin-dedrm"]
 
         return deps
 
