@@ -11,3 +11,11 @@ class hgcal_database(decman.Module):
 
     def aur_packages(self) -> list[str]:
         return ["sqlfmt-bin"]
+
+
+class hep_cpp(decman.Module):
+    def __init__(self):
+        super().__init__(name="hep_cpp", enabled=True, version="1")
+
+    def pacman_packages(self) -> list[str]:
+        return ["root"]
