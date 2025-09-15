@@ -31,7 +31,7 @@ else
   # loads an odd version of ncurses
   ROWS=$(/usr/bin/tput lines)
   COLS=$(/usr/bin/tput cols)
-  kitty_common=$kitty_common" --use-window-size=$((COLS/2)),$((ROWS/2)),1500,1000"
+  kitty_common=$kitty_common" --use-window-size=$((COLS / 2)),$((ROWS / 2)),1500,1000"
 fi
 
 echo "$realpath_msg"
