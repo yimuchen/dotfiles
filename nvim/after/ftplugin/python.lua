@@ -12,7 +12,6 @@ end
 -- Adding an explicit prefix to modify where python executable start
 local cmd_prefix = ""
 if vim.fn.executable('_cmssw_src_path') ~= 0 and vim.fn.system("_cmssw_src_path") ~= "" then
-  vim.print(vim.fn.system('_cmssw_src_path'))
   cmd_prefix = vim.env.HOME .. "/.config/dot-bin/remote/cmssw/cmssw-"
 elseif vim.env.CONDA_PREFIX ~= nil then
   cmd_prefix = vim.env.CONDA_PREFIX .. "/bin/"
