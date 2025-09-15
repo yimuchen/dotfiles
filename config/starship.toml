@@ -8,6 +8,7 @@ format = """
 [┌](fg:white)\
 [\uE0B6](fg:white)\
 $time\
+$nix_shell\
 $conda\
 $git_branch\
 $git_commit\
@@ -24,14 +25,15 @@ ${custom.hostlpc}\
 ${custom.hostlxplus}\
 ${custom.hostkit}\
 $hostname\
-$os \
+$os\
+[\uE0B4](fg:black)\
 \n[└](fg:white)\
 $character"""
 
 
 [time]
 disabled=false
-format="[󰥔 $time  ]($style)"
+format="[󰥔 $time ]($style)"
 style="fg:black bg:white"
 
 [conda]
@@ -39,6 +41,10 @@ disabled=false
 format="[ $symbol$environment ]($style)"
 symbol=" "
 style="fg:black bg:purple"
+
+[nix_shell]
+disabled=false
+unknown_msg="UNKNOWN"
 
 [directory]
 format="[  $path ]($style)[$read_only]($read_only_style)"
@@ -96,25 +102,25 @@ map_symbol = true
 # Where we currently are, this unfortunately needs to be modeled per item
 [custom.hostlocal]
 command="echo ${USER}@$(cat /etc/hostname)"
-when='test $MACHINE_TYPE_SIMPLE = "local" '
+when='test $MACHINE_TYPE_SIMPLE = "local"'
 style="fg:black bg:blue"
 format='[ $symbol$output ]($style)'
 
 [custom.hostlpc]
 command="echo ${USER}@$(cat /etc/hostname)"
-when='test $MACHINE_TYPE_DETAIL = "cmslpc" '
+when='test $MACHINE_TYPE_DETAIL = "cmslpc"'
 style="fg:black bg:yellow"
 format='[ $symbol$output ]($style)'
 
 [custom.hostlxplus]
 command="echo ${USER}@$(cat /etc/hostname)"
-when='test $MACHINE_TYPE_DETAIL = "lxplus" '
+when='test $MACHINE_TYPE_DETAIL = "lxplus"'
 style="fg:white bg:21"
 format='[ $symbol$output ]($style)'
 
 [custom.hostkit]
 command="echo ${USER}@$(cat /etc/hostname)"
-when='test $MACHINE_TYPE_DETAIL = "kit" '
+when='test $MACHINE_TYPE_DETAIL = "kit"'
 style="fg:white bg:22"
 format='[ $symbol$output ]($style)'
 
@@ -131,6 +137,6 @@ disabled=false
 style="fg:white bg:black"
 
 [os.symbols]
-AlmaLinux = ''
-Gentoo = ''
-Arch='󰣇'
+AlmaLinux = ' '
+Gentoo = ' '
+Arch='󰣇 '
