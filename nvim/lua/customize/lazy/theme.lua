@@ -43,7 +43,11 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('lualine').setup {
-        options = { theme = 'nord' },
+        options = {
+          theme = 'nord',
+          section_separators = { left = '', right = '' },
+          component_separators = { left = '', right = '' }
+        },
         sections = {
           lualine_a = { 'mode' },
           lualine_b = { 'branch', 'diff', 'diagnostics' },
