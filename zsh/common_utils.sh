@@ -90,6 +90,14 @@ function show_colors256() {
   printf "|\n"
 }
 
+function show_powerline_char() {
+  # Printing the powerline character
+  # Unicode entry listed here: https://github.com/ryanoasis/powerline-extra-symbols
+  echo '\ue0a0  \ue0a1 \ue0a2 \ue0a3'
+  echo '\ue0b0  \ue0b1 \ue0b2 \ue0b3'
+  echo '\ue0b4  \ue0b5 \ue0b6 \ue0b7'
+}
+
 # Helper functions for getting tmux spin up
 alias -- ctmux="$HOME/.config/tmux-plugins-custom/cluster-session/scripts/ctmux attach-session"
 
