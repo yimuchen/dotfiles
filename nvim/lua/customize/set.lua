@@ -44,7 +44,7 @@ vim.opt.colorcolumn = '120'
 -- Setting the folding expression
 vim.opt.foldmethod = 'expr' -- Folding using tree-sitter syntax parser
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
-vim.opt.foldlevel = 20 -- Expand everything by default
+vim.opt.foldlevel = 20      -- Expand everything by default
 
 -- Adding some additional key mappings for vim in-built functions
 vim.g.mapleader = ' ' -- leader key for custom mapping
@@ -77,4 +77,28 @@ elseif vim.fn.isdirectory(vim.env.HOME .. '/.portage') ~= 0 then
   vim.opt.shell = vim.env.HOME .. '/.portage/bin/zsh'
 else
   vim.opt.shell = '/bin/zsh'
+end
+
+-- Adding global functions for LSPs to switch execution environments on
+-- directory or path patterns
+vim.g.get_prefixed_exec = function(exe_name)
+  if vim.fn.executable('_cmssw_src_path') ~= 0 and vim.fn.system("_cmssw_src_path") ~= "" then
+    -- Calling the tools installed in a CMSSW environment. These need to be
+    -- defined in the custom scripts directory
+    local prefix = vim.env.HOME .. "/.config/dot-bin/remote/cmssw/cmssw-"
+    if vim.fn.filereadable(prefix .. exe_name) then
+      return prefix .. exe_name
+    else
+      return exe_name
+    end
+  elseif vim.env.CONDA_PREFIX ~= nil then
+    -- For calling tools installed in a conda environment
+    return vim.env.CONDA_PREFIX .. "/bin/" .. exe_name
+  elseif vim.fs.root(0, { ".apptainer-" .. exe_name }) ~= nil then
+    -- For tool loaded in an apptainer environment, the project in question
+    -- will need to provide the .apptainer-exe script for how the tool should
+    -- be initialized with apptainer environment of interest
+    return vim.fs.root(0, { ".apptainer-" .. exe_name }) .. "/.apptainer-" .. exe_name
+  end
+  return exe_name
 end

@@ -2,27 +2,16 @@
 vim.lsp.enable('pylsp')
 vim.lsp.enable('ruff')
 -- vim.lsp.enable('pyrefly')
--- vim.lsp.enable('zuban')
 
 --- Adding multi-line strings to mini.ai
 require('mini.ai').config.custom_textobjects['M'] = function()
   return { string.format('%s().-()%s', '"""\n', '\n *"""\n') }
 end
 
--- Adding an explicit prefix to modify where python executable start
-local cmd_prefix = ""
-if vim.fn.executable('_cmssw_src_path') ~= 0 and vim.fn.system("_cmssw_src_path") ~= "" then
-  cmd_prefix = vim.env.HOME .. "/.config/dot-bin/remote/cmssw/cmssw-"
-elseif vim.env.CONDA_PREFIX ~= nil then
-  cmd_prefix = vim.env.CONDA_PREFIX .. "/bin/"
-elseif vim.fs.root(0, { ".apptainer-ruff" }) ~= nil then
-  cmd_prefix = vim.fs.root(0, { ".apptainer-pylsp" }) .. "/.apptainer-"
-end
-
 local conform = require("conform")
 local orig = require("conform.formatters.ruff_organize_imports")
 conform.formatters.ruff_order = vim.deepcopy(orig)
-conform.formatters.ruff_order.command = cmd_prefix .. conform.formatters.ruff_order.command
+conform.formatters.ruff_order.command = vim.g.get_prefixed_exec(conform.formatters.ruff_order.command)
 conform.formatters_by_ft["python"] = { "ruff_order" }
 
 

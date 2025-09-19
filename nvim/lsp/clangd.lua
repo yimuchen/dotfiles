@@ -1,11 +1,5 @@
--- Adding an explicit prefix to where the pylsp server should be activated
-local cmd_prefix = ''
-if vim.fn.executable('_cmssw_src_path') and vim.fn.system("_cmssw_src_path") then
-  cmd_prefix = vim.env.HOME .. "/.config/dot-bin/remote/cmssw/cmssw-"
-end
-
 return {
-  cmd = { cmd_prefix .. 'clangd' },
+  cmd = { vim.g.get_prefixed_exec('clangd') },
   filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
   root_markers = {
     '.clangd',
