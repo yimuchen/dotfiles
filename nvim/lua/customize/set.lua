@@ -82,12 +82,16 @@ end
 -- Adding global functions for LSPs to switch execution environments on
 -- directory or path patterns
 vim.g.get_prefixed_exec = function(exe_name)
-  if vim.fn.executable('_cmssw_src_path') ~= 0 and vim.fn.system("_cmssw_src_path") ~= "" then
-    -- Calling the tools installed in a CMSSW environment. These need to be
-    -- defined in the custom scripts directory
-    local prefix = vim.env.HOME .. "/.config/dot-bin/remote/cmssw/cmssw-"
-    if vim.fn.filereadable(prefix .. exe_name) then
-      return prefix .. exe_name
+  if vim.fn.isdirectory('/cvmfs/cms.cern.ch') ~= 0 then
+    if vim.fn.system("_cmssw_src_path") ~= "" then
+      -- Calling the tools installed in a CMSSW environment. These need to be
+      -- defined in the custom scripts directory
+      local mod_exec = vim.env.HOME .. "/.config/dot-bin/remote/cmssw/cmssw-" .. exe_name
+      if vim.fn.filereadable(mod_exec) then
+        return mod_exec
+      else
+        return exe_name
+      end
     else
       return exe_name
     end

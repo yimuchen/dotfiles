@@ -3,8 +3,8 @@
 # the CMSSW containers, nor load the CMSSW environment when using this command.
 # You just need to be sure that your current working directory is within a
 # CMSSW_X_Y_Z/src directory.
-
-PWD_CMSSW_VERSION=$(_cmssw_src_path)
+script_dir=$(dirname $BASH_SOURCE[0])
+PWD_CMSSW_VERSION=$(${script_dir}/_cmssw_src_path)
 if [[ $PWD_CMSSW_VERSION == "" ]]; then
   echo "Not in a valid CMSSW_X_Y_Z/src directory. Exiting..."
   exit 1
@@ -20,11 +20,11 @@ fi
 # host OS versions is matching. This ensure consistency between the results
 CONTAINER_CMD=""
 if [[ "$PWD_SCRAM_ARCH" == "slc7"* ]]; then
-  CONTAINER_CMD="cmssw-el7"
+  CONTAINER_CMD="/cvmfs/cms.cern.ch/common/cmssw-el7"
 elif [[ "$PWD_SCRAM_ARCH" == "el8"* ]]; then
-  CONTAINER_CMD="cmssw-el8"
+  CONTAINER_CMD="/cvmfs/cms.cern.ch/common/cmssw-el8"
 elif [[ "$PWD_SCRAM_ARCH" == "el9"* ]]; then
-  CONTAINER_CMD="cmssw-el9"
+  CONTAINER_CMD="/cvmfs/cms.cern.ch/common/cmssw-el9"
 else
   echo "Unrecognized SCRAM_ARCH '${PWD_SCRAM_ARCH}'; Will not continue"
   exit 1
