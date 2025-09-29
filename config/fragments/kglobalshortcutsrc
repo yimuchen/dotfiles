@@ -7,7 +7,7 @@ activate task manager entry 3=Meta+M\tMeta+3,Meta+3,Activate Task Manager Entry 
 _launch=none
 
 [services][org.kde.krunner.desktop]
-_launch=Meta
+_launch=Meta+Space
 
 [yakuake]
 _k_friendly_name=Yakuake
