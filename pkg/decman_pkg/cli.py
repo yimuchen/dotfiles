@@ -11,7 +11,8 @@ class Neovim(decman.Module):
         super().__init__(name="neovim", enabled=True, version="1")
 
     def pacman_packages(self):
-        deps = ["neovim", "luarocks"]  # Neovim proper along with lua package manager
+        deps = ["neovim", "luarocks"]  # Neovim along with lua package manager
+        deps += ["tree-sitter", "tree-sitter-cli"]  # Tree-sitter stuff
         # Base LSP and formatting tools for common languages
         deps += ["python-lsp-server", "ruff", "python-uv"]
         deps += ["lua-language-server", "stylua"]
