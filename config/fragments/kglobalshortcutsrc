@@ -9,10 +9,6 @@ _launch=none
 [services][org.kde.krunner.desktop]
 _launch=Meta+Space
 
-[yakuake]
-_k_friendly_name=Yakuake
-toggle-window-state=Meta+X,F12,Open/Retract Yakuake
-
 [kwin]
 Expose=Meta+Q,Ctrl+F9,Toggle Present Windows (Current desktop)
 Walk Through Windows=Meta+Tab,Alt+Tab,Walk Through Windows

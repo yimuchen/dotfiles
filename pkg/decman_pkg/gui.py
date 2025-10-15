@@ -18,7 +18,7 @@ class Core(decman.Module):
         # For personal information management
         deps += ["thunderbird", "korganizer"]
         # Terminal of preference
-        deps += ["ghostty", "yakuake", "wezterm"]
+        deps += ["ghostty", "wezterm"]
         # For personal not taking
         deps += ["obsidian"]
         return deps
@@ -97,7 +97,7 @@ class Office(decman.Module):
 
     def aur_packages(self):
         # Alternate office suite
-        deps = ["wps-office-bin"]
+        deps = ["wps-office"]
         # Additional packages required for markup document compiling
         deps += ["typstyle-bin"]
         # Additional

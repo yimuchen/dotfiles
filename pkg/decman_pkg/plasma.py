@@ -55,7 +55,10 @@ class Input(decman.Module):
     def pacman_packages(self):
         # Method input methods
         deps = ["fcitx5", "fcitx5-chewing", "fcitx5-anthy"]
+        # For difference GUI applications
         deps += ["fcitx5-qt", "fcitx5-gtk"]
+        # For configuration
+        deps += ["fcitx5-configtool"]
         return deps
 
     def files(self):
@@ -85,24 +88,11 @@ class Themes(decman.Module):
         kcminputrc = user.create_confexp(ref_path=_conf_target("kcminputrc"))
         kcminputrc.update_from_fragment(ref_path=_frag_target("kcminputrc"))
 
-        konsolerc = user.create_confexp(ref_path=_conf_target("konsolerc"))
-        konsolerc.update_from_fragment(ref_path=_frag_target("konsolerc"))
-
-        konsole_nord = user.create_file_url(
-            "https://raw.githubusercontent.com/nordtheme/konsole/refs/heads/develop/src/nord.colorscheme"
-        )
-        konsole_nord.content += "\nOpacity=0.87"
-
         return {
             **user.filemgr_config.create_decman_list(
-                ["krunnerrc", "ktimezonedrc", "plasmarc", "yakuakerc"]
+                ["krunnerrc", "ktimezonedrc", "plasmarc"]
             ),
-            **user.filemgr_share.create_decman_list(["konsole/nord.profile"]),
-            os.path.join(
-                user.filemgr_share.target_prefix, "konsole/nord.colorscheme"
-            ): konsole_nord,
             **kcminputrc.to_decman(),
-            **konsolerc.to_decman(),
         }
 
 

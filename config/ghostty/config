@@ -12,6 +12,11 @@ window-decoration = auto
 gtk-titlebar = true
 gtk-single-instance = true
 
+# Quick terminal
+keybind = global:super+grave_accent=toggle_quick_terminal
+quick-terminal-position = center
+quick-terminal-size = 80%,80%
+
 # Making the keybinds for tab switching more similar to other applications
 keybind =  ctrl+one=goto_tab:1
 keybind =  ctrl+two=goto_tab:2
