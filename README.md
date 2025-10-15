@@ -1,6 +1,6 @@
 # Reloading command line tools
 
-This is the set of tools that I use for day-to-day activity. Each major component will include each of it's
+This is the set of tools that I use for day-to-day activity. Each major component will include each of its
 copy-and-paste install instructions, assuming that you are working from the base directory of this repository. To allow
 changes to be reflected immediately after any edits, all custom files will be soft-linked to the required repositories.
 
@@ -24,7 +24,7 @@ can run this like:
 ./bin/common/symlinkmgr ./config/links-cli.txt
 ```
 
-This links that are managed by this tool will be kept in a log file so that links can be cleanly removed when the system
+This links that are managed by this tool will be kept in a logfile so that links can be cleanly removed when the system
 is updated.
 
 ## What should be handled by package managers?
@@ -65,7 +65,7 @@ These are configurations that are not expected to be changed often.
 
 ## Latex settings
 
-Custom latex aliasing, symbols and styling files. This is mainly for standalone documents generate without minimum
+Custom latex aliasing, symbols, and styling files. This is mainly for standalone documents generate without minimum
 document format restrictions and _not_ publication ready. For any serious publications, it would be better to directly
 create a separate copy to ensure the object styles are properly frozen.
 
