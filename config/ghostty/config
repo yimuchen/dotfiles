@@ -9,7 +9,8 @@ cursor-style = block
 shell-integration-features = no-cursor,no-title
 # Removing title bar
 window-decoration = auto
-gtk-titlebar = true
+gtk-titlebar = false
+gtk-titlebar-style = tabs
 gtk-single-instance = true
 
 # Quick terminal

@@ -1,0 +1,13 @@
+[99c23d64-dc75-4c84-b850-6ce0c429bacd]
+Description=Window settings for com.mitchellh.ghostty
+noborder=true
+noborderrule=3
+title=🏠~
+types=1
+wmclass=ghostty com.mitchellh.ghostty
+wmclasscomplete=true
+wmclassmatch=1
+
+[General]
+count=1
+rules=99c23d64-dc75-4c84-b850-6ce0c429bacd

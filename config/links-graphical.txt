@@ -4,3 +4,4 @@
 ./zen/chrome/userChrome.css       $HOME/.zen/enscProfile/chrome/userChrome.css
 ./zen/zen-keyboard-shortcuts.json $HOME/.zen/enscProfile/zen-keyboard-shortcuts.json
 ./wezterm.lua                     $HOME/.wezterm.lua
+./kwinrulesrc                     $HOME/.config/kwinrulerc
