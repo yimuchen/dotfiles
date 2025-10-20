@@ -1,13 +1,21 @@
-[99c23d64-dc75-4c84-b850-6ce0c429bacd]
+[676b0733-0cb7-49d5-b69b-d58c5e2b94d5]
 Description=Window settings for com.mitchellh.ghostty
 noborder=true
 noborderrule=3
+title=🏠~
+wmclass=ghostty com.mitchellh.ghostty
+wmclassmatch=2
+
+[General]
+count=2
+rules=c1f91286-b9d5-4bee-a167-dcf902b69c2a,676b0733-0cb7-49d5-b69b-d58c5e2b94d5
+
+[c1f91286-b9d5-4bee-a167-dcf902b69c2a]
+Description=Window settings for com.mitchellh.ghostty
+noborder=true
+noborderrule=2
 title=🏠~
 types=1
 wmclass=ghostty com.mitchellh.ghostty
 wmclasscomplete=true
 wmclassmatch=1
-
-[General]
-count=1
-rules=99c23d64-dc75-4c84-b850-6ce0c429bacd
