@@ -14,9 +14,9 @@ vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 
--- Displaying problematic white space characters
+-- Displaying problematic whitespace characters
 vim.opt.list = true
-vim.opt.listchars = { tab = '▷ ', trail = '', extends = '>', precedes = '<' }
+vim.opt.listchars = { tab = '▷ ', trail = '🮙', extends = '>', precedes = '<' }
 
 -- Do not attempt to wrap the text on display
 vim.opt.wrap = false
@@ -42,11 +42,11 @@ vim.opt.updatetime = 50
 vim.opt.colorcolumn = '120'
 
 -- Setting the folding expression
-vim.opt.foldmethod = 'expr' -- Folding using tree-sitter syntax parser
+vim.opt.foldmethod = 'expr' -- Folding using Tree-sitter syntax parser
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.opt.foldlevel = 20      -- Expand everything by default
 
--- Adding some additional key mappings for vim in-built functions
+-- Adding some additional key mappings for vim built-in functions
 vim.g.mapleader = ' ' -- leader key for custom mapping
 
 -- Highlighting text on yank

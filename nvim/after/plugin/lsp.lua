@@ -5,7 +5,7 @@ vim.lsp.enable("harper_ls")
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
   callback = function(event)
-    local ts_builtin = require 'telescope.builtin'
+    local fzf = require("fzf-lua")
     local wk = require 'which-key'
 
     -- Functions for diagnostic jumping
@@ -16,22 +16,26 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     -- Navigation based on LSP related functions. For multiple items, we will be
-    -- using telescope
+    -- using fuzzing finding plugin
     wk.add {
       -- Additional navigation key bindings
-      { '[d',          diag_jump(1),                             desc = 'Go to previous [d]iagnostic' },
-      { ']d',          diag_jump(-1),                            desc = 'Go to next [d]iagnostic' },
-      { 'gd',          ts_builtin.lsp_definitions,               desc = '[G]oto definition' },
-      { 'gb',          ':e#<CR>',                                desc = '[G]o [b]ack to previous' },
-      { 'gr',          ts_builtin.lsp_references,                desc = '[G]oto [R]eferences' },
-      { 'gI',          ts_builtin.lsp_implementations,           desc = '[G]oto [I]mplementation' },
+      { '[d',          diag_jump(1),                       desc = 'Go to previous [d]iagnostic' },
+      { ']d',          diag_jump(-1),                      desc = 'Go to next [d]iagnostic' },
+      { 'gd',          fzf.lsp_definitions,                desc = '[G]oto definition' },
+      { 'gb',          ':e#<CR>',                          desc = '[G]o [b]ack to previous' },
+      { 'gr',          fzf.lsp_references,                 desc = '[G]oto [R]eferences' },
+      { 'gI',          fzf.lsp_implementations,            desc = '[G]oto [I]mplementation' },
       -- Additional search items
-      { '<leader>ssd', ts_builtin.lsp_document_symbols,          desc = '[S]search [S]ymbols in [D]ocument' },
-      { '<leader>ssw', ts_builtin.lsp_dynamic_workspace_symbols, desc = '[S]earch [S]ymbols in [W]orkspace' },
-      { '<leader>sd',  ts_builtin.diagnostics,                   desc = '[S]earch [D]iagnostics' },
+      { '<leader>ssd', fzf.lsp_document_symbols,           desc = '[S]search [S]ymbols in [D]ocument' },
+      { '<leader>ssw', fzf.lsp_dynamic_workspace_symbolss, desc = '[S]earch [S]ymbols in [W]orkspace' },
+      { '<leader>sd',  fzf.diagnostics_document,           desc = '[S]earch [D]iagnostics' },
       -- Opening preview buffers - Use ctrl key as modifier
-      { '<C-h>',       vim.lsp.buf.hover,                        desc = '[H]over Documentation',            mode = 'ni' },
-      { '<C-e>',       vim.diagnostic.open_float,                desc = 'Show diagnostic [E]rror messages', mode = 'ni' },
+      { '<C-h>',       vim.lsp.buf.hover,                  desc = '[H]over Documentation',            mode = 'ni' },
+      { '<C-e>',       vim.diagnostic.open_float,          desc = 'Show diagnostic [E]rror messages', mode = 'ni' },
+      -- For select interactions
+      { '<leader>l',   group = '[L]SP' },
+      { '<leader>la',  fzf.lsp_code_actions,               desc = "[L]SP [A]ction" },
+      { '<leader>lr',  vim.lsp.buf.rename,                 desc = "[L]SP [R]ename" }
     }
 
     -- The following two auto commands are used to highlight references
