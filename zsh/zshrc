@@ -52,7 +52,7 @@ fi
 zstyle ':completion:*:(ssh|scp|sftp):*' hosts # Special case for ssh completions
 
 
-# History options should be set in .zshrc and after oh-my-zsh sourcing.
+# History options should be set in .zshrc and after compinit items
 # See https://github.com/nix-community/home-manager/issues/177.
 HISTSIZE="10000"
 SAVEHIST="10000"
@@ -66,7 +66,7 @@ setopt HIST_IGNORE_DUPS
 unsetopt HIST_IGNORE_ALL_DUPS
 unsetopt HIST_SAVE_NO_DUPS
 unsetopt HIST_FIND_NO_DUPS
-setopt HIST_IGNORE_SPACE
+setopt HIST_IGNORE_SPACE # Commands that start with spaces are ignored in history, see common_utils for the alias setup to ignore certain commands by default
 unsetopt HIST_EXPIRE_DUPS_FIRST
 setopt SHARE_HISTORY
 unsetopt EXTENDED_HISTORY

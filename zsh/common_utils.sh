@@ -1,15 +1,18 @@
 # Common aliases for commands:
 alias -- dir_size='du --max-depth=1 --human-readable --all | sort --human-numeric-sort'
 alias -- grp='grep --colour=always'
-alias -- less='less --raw-control-chars'
 alias -- ln='ln --symbolic --force'
-alias -- ls='ls --group-directories-first -X --human-readable --color=auto'
 alias -- nshell='nix develop -c $SHELL'
 alias -- ping='ping -c 7 -i 0.200'
 alias -- ping-test='ping www.google.com'
 alias -- rm='rm -i'
 alias -- root='root -l'
 alias -- wget='wget --continue'
+# Display commands should be ignored in command history to avoid clutter
+alias -- less=' less --raw-control-chars'
+alias -- ls=' ls --group-directories-first -X --human-readable --color=auto'
+alias -- icat=' icat'
+alias -- cat=' cat'
 
 # Counting number of files
 function dir_count() {
