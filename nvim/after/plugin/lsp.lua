@@ -32,7 +32,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
       -- Opening preview buffers - Use ctrl key as modifier
       { '<C-h>',       vim.lsp.buf.hover,                  desc = '[H]over Documentation',            mode = 'ni' },
       { '<C-e>',       vim.diagnostic.open_float,          desc = 'Show diagnostic [E]rror messages', mode = 'ni' },
-      -- For select interactions
+      -- For select interactions.
       { '<leader>l',   group = '[L]SP' },
       { '<leader>la',  fzf.lsp_code_actions,               desc = "[L]SP [A]ction" },
       { '<leader>lr',  vim.lsp.buf.rename,                 desc = "[L]SP [R]ename" }

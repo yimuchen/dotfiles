@@ -19,7 +19,7 @@ class Neovim(decman.Module):
         deps += ["shfmt", "bash-language-server"]
         deps += ["harper"]
         # For fuzzy finder
-        deps += ["ripgrep"]
+        deps += ["ripgrep", "fzf"]
         return deps
 
     def aur_packages(self):
