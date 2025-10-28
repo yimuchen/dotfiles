@@ -43,7 +43,7 @@ def obtain_bw_items(item_filter: Optional[Callable] = None) -> List[Dict]:
     )
     try:
         items_list = json.loads(stdout)
-    except:
+    except json.decoder.JSONDecodeError:
         scriptizer.log.error(
             "Bitwarden did not return a valid response, make sure you provided the correct master password"
         )
@@ -196,6 +196,7 @@ def copypass(target: str):
     except StopIteration:
         with tempfile.NamedTemporaryFile("w") as temp:
             temp.write(json.dumps([make_display(login) for login in logins]))
+            pre_query = [] if target is None else ["--query", target]
             fzf_process = subprocess.Popen(
                 [
                     "fzf",
@@ -206,7 +207,8 @@ def copypass(target: str):
                     "15",
                     "--preview",
                     "jq --arg a {} -C -r '.[] | select(.name == $a)'  " + temp.name,
-                ],
+                ]
+                + pre_query,
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
             )
