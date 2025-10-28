@@ -172,9 +172,14 @@ def voms():
 
 
 @scriptizer.register_function
-def copypass():
+def copypass(target: str):
     """
-    Browsing through the login credentials, copying the password to thw wayland clipboard
+    Browsing through the login credentials, copying the password to the wayland clipboard
+
+    Parameters
+    ==========
+
+    - target: this is a test
     """
     logins = obtain_bw_items(lambda x: "login" in x)
 
@@ -186,32 +191,35 @@ def copypass():
         }
 
     select = None
-    with tempfile.NamedTemporaryFile("w") as temp:
-        temp.write(json.dumps([make_display(login) for login in logins]))
-        fzf_process = subprocess.Popen(
-            [
-                "fzf",
-                "--layout",
-                "reverse",
-                "--border",
-                "--height",
-                "15",
-                "--preview",
-                "jq --arg a {} -C -r '.[] | select(.name == $a)'  " + temp.name,
-            ],
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-        )
-        fzf_process.stdin.write(
-            "\n".join([x["name"] for x in logins]).encode("utf8")
-        )  # Writing opens
-        fzf_process.stdin.close()
-        select = fzf_process.stdout.read().splitlines()
-        if len(select) == 0:
-            return  # Early exit with no error
-        select = select[0].decode("utf8")
+    try:
+        select = next(x for x in logins if x["name"] == target)["name"]
+    except StopIteration:
+        with tempfile.NamedTemporaryFile("w") as temp:
+            temp.write(json.dumps([make_display(login) for login in logins]))
+            fzf_process = subprocess.Popen(
+                [
+                    "fzf",
+                    "--layout",
+                    "reverse",
+                    "--border",
+                    "--height",
+                    "15",
+                    "--preview",
+                    "jq --arg a {} -C -r '.[] | select(.name == $a)'  " + temp.name,
+                ],
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+            )
+            fzf_process.stdin.write(
+                "\n".join([x["name"] for x in logins]).encode("utf8")
+            )  # Writing opens
+            fzf_process.stdin.close()
+            select = fzf_process.stdout.read().splitlines()
+            if len(select) == 0:
+                return  # Early exit with no error
+            select = select[0].decode("utf8")
 
-    login = [x for x in logins if x["name"] == select][0]
+    login = next(x for x in logins if x["name"] == select)
     copy_process = subprocess.Popen("wl-copy", stdin=subprocess.PIPE)
     copy_process.stdin.write(login["login"]["password"].encode("utf8"))
     copy_process.stdin.close()
