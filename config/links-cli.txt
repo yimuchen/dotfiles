@@ -8,3 +8,4 @@
 ./tmux           $HOME/.config/tmux
 ../bin/          $HOME/.config/dot-bin
 ./starship.toml  $HOME/.config/starship.toml
+./harper-ls      $HOME/.config/harper-ls
