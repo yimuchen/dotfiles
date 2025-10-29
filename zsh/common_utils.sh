@@ -20,6 +20,17 @@ function dir_count() {
 }
 
 # Helper functions for fzf!
+# Enable FZF integration
+export FZF_CTRL_T_OPTS="--walker file,dir,follow --walker-skip .git,node_modules,target "
+export FZF_ALT_C_OPTS="--walker dir,follow --walker-skip .git,node_modules,target --preview 'tree -C {}'"
+eval "$(fzf --zsh)"
+# Addiing additional keybinds to fzf widges
+bindkey -M emacs '\ef' fzf-file-widget
+bindkey -M vicmd '\ef' fzf-file-widget
+bindkey -M viins '\ef' fzf-file-widget
+bindkey -M emacs '\eh' fzf-history-widget
+bindkey -M vicmd '\eh' fzf-history-widget
+bindkey -M viins '\eh' fzf-history-widget
 
 # Image browser compound command will be written as a function instead
 alias -- icat='fzf_img_preview'
