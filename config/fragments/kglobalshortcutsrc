@@ -7,7 +7,7 @@ activate task manager entry 3=Meta+M\tMeta+3,Meta+3,Activate Task Manager Entry 
 _launch=none
 
 [services][org.kde.krunner.desktop]
-_launch=Meta+Space
+_launch=none
 
 [kwin]
 Expose=Meta+Q,Ctrl+F9,Toggle Present Windows (Current desktop)
