@@ -1,4 +1,7 @@
 import os
+import signal
+import subprocess
+import tempfile
 
 import decman
 import decman_utils
@@ -34,7 +37,8 @@ class Core(decman.Module):
         """
         The zen browser profile requires that creation of the a profiles that
         is based on the user name and a pseudo random string associated with
-        the install. This will be dynamically generated, but you will have to run the .
+        the install. This will be dynamically generated, but you will have to
+        run the browser once to have this be generated.
         """
         zen_base = os.path.join(user.home_path, ".zen")
         zen_install_path = os.path.join(zen_base, "installs.ini")
