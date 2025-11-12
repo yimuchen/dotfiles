@@ -69,10 +69,13 @@ class ScriptsDep(decman.Module):
         deps = ["python"]  # Main language used for helper scripts
         # Additional python helper libraries
         deps += [
-            # Required for handling the requests
+            # For script auto completion in the command line
             "python-argcomplete",
+            # To create progress bars and simple parallelism
             "python-tqdm",
+            # Python interface for imagemagick
             "python-wand",
+            # Required for handling the requests
             "python-requests",
             # Required for scriptize docstring parsing
             "python-numpydoc",
