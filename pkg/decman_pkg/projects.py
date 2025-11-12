@@ -16,7 +16,11 @@ class hgcal_database(decman.Module):
         return deps
 
     def aur_packages(self) -> list[str]:
-        return ["sqlfmt-bin"]
+        # For SQL processing
+        deps = ["sqlfmt-bin"]
+        # For printing at Campus north
+        # deps += ["cnrdrvcups-lb"]
+        return deps
 
 
 class hep_cpp(decman.Module):
