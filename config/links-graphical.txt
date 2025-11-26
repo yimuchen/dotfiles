@@ -5,3 +5,6 @@
 ./wezterm.lua                     $HOME/.wezterm.lua
 ./kwinrulesrc                     $HOME/.config/kwinrulesrc
 ./fuzzel/                         $HOME/.config/fuzzel
+./niri                            $HOME/.config/niri
+./mako/                           $HOME/.config/mako
+./waybar/                         $HOME/.config/waybar
