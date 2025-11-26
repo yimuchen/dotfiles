@@ -23,7 +23,7 @@ class Core(decman.Module):
         # Terminal of preference
         deps += ["ghostty", "wezterm"]
         # For personal not taking
-        deps += ["obsidian"]
+        deps += ["obsidian", "kate"]
         return deps
 
     def aur_packages(self):
@@ -116,7 +116,7 @@ class Media(decman.Module):
 
     def pacman_packages(self):
         # Audio related
-        deps = ["vlc", "elisa", "audacity", "kid3", "musescore"]
+        deps = ["vlc", "elisa", "audacity", "kid3"]
         # Image related
         deps += ["inkscape", "gimp", "gwenview", "digikam"]
         # Additional dependencies of inkscape
@@ -126,7 +126,7 @@ class Media(decman.Module):
         return deps
 
     def aur_packages(self):
-        return ["wl-color-picker", "droidcam"]
+        return ["wl-color-picker", "droidcam", "musescore-bin"]
 
 
 class MiscTools(decman.Module):
@@ -167,7 +167,7 @@ class Gaming(decman.Module):
         return deps
 
     def aur_packages(self):
-        return ["r2modman-bin", "proton-ge-custom-bin", "shadps4-bin"]
+        return ["r2modman-bin", "proton-ge-custom-bin", "shadps4-bin", "xpadneo-dkms"]
 
     def on_enable(self):
         decman.prg(["gpasswd", "-a", user.username, "games"])
