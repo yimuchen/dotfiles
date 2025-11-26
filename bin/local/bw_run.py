@@ -236,7 +236,7 @@ def copypass(target: str):
         pass
     finally:  # Ensuring that wl-copy is always used
         print("Clearing.")
-        subprocess.Popen(["wl-copy", "--clear"])
+        subprocess.Popen(["wl-copy", "--clear"], stdout=subprocess.DEVNULL)
         subprocess.Popen(
             [
                 "gdbus",
@@ -248,7 +248,9 @@ def copypass(target: str):
                 "/klipper",
                 "--method",
                 "org.kde.klipper.klipper.clearClipboardHistory",
-            ]
+            ],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
         )
 
 
