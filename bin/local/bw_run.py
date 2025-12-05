@@ -118,7 +118,15 @@ def kinit():
         for target in get_protocols(item, "ssh_kerberos"):
             ssh, server = target.split("/")
             subprocess.run(
-                ["ssh", ssh, "kinit", "-r", "7d", f"{username}@{server}"],
+                [
+                    "ssh",
+                    ssh,
+                    "KRB5CCNAME=DIR:$HOME/.temp.persist",
+                    "kinit",
+                    "-r",
+                    "7d",
+                    f"{username}@{server}",
+                ],
                 input=item["login"]["password"],
                 encoding="ascii",
                 stdout=subprocess.DEVNULL,
