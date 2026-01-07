@@ -167,7 +167,12 @@ class Gaming(decman.Module):
         return deps
 
     def aur_packages(self):
-        return ["r2modman-bin", "proton-ge-custom-bin", "shadps4-bin", "xpadneo-dkms"]
+        return [
+            "r2modman-bin",
+            "proton-ge-custom-bin",
+            "shadps4-qtlauncher-bin",
+            "xpadneo-dkms",
+        ]
 
     def on_enable(self):
         decman.prg(["gpasswd", "-a", user.username, "games"])
