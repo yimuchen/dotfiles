@@ -81,7 +81,7 @@ class Themes(decman.Module):
         return ["papirus-icon-theme", "fcitx5-breeze"]
 
     def aur_packages(self):
-        return ["arc-kde"]
+        return ["arc-kde-git"]
 
     def files(self):
         """Theming that are likely not chancing for a long time"""
