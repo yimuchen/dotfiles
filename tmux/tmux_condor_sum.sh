@@ -19,5 +19,5 @@ if command -v condor_q &>/dev/null; then
   held_all=$(jq '[.[].AllusersHeld] | add' ${CONDOR_SUMMARY_JSON})
   held_usr=$(jq '[.[].MyHeld] | add' ${CONDOR_SUMMARY_JSON})
   # Echo printing the solution
-  echo " │󰙮 │󱇼 ${idle_usr}/${idle_all} 󰯔 ${run_usr}/${run_all} 󰾘 ${held_usr}/${held_all}│ "
+  echo " 󰙮 │ 󱇼 ${idle_usr}/${idle_all} 󰯔 ${run_usr}/${run_all} 󰾘 ${held_usr}/${held_all} "
 fi
