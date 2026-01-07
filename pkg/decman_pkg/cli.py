@@ -116,7 +116,7 @@ class CliTools(decman.Module):
 
     def aur_packages(self):
         # For looking up items in the AUR
-        deps = ["paru-bin"]
+        deps = ["paru-bin", "yay-bin"]
         # For python development
         deps += ["miniconda3"]
         return deps
