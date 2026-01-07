@@ -100,6 +100,10 @@ bindkey  "^[[H"   beginning-of-line
 bindkey  "^[[F"   end-of-line
 bindkey  "^[[3~"  delete-char
 
+# Fixing keybind issue for within tmux
+bindkey "^[[1~"   beginning-of-line
+bindkey "^[[4~"   end-of-line
+
 ############## Uncomment to run profiling
 # zprof
 ########
