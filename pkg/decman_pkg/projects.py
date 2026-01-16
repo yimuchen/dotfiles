@@ -22,6 +22,9 @@ class hgcal_database(decman.Module):
         # deps += ["cnrdrvcups-lb"]
         return deps
 
+    def flatpak_packages(self) -> list[str]:
+        return ["com.ultimaker.cura"]
+
 
 class hep_cpp(decman.Module):
     def __init__(self):
