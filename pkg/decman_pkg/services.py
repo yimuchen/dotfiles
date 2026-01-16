@@ -1,4 +1,7 @@
+import os
 import socket
+import stat
+import xml.etree.ElementTree as ETree
 
 import decman
 
@@ -12,6 +15,29 @@ class Syncthing(decman.Module):
     def pacman_packages(self):
         # Packages part of this module
         return ["syncthing"]
+
+    def files(self):
+        self.modify_files()
+        return {}
+
+    def modify_files(self):
+        # Modify the existing files if it exists
+        target = os.path.join(user.home_path, ".local/state/syncthing/config.xml")
+        if not os.path.exists(target):
+            return
+
+        # Modifying the address to always export 8021 for syncthing
+        tree = ETree.parse("/home/ensc/.local/state/syncthing/config.xml").getroot()
+        try:
+            gui_config = next(b for b in tree if b.tag == "gui")
+            addr_config = next(b for b in gui_config if b.tag == "address")
+            addr_config.text = "127.0.0.1:8021"
+        except StopIteration:
+            pass
+
+        with open(target, "wb") as f:
+            f.write(ETree.tostring(tree))
+        os.chmod(target, stat.S_IWUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IWGRP)
 
     def systemd_units(self):
         # Launching syncthing as a system service owned by the user, this way
