@@ -37,7 +37,7 @@ class Syncthing(decman.Module):
 
         with open(target, "wb") as f:
             f.write(ETree.tostring(tree))
-        os.chmod(target, stat.S_IWUSR | stat.S_IRUSR | stat.S_IRGRP | stat.S_IWGRP)
+        os.chmod(target, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IWGRP)
 
     def systemd_units(self):
         # Launching syncthing as a system service owned by the user, this way
