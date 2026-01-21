@@ -117,6 +117,8 @@ class Media(decman.Module):
     def pacman_packages(self):
         # Audio related
         deps = ["vlc", "elisa", "audacity", "kid3"]
+        # Musescore is difficult...
+        deps += ["musescore"]
         # Image related
         deps += ["inkscape", "gimp", "gwenview", "digikam"]
         # Additional dependencies of inkscape
@@ -126,7 +128,7 @@ class Media(decman.Module):
         return deps
 
     def aur_packages(self):
-        return ["wl-color-picker", "droidcam", "musescore-bin"]
+        return ["wl-color-picker", "droidcam"]
 
 
 class MiscTools(decman.Module):
