@@ -14,7 +14,7 @@ class Neovim(decman.Module):
         deps = ["neovim", "luarocks"]  # Neovim along with lua package manager
         deps += ["tree-sitter", "tree-sitter-cli"]  # Tree-sitter stuff
         # Base LSP and formatting tools for common languages
-        deps += ["python-lsp-server", "ruff", "python-uv"]
+        deps += ["ty", "ruff", "python-uv"]
         deps += ["lua-language-server", "stylua"]
         deps += ["shfmt", "bash-language-server"]
         deps += ["harper"]
@@ -25,7 +25,7 @@ class Neovim(decman.Module):
     def aur_packages(self):
         # Additional language servers/formatters that are only available in the AUR
         # For python
-        deps = ["python-lsp-ruff", "pyrefly-bin"]
+        deps = ["pyrefly-bin"]
         # For nix
         deps += ["nixfmt"]
         return deps
