@@ -43,6 +43,7 @@ class Core(decman.Module):
         zen_base = os.path.join(user.home_path, ".zen")
         zen_install_path = os.path.join(zen_base, "installs.ini")
         zen_profile_path = os.path.join(zen_base, "profiles.ini")
+        zen_pref_path = os.path.join(zen_base, "prefs.js")
         ## How is this generate???
         user_hash = "15B76BAA26BA15E7"
         user_profile = f"{user.username}Profile"
@@ -62,9 +63,53 @@ class Core(decman.Module):
         zen_profile["General"] = {"StartWithLastProfile": "1", "Version": "2"}
         zen_profile[f"Install{user_hash}"] = {"Default": user_profile, "Locked": "1"}
 
+        zen_pref_path = os.path.join(zen_base, f"{user_profile}/prefs.js")
+
         return {
             **zen_install.to_decman(),
             **zen_profile.to_decman(),
+            **self.zen_user_preferences(zen_pref_path),
+        }
+
+    def zen_user_preferences(self, orig_path: str):
+        if not os.path.exists(orig_path):
+            return {}
+        with open(orig_path) as f:  # Getting the orignal content
+            contents = f.readlines()
+        # Creating a new contents
+        target_configs = {
+            "pdfjs.defaultZoomValue": "page-fit",
+            "signon.rememberSignons": False,
+        }
+        create_configs = {
+            k: False for k in target_configs
+        }  # Checking if items are checked
+
+        def make_line(key, value):
+            if type(value) is float or type(value) is int:
+                return f'user_pref("{key}", {value});\n'
+            if type(value) is bool:
+                pval = "true" if value else "false"
+                return f'user_pref("{key}", {pval});\n'
+            return f'user_pref("{key}", "{value}");\n'
+
+        def modify_line(line):
+            if not line.startswith("user_pref"):
+                return line
+            for k, v in target_configs.items():
+                if line.startswith(f'user_pref("{k}"'):
+                    create_configs[k] = True
+                    return make_line(k, v)
+            return line
+
+        # Creating a new line
+        new_contents = [modify_line(line) for line in contents]
+        new_contents += [
+            make_line(k, v) for k, v in target_configs.items() if not create_configs[k]
+        ]
+
+        return {
+            orig_path: decman.File(content="".join(new_contents), owner=user.username)
         }
 
 
