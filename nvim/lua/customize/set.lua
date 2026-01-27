@@ -87,7 +87,7 @@ vim.g.get_prefixed_exec = function(exe_name)
       -- Calling the tools installed in a CMSSW environment. These need to be
       -- defined in the custom scripts directory
       local mod_exec = vim.env.HOME .. "/.config/dot-bin/remote/cmssw/cmssw-" .. exe_name
-      if vim.fn.filereadable(mod_exec) then
+      if vim.fn.filereadable(mod_exec) ~= 0 then
         return mod_exec
       else
         return exe_name
@@ -97,7 +97,12 @@ vim.g.get_prefixed_exec = function(exe_name)
     end
   elseif vim.env.CONDA_PREFIX ~= nil then
     -- For calling tools installed in a conda environment
-    return vim.env.CONDA_PREFIX .. "/bin/" .. exe_name
+    local mod_exec = vim.env.CONDA_PREFIX .. "/bin/" .. exe_name
+    if vim.fn.filereadable(mod_exec) ~= 0 then
+      return mod_exec
+    else
+      return exe_name
+    end
   elseif vim.fs.root(0, { ".apptainer-" .. exe_name }) ~= nil then
     -- For tool loaded in an apptainer environment, the project in question
     -- will need to provide the .apptainer-exe script for how the tool should
