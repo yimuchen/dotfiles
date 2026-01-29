@@ -15,6 +15,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
       end
     end
 
+    local toggle_inlay = function()
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ 0 }), { 0 })
+    end
     -- Navigation based on LSP related functions. For multiple items, we will be
     -- using fuzzing finding plugin
     wk.add {
@@ -35,7 +38,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
       -- For select interactions.
       { '<leader>l',   group = '[L]SP' },
       { '<leader>la',  fzf.lsp_code_actions,               desc = "[L]SP [A]ction" },
-      { '<leader>lr',  vim.lsp.buf.rename,                 desc = "[L]SP [R]ename" }
+      { '<leader>lr',  vim.lsp.buf.rename,                 desc = "[L]SP [R]ename" },
+      { '<leader>li',  toggle_inlay,                       desc= "[L]SP [I]nlay toggle" },
     }
 
     -- The following two auto commands are used to highlight references
