@@ -2,35 +2,38 @@ import os
 
 import decman
 import decman_utils
+from decman.plugins import aur, pacman
 
 from ._common import user
 
 
 class Neovim(decman.Module):
     def __init__(self):
-        super().__init__(name="neovim", enabled=True, version="1")
+        super().__init__("neovim")
 
+    @pacman.packages
     def pacman_packages(self):
-        deps = ["neovim", "luarocks"]  # Neovim along with lua package manager
-        deps += ["tree-sitter", "tree-sitter-cli"]  # Tree-sitter stuff
+        deps = {"neovim", "luarocks"}  # Neovim along with lua package manager
+        deps |= {"tree-sitter", "tree-sitter-cli"}  # Tree-sitter stuff
         # Base LSP and formatting tools for common languages
-        deps += ["ty", "ruff", "python-uv"]
-        deps += ["lua-language-server", "stylua"]
-        deps += ["shfmt", "bash-language-server"]
-        deps += ["harper"]
+        deps |= {"ty", "ruff", "python-uv"}
+        deps |= {"lua-language-server", "stylua"}
+        deps |= {"shfmt", "bash-language-server"}
+        deps |= {"harper"}
         # For fuzzy finder
-        deps += ["ripgrep", "fzf"]
+        deps |= {"ripgrep", "fzf"}
         return deps
 
+    @aur.packages
     def aur_packages(self):
         # Additional language servers/formatters that are only available in the AUR
         # For python
-        deps = ["pyrefly-bin"]
+        deps = {"pyrefly-bin"}
         # For nix
-        deps += ["nixfmt"]
+        deps |= {"nixfmt"}
         return deps
 
-    def after_update(self):
+    def after_update(self, store):
         # Installing the tools for python (mainly mdformat variants)
         python_env = os.path.join(user.home_path, ".cli-python")
         python_path = os.path.realpath(os.path.join(python_env, "bin/python"))
@@ -63,12 +66,13 @@ class ScriptsDep(decman.Module):
     """
 
     def __init__(self):
-        super().__init__(name="script-deps", enabled=True, version="1")
+        super().__init__("script-deps")
 
+    @pacman.packages
     def pacman_packages(self):
-        deps = ["python"]  # Main language used for helper scripts
+        deps = {"python"}  # Main language used for helper scripts
         # Additional python helper libraries
-        deps += [
+        deps |= {
             # For script auto completion in the command line
             "python-argcomplete",
             # To create progress bars and simple parallelism
@@ -82,14 +86,14 @@ class ScriptsDep(decman.Module):
             # Commonly used for on-off data analysis scripts
             "python-numpy",
             "python-scipy",
-        ]
+        }
         # Image manipulations stuff
-        deps += ["kitty", "ghostscript", "imagemagick"]
+        deps |= {"kitty", "ghostscript", "imagemagick"}
         # For password interactions in cli
-        deps += ["bitwarden-cli"]
+        deps |= {"bitwarden-cli"}
         return deps
 
-    def after_update(self):
+    def after_update(self, store):
         decman_utils.common.install_python_symlink(
             user.home_path + "/projects/Personal/python-modules/scriptize"
         )
@@ -97,28 +101,30 @@ class ScriptsDep(decman.Module):
 
 class CliTools(decman.Module):
     def __init__(self):
-        super().__init__(name="cli-tools", enabled=True, version="1")
+        super().__init__("cli-tools")
 
+    @pacman.packages
     def pacman_packages(self):
         # Core tools
-        deps = ["git", "fzf", "parallel"]
+        deps = {"git", "fzf", "parallel"}
         # Session management and monitoring
-        deps += ["tmux", "htop", "btop", "speedtest-cli", "tree"]
+        deps |= {"tmux", "htop", "btop", "speedtest-cli", "tree"}
         # Configure file parsing
-        deps += ["jq", "go-yq"]
+        deps |= {"jq", "go-yq"}
         # Additional compression formats
-        deps += ["zip", "unzip", "lzip"]
+        deps |= {"zip", "unzip", "lzip"}
         # For direct interactions with the wayland clipboard
-        deps += ["wl-clipboard"]
+        deps |= {"wl-clipboard"}
         # For zsh styling
-        deps += ["starship"]
+        deps |= {"starship"}
         return deps
 
+    @aur.packages
     def aur_packages(self):
         # For looking up items in the AUR
-        deps = ["paru", "yay"]
+        deps = {"paru", "yay"}
         # For python development
-        deps += ["miniconda3"]
+        deps |= {"miniconda3"}
         return deps
 
     def files(self):
@@ -136,9 +142,9 @@ class Symlink(decman.Module):
     """
 
     def __init__(self):
-        super().__init__(name="symlinks", enabled=True, version="1")
+        super().__init__("symlinks")
 
-    def after_update(self):
+    def after_update(self, store):
         decman.prg(
             [
                 os.path.join(user.config_source_dir, "bin/common/symlinkmgr"),

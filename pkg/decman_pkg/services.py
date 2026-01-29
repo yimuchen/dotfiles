@@ -4,17 +4,18 @@ import stat
 import xml.etree.ElementTree as ETree
 
 import decman
+from decman.plugins import aur, pacman, systemd
 
 from ._common import user
 
 
 class Syncthing(decman.Module):
     def __init__(self):
-        super().__init__(name="syncthing", enabled=True, version="1")
+        super().__init__("syncthing")
 
+    @pacman.packages
     def pacman_packages(self):
-        # Packages part of this module
-        return ["syncthing"]
+        return {"syncthing"}
 
     def files(self):
         self.modify_files()
@@ -27,7 +28,7 @@ class Syncthing(decman.Module):
             return
 
         # Modifying the address to always export 8021 for syncthing
-        tree = ETree.parse("/home/ensc/.local/state/syncthing/config.xml").getroot()
+        tree = ETree.parse(target).getroot()
         try:
             gui_config = next(b for b in tree if b.tag == "gui")
             addr_config = next(b for b in gui_config if b.tag == "address")
@@ -39,26 +40,27 @@ class Syncthing(decman.Module):
             f.write(ETree.tostring(tree))
         os.chmod(target, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IWGRP)
 
+    @systemd.user_units
     def systemd_units(self):
-        # Launching syncthing as a system service owned by the user, this way
-        # Syncing can begin event before the user formally logs in
-        return [f"syncthing@{user.username}.service"]
+        return {user.username: {"syncthing.service"}}
 
 
 class LanguageTool(decman.Module):
     def __init__(self):
-        super().__init__(name="languagetool", enabled=True, version="1")
+        super().__init__("languagetool")
 
+    @pacman.packages
     def pacman_packages(self):
-        return ["languagetool"]
+        return {"languagetool"}
 
+    @systemd.units
     def systemd_units(self):
-        return ["languagetool.service"]
+        return {"languagetool.service"}
 
 
 class RcbListener(decman.Module):
     def __init__(self):
-        super().__init__(name="rcb_listener", enabled=True, version="1")
+        super().__init__("rcb_listener")
         self.rcb_service = user.create_service(service_name="rcb_listener.service")
         self.rcb_service["Install"] = {"WantedBy": "default.target"}
         self.rcb_service["Service"] = {
@@ -69,13 +71,14 @@ class RcbListener(decman.Module):
     def files(self):
         return self.rcb_service.to_decman()
 
+    @systemd.user_units
     def systemd_user_units(self):
-        return self.rcb_service.add_service()
+        return self.rcb_service.to_decman_unit()
 
 
 class LLMService(decman.Module):
     def __init__(self):
-        super().__init__(name="llm_service", enabled=True, version="1")
+        super().__init__("llm_service")
         self.ollama_service = user.create_service(service_name="ollama.service")
         self.ollama_service["Install"] = {"WantedBy": "default.target"}
         self.ollama_service["Service"] = {
@@ -84,21 +87,24 @@ class LLMService(decman.Module):
         }
         self.ollama_service["Unit"] = {"Description": "Starting the base ollama server"}
 
+    @pacman.packages
     def pacman_packages(self):
-        deps = ["ollama-docs"]
-        deps += ["rust"]  # Required to build avante for nvim
+        deps = {"ollama-docs"}
+        deps |= {"rust"}  # Required to build avante for nvim
         if socket.gethostname() == "enscAMDPC":
-            deps += ["ollama-cuda", "nvtop"]
+            deps |= {"ollama-cuda", "nvtop"}
         else:
-            deps += ["ollama"]
+            deps |= {"ollama"}
         return deps
 
+    @aur.packages
     def aur_packages(self):
-        deps = ["opencode-bin"]
-        return deps
+        deps = {"opencode-bin"}
+        return {}
 
     def files(self):
         return self.ollama_service.to_decman()
 
+    @systemd.user_units
     def systemd_user_units(self):
-        return self.ollama_service.add_service()
+        return self.ollama_service.to_decman_unit()

@@ -1,10 +1,8 @@
 import os
-import signal
-import subprocess
-import tempfile
 
 import decman
 import decman_utils
+from decman.plugins import aur, pacman
 
 from ._common import user
 
@@ -13,24 +11,26 @@ class Core(decman.Module):
     """Essential functionalities - browsing and terminal access"""
 
     def __init__(self):
-        super().__init__(name="gui-core", enabled=True, version="1")
+        super().__init__(name="gui-user-core")
 
-    def pacman_packages(self):
+    @pacman.packages
+    def pacman_packages(self) -> set(str):
         # For online interactions
-        deps = ["bitwarden"]
+        deps = {"bitwarden"}
         # For personal information management
-        deps += ["thunderbird", "korganizer"]
+        deps |= {"thunderbird", "korganizer"}
         # Terminal of preference
-        deps += ["ghostty", "wezterm"]
+        deps |= {"ghostty", "wezterm"}
         # For personal not taking
-        deps += ["obsidian", "kate"]
+        deps |= {"obsidian", "kate"}
+        # For screen casting
+        deps |= {"showmethekey"}
         return deps
 
+    @aur.packages
     def aur_packages(self):
         # My browser of choice
-        deps = ["zen-browser-bin"]
-        # For screen recording
-        deps += ["showmethekey"]
+        deps = {"zen-browser-bin"}
         return deps
 
     def files(self):
@@ -115,13 +115,14 @@ class Core(decman.Module):
 
 class Office(decman.Module):
     def __init__(self):
-        super().__init__(name="gui-office", enabled=True, version="1")
+        super().__init__("gui-office")
 
+    @pacman.packages
     def pacman_packages(self):
         # LibreOffice and plugins
-        deps = ["libreoffice-fresh", "libreoffice-extension-texmaths"]
+        deps = {"libreoffice-fresh", "libreoffice-extension-texmaths"}
         # Additional items for document creation
-        deps += [
+        deps |= {
             "texlive-bin",
             "texlive-binextra",
             "texlive-fontsextra",
@@ -138,85 +139,97 @@ class Office(decman.Module):
             "texlive-langenglish",
             "texlive-langgerman",
             "texlab",
-        ]  # latex
-        deps += ["typst", "tinymist"]  # typst
+        }  # latex
+        deps |= {"typst", "tinymist"}  # typst
         # PDF browsers
-        deps += ["okular", "evince", "calibre"]
+        deps |= {"okular", "evince", "calibre"}
         return deps
 
+    @aur.packages
     def aur_packages(self):
         # Alternate office suite
-        deps = ["wps-office"]
+        deps = {"wps-office"}
         # Additional packages required for markup document compiling
-        deps += ["typstyle-bin"]
+        deps |= {"typstyle-bin"}
         # Additional
-        deps += ["calibre-plugin-dedrm"]
+        deps |= {"calibre-plugin-dedrm"}
 
         return deps
 
 
 class Media(decman.Module):
     def __init__(self):
-        super().__init__(name="gui-media", enabled=True, version="1")
+        super().__init__("gui-media")
 
+    @pacman.packages
     def pacman_packages(self):
         # Audio related
-        deps = ["vlc", "elisa", "audacity", "kid3"]
+        deps = {"vlc", "elisa", "audacity", "kid3"}
         # Musescore is difficult...
-        deps += ["musescore"]
+        deps |= {"musescore"}
         # Image related
-        deps += ["inkscape", "gimp", "gwenview", "digikam"]
+        deps |= {"inkscape", "gimp", "gwenview", "digikam"}
         # Additional dependencies of inkscape
-        deps += ["python-tinycss2"]
+        deps |= {"python-tinycss2"}
         # Video related
-        deps += ["kdenlive", "yt-dlp", "obs-studio", "k3b"]
+        deps |= {"kdenlive", "yt-dlp", "obs-studio", "k3b"}
         return deps
 
+    @aur.packages
     def aur_packages(self):
-        return ["wl-color-picker", "droidcam"]
+        return {"wl-color-picker", "droidcam"}
 
 
 class MiscTools(decman.Module):
     def __init__(self):
-        super().__init__(name="gui-tools", enabled=True, version="1")
+        super().__init__("gui-tools")
 
+    @pacman.packages
     def pacman_packages(self):
         # Alternate browsers
-        deps = ["thunderbird", "signal-desktop"]
+        deps = {"thunderbird", "signal-desktop"}
         # Related to hardware design
-        deps += [
+        deps |= {
             "freecad",
             "kicad",
             "kicad-library",
             "kicad-library-3d",
             "python-kikit",
-        ]
+        }
         # Virtual machine and remote access
-        deps += ["virt-manager", "tigervnc", "freerdp"]
+        deps |= {"virt-manager", "tigervnc", "freerdp"}
         return deps
 
+    @aur.packages
     def aur_packages(self):
         # Non-free software
-        deps = ["ungoogled-chromium-bin", "vscodium-bin"]
+        deps = {"ungoogled-chromium-bin", "vscodium-bin"}
         # For boot USB management
-        deps += ["ventoy-bin"]
+        deps |= {"ventoy-bin"}
         return deps
 
 
 class Gaming(decman.Module):
     def __init__(self):
-        super().__init__(name="gui-game", enabled=True, version="1")
+        super().__init__("gui-game")
 
+    @pacman.packages
     def pacman_packages(self):
-        deps = ["steam", "lutris"]
+        deps = {"steam", "lutris"}
         # Optional dependencies for lutris
-        deps += ["wine", "python-protobuf"]
+        deps |= {"wine", "python-protobuf"}
         return deps
 
+    @aur.packages
     def aur_packages(self):
-        return ["r2modman-bin", "proton-ge-custom-bin", "bb_launcher", "xpadneo-dkms"]
+        return {
+            "r2modman-bin",
+            "proton-ge-custom-bin",
+            "bb_launcher",
+            "xpadneo-dkms",
+        }
 
-    def on_enable(self):
+    def on_enable(self, store):
         decman.prg(["gpasswd", "-a", user.username, "games"])
 
 
@@ -227,9 +240,9 @@ class Symlink(decman.Module):
     """
 
     def __init__(self):
-        super().__init__(name="symlinks", enabled=True, version="1")
+        super().__init__("symlinks")
 
-    def after_update(self):
+    def after_update(self, store):
         decman.prg(
             [
                 os.path.join(user.config_source_dir, "bin/common/symlinkmgr"),

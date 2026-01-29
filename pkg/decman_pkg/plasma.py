@@ -5,6 +5,7 @@ Specifically for the look and feel of plasma
 import os
 
 import decman
+from decman.plugins import aur, pacman
 
 from ._common import user
 
@@ -23,21 +24,26 @@ def _frag_target(path: str):
 
 class Fonts(decman.Module):
     def __init__(self):
-        super().__init__(name="plasma-font", enabled=True, version="1")
+        super().__init__("plasma-font")
 
+    @pacman.packages
     def pacman_packages(self):
         # Baseline sans/serif fonts
-        deps = ["noto-fonts", "noto-fonts-cjk"]
+        deps = {"noto-fonts", "noto-fonts-cjk"}
         # Baseline serif fonts
-        deps += ["ttf-libertinus"]
+        deps |= {"ttf-libertinus"}
         # Baseline monospace fonts
-        deps += ["ttf-jetbrains-mono-nerd"]
+        deps |= {"ttf-jetbrains-mono-nerd"}
         # Miscellaneous fonts
-        deps += ["otf-firamono-nerd"]
+        deps |= {"otf-firamono-nerd"}
         return deps
 
+    @aur.packages
     def aur_packages(self):
-        return ["ttf-tw", "ttf-ms-fonts"]
+        return {
+            # "ttf-tw",
+            "ttf-ms-fonts"
+        }
 
     def files(self):
         return user.filemgr_config.create_decman_list(
@@ -50,15 +56,16 @@ class Fonts(decman.Module):
 
 class Input(decman.Module):
     def __init__(self):
-        super().__init__(name="plasma-input", enabled=True, version=1)
+        super().__init__("plasma-input")
 
+    @pacman.packages
     def pacman_packages(self):
         # Method input methods
-        deps = ["fcitx5", "fcitx5-chewing", "fcitx5-anthy"]
+        deps = {"fcitx5", "fcitx5-chewing", "fcitx5-anthy"}
         # For difference GUI applications
-        deps += ["fcitx5-qt", "fcitx5-gtk"]
+        deps |= {"fcitx5-qt", "fcitx5-gtk"}
         # For configuration
-        deps += ["fcitx5-configtool"]
+        deps |= {"fcitx5-configtool"}
         return deps
 
     def files(self):
@@ -74,14 +81,16 @@ class Input(decman.Module):
 
 class Themes(decman.Module):
     def __init__(self):
-        super().__init__(name="plasma-themes", enabled=True, version=1)
+        super().__init__("plasma-themes")
 
+    @pacman.packages
     def pacman_packages(self):
         """Packages required for themes to work"""
-        return ["papirus-icon-theme", "fcitx5-breeze"]
+        return {"papirus-icon-theme", "fcitx5-breeze"}
 
+    @aur.packages
     def aur_packages(self):
-        return ["arc-kde-git"]
+        return {"arc-kde-git"}
 
     def files(self):
         """Theming that are likely not chancing for a long time"""
@@ -102,7 +111,7 @@ class ShortCuts(decman.Module):
     """
 
     def __init__(self):
-        super().__init__(name="plasma-shortcuts", enabled=True, version="1")
+        super().__init__("plasma-shortcuts")
 
     def files(self):
         # Modifying panels to always include specific items
