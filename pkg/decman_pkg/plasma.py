@@ -71,11 +71,15 @@ class Input(decman.Module):
     def files(self):
         kwinrc = user.create_confexp(ref_path=_conf_target("kwinrc"))
         kwinrc.update_from_fragment(ref_path=_frag_target("kwinrc"))
+
+        bluedevil = user.create_confexp(ref_path=_conf_target("bluedevilglobalrc"))
+        bluedevil.update_from_fragment(ref_path=_frag_target("bluedevilglobalrc"))
         return {
             **user.filemgr_config.create_decman_list(
                 ["kxkbrc", "fcitx5/profile", "fcitx5/config"]
             ),
             **kwinrc.to_decman(),
+            **bluedevil.to_decman(),
         }
 
 
