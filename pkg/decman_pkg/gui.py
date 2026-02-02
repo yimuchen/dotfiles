@@ -140,7 +140,7 @@ class Office(decman.Module):
             "texlive-langgerman",
             "texlab",
         }  # latex
-        deps |= {"typst", "tinymist"}  # typst
+        deps |= {"typst", "tinymist", "typstyle"}  # typst
         # PDF browsers
         deps |= {"okular", "evince", "calibre"}
         return deps
@@ -149,8 +149,6 @@ class Office(decman.Module):
     def aur_packages(self):
         # Alternate office suite
         deps = {"wps-office"}
-        # Additional packages required for markup document compiling
-        deps |= {"typstyle-bin"}
         # Additional
         deps |= {"calibre-plugin-dedrm"}
 
