@@ -42,7 +42,7 @@
       pkgs.shfmt
 
       # Additional tools used by other plugins
-      pkgs.ripgrep # For telescope
+      pkgs.ripgrep # For fuzzy-finding
       pkgs.libgcc # Compiler required for tree-sitter and luarocks
     ];
   };

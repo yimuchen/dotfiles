@@ -9,6 +9,7 @@ conform.formatters['py_mdformat'] = {
 }
 conform.formatters_by_ft['markdown'] = { 'py_mdformat' }
 
+vim.lsp.enable("texlab")
 
 local buffer_name = vim.api.nvim_buf_get_name(0)
 if string.sub(buffer_name, -6) == '.ipynb' then
