@@ -1,0 +1,17 @@
+{
+  "0": {
+    "title": "Explore"
+  },
+  "1": {
+    "title": "Editor",
+    "cmd": "nvim ."
+  },
+  "9": {
+    "title": "(repl)",
+    "disable": true
+  },
+  "8": {
+    "title": "b-top",
+    "cmd": "btop"
+  }
+}
