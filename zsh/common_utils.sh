@@ -113,11 +113,20 @@ function show_powerline_char() {
 }
 
 # Helper functions for getting tmux spin up
-alias -- ctmux="$HOME/.config/tmux-plugins-custom/cluster-session/scripts/ctmux attach-session"
 if [ ! -z "$CONDA_PREFIX" ]; then # Force reloading conda, ensures tmux internal launch with same conda environment
   conda activate $CONDA_PREFIX
 fi
 
+function ctmux() { # For spinning up tmux session in cross-cluster configruations
+  $HOME/.config/tmux-plugins-custom/cluster-session/scripts/ctmux attach-session $@
+}
+
+function _ctmux() { # Getting the list of managed sessions
+  local -a targets
+  targets=($($HOME/.config/tmux-plugins-custom/cluster-session/scripts/ctmux list-sessions))
+  _arguments -C '1:Select a session:('"${targets[*]}"')'
+}
+# compdef _ctmux ctmux ## For some reason this must be declared at top level??
 
 #################################################################################
 # Functions for setting the title of tabs as they appear in terminal emulators
