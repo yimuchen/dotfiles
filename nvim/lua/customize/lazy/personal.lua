@@ -24,7 +24,7 @@ add_local_plugin('tmux-repl', {
     repl.setup {
       repl_start_cmd = function()
         local repl_root = vim.fs.root(0, '.repl.sh')
-        if repl_root ~= nil then
+        if repl_root ~= 0 then
           return vim.fs.joinpath(repl_root, '.repl.sh')
         end
         return nil
