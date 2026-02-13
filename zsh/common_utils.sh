@@ -114,6 +114,10 @@ function show_powerline_char() {
 
 # Helper functions for getting tmux spin up
 alias -- ctmux="$HOME/.config/tmux-plugins-custom/cluster-session/scripts/ctmux attach-session"
+if [ ! -z "$CONDA_PREFIX" ]; then # Force reloading conda, ensures tmux internal launch with same conda environment
+  conda activate $CONDA_PREFIX
+fi
+
 
 #################################################################################
 # Functions for setting the title of tabs as they appear in terminal emulators
@@ -123,9 +127,9 @@ function host_display_() {
   if [[ $MACHINE_TYPE_DETAIL == "personal" ]]; then
     echo "🏠"
   elif [[ $MACHINE_TYPE_DETAIL == "kit" ]]; then
-    echo "🌐 ${HOST}.${DOMAIN_NAME}:"
+    echo "🌐 ${HOST}($MACHINE_TYPE_DETAIL)"
   else
-    echo "🌐 ${HOST}:"
+    echo "🌐 ${HOST}"
   fi
 }
 
@@ -175,9 +179,9 @@ function _add_buffer_prefix() {
   # should be augmented by a command prefix
 
   ## Check if in CMSSW environment
-  if command -v _cmsexec 2>&1 >/dev/null; then
-    if [[ $(_cmssw_src_path) != "" ]]; then
-      echo "_cmsexec "
+  if command -v cmssw_exec 2>&1 >/dev/null; then
+    if [[ $(cmssw_src_path) != "" ]]; then
+      echo "cmssw_exec "
       return
     fi
   fi

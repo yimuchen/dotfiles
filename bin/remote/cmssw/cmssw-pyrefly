@@ -1,4 +1,3 @@
 #!/bin/bash
 script_dir=$(dirname $BASH_SOURCE[0])
-"${script_dir}/_cmsexec" pyrefly $@
-
+"${script_dir}/cmssw_exec" pyrefly $@

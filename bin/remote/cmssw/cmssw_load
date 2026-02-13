@@ -1,6 +1,6 @@
 #!/bin/bash
 if [[ $# -eq 0 ]] ; then
-  echo "Use this script like _cmsrel CMSSW_X_Y_Z where X_Y_Z is the desired version number."
+  echo "Use this script like cmssw_load CMSSW_X_Y_Z where X_Y_Z is the desired version number."
   echo "This will automatically load the desired CMSSW version in the proper SCRAM_ARCH and "
   echo "container directory."
   exit 0

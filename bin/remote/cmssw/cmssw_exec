@@ -4,7 +4,7 @@
 # You just need to be sure that your current working directory is within a
 # CMSSW_X_Y_Z/src directory.
 script_dir=$(dirname $BASH_SOURCE[0])
-PWD_CMSSW_VERSION=$(${script_dir}/_cmssw_src_path)
+PWD_CMSSW_VERSION=$(${script_dir}/cmssw_src_path)
 if [[ $PWD_CMSSW_VERSION == "" ]]; then
   echo "Not in a valid CMSSW_X_Y_Z/src directory. Exiting..."
   exit 1

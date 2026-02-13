@@ -41,21 +41,21 @@ function _build_cmssw_scram_arch() {
 
 # Simple alias functions to directly call CMSSW methods without having to load in cmsenv
 function cmssw-clean() {
-  _cmsexec scram b clean
+  cmssw_exec scram b clean
 }
 
 function cmssw-make() {
   # Standard make methods
   #
   # Always move to base path to compile everything
-  cmssw_src=$(_cmssw_src_path)
+  cmssw_src=$(cmssw_src_path)
   cd ${cmssw_src}
 
   # Compile with half the available cores
-  _cmsexec scram b -j $(($(nproc) / 2))
+  cmssw_exec scram b -j $(($(nproc) / 2))
 
   # Generate the compile commands and link it to the src base path
-  _cmsexec scram b llvm-ccdb
+  cmssw_exec scram b llvm-ccdb
   ln -sf ${cmssw_src}/../compile_commands.json ./
 
   # Moving back to whatever working directory was used
