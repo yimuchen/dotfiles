@@ -36,13 +36,18 @@ class Fonts(decman.Module):
         deps |= {"ttf-jetbrains-mono-nerd"}
         # Miscellaneous fonts
         deps |= {"otf-firamono-nerd"}
+        # More chinese fonts
+        deps |= {"ttf-arphic-ukai", "ttf-arphic-uming"}
         return deps
 
     @aur.packages
     def aur_packages(self):
         return {
             # "ttf-tw",
-            "ttf-ms-fonts"
+            "ttf-ms-fonts",
+            "otf-misans-tc",
+            "otf-misans-l3",
+            "ttf-line-seed-tw",
         }
 
     def files(self):
