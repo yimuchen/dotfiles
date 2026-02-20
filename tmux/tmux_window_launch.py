@@ -45,7 +45,9 @@ def parse_config_json(
     return config
 
 
-def switch_window(session_name: str, window_idx: str, config: Dict[str]) -> None:
+def switch_window(
+    session_name: str, window_idx: str, config: Dict[str, ConfigEntry]
+) -> None:
     tconf = config.get(window_idx, None)
     target = f"{session_name}:{window_idx}"
     if (
