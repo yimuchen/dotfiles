@@ -3,6 +3,9 @@ alias -- efireboot='systemctl reboot --firmware-setup'
 alias -- poweroff='systemctl poweroff'
 alias -- reboot='systemctl reboot'
 
+# Aliasing makepkg to not clog up configuration directory
+alias -- makepkg='makepkg --config $HOME/.config/makepkg.conf'
+
 # Additional setup for the python session
 NIX_ENVPYTHON_DIR=$(dirname $(dirname $(realpath $(which python))))
 ENVPYTHON_VERSION=$(python --version | awk '{print $2}' | cut -f1,2 -d'.')
