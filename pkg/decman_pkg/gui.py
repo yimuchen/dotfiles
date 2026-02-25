@@ -2,7 +2,7 @@ import os
 
 import decman
 import decman_utils
-from decman.plugins import aur, pacman
+from decman.plugins import aur, flatpak, pacman
 
 from ._common import user
 
@@ -14,7 +14,7 @@ class Core(decman.Module):
         super().__init__(name="gui-user-core")
 
     @pacman.packages
-    def pacman_packages(self) -> set(str):
+    def pacman_packages(self) -> set[str]:
         # For online interactions
         deps = {"bitwarden"}
         # For personal information management
@@ -160,18 +160,16 @@ class Media(decman.Module):
         super().__init__("gui-media")
 
     @pacman.packages
-    def pacman_packages(self):
-        # Audio related
-        deps = {"vlc", "elisa", "audacity", "kid3"}
-        # Musescore is difficult...
-        deps |= {"musescore"}
-        # Image related
-        deps |= {"inkscape", "gimp", "gwenview", "digikam"}
-        # Additional dependencies of inkscape
-        deps |= {"python-tinycss2"}
-        # Video related
-        deps |= {"kdenlive", "yt-dlp", "obs-studio", "k3b"}
-        return deps
+    def audio_packages(self):
+        return {"vlc", "elisa", "audacity", "kid3", "musescore"}
+
+    @pacman.packages
+    def image_packages(self):
+        return {"inkscape", "gimp", "gwenview", "digikam"}
+
+    @pacman.packages
+    def video_packages(self):
+        return {"kdenlive", "yt-dlp", "obs-studio", "k3b"}
 
     @aur.packages
     def aur_packages(self):
@@ -184,19 +182,21 @@ class MiscTools(decman.Module):
 
     @pacman.packages
     def pacman_packages(self):
-        # Alternate browsers
-        deps = {"thunderbird", "signal-desktop"}
-        # Related to hardware design
-        deps |= {
+        return {"thunderbird", "signal-desktop"}
+
+    @pacman.packages
+    def cad_packages(self):
+        return {
             "freecad",
             "kicad",
             "kicad-library",
             "kicad-library-3d",
             "python-kikit",
         }
-        # Virtual machine and remote access
-        deps |= {"virt-manager", "tigervnc", "freerdp"}
-        return deps
+
+    @pacman.packages
+    def virtual_remotes(self):
+        return {"virt-manager", "tigervnc", "freerdp"}
 
     @aur.packages
     def aur_packages(self):
@@ -212,11 +212,12 @@ class Gaming(decman.Module):
         super().__init__("gui-game")
 
     @pacman.packages
-    def pacman_packages(self):
-        deps = {"steam", "lutris"}
-        # Optional dependencies for lutris
-        deps |= {"wine", "python-protobuf"}
-        return deps
+    def pacman_packages(self) -> set[str]:
+        return {"steam"}
+
+    @pacman.packages
+    def lutris_packages(self) -> set[str]:
+        return {"lutris", "wine", "python-protobuf"}
 
     @aur.packages
     def aur_packages(self):

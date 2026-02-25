@@ -28,7 +28,7 @@ class Neovim(decman.Module):
     def aur_packages(self):
         # Additional language servers/formatters that are only available in the AUR
         # For python
-        deps = {"pyrefly-bin"}
+        deps = {"pyrefly"}
         # For nix
         deps |= {"nixfmt"}
         return deps
