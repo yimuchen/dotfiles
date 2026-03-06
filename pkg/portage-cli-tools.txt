@@ -14,5 +14,6 @@ sys-apps/ripgrep
 neovim
 dev-util/sh
 dev-python/uv
+dev-python/argcomplete
 dev-lang/rust-bin
 app-shells/starship

@@ -1,14 +1,26 @@
 # tmux configuration
 
+## tmux session hooks
+
 I use [tmux] for typically when I can potentially have long running jobs for a specific project directory, especially
-over SSH connections. I don't switch directories, as none of the project that I am working warrants having nested
-project structures. I typically don't want to use panes, and prefer to relegate each window to just one task. I also
-want to have a consistent window order, where each window number has a dedicated function defined by the project in
-questions. Because of this, the switch-window method (prefix+number) is wrapped by the
-[`tmux_window_launch.py`](./tmux_window_launch.py) python script, that spawn as new window if it doesn't already exist,
-as well as automatically handling the windows renaming. The windows layout is handled globally by the
-`~/.config/tmux/windows_layout.json` configuration file or in the `.tmux_windows_layout.json` file of the working
-directory of tmux. The local layout will overriding the global layout if there is a duplicate item.
+over SSH connections. I typically don't switch the working directories, as none of the project that I am working
+warrants having nested project structures. However, because when working on clusters, the host of the tmux session may
+not be assigned if left to the automatic loader.
+
+Because of these usage pattern, we should typically not launch tmux session directly via `tmux new -s session_name`.
+Instead, we should call the wrapper `tmux_session_launch.py` script, which will attempt to automatically SSH to the host
+with the same session name. The mechanism for this banks on the fact that the most clusters will have a shared home
+directory, for which the tmux session will create a file indicating the hostname whenever a new session is created.
+
+## tmux windows/pane naming
+
+I typically don't want to use panes, and prefer to relegate each window to just one task. I also want to have a
+consistent window order, where each window number has a dedicated function defined by the project in questions. Because
+of this, the switch-window method (prefix+number) is wrapped by the [`tmux_window_launch.py`](./tmux_window_launch.py)
+python script, that spawn as new window if it doesn't already exist, as well as automatically handling the windows
+renaming. The windows layout is handled globally by the `~/.config/tmux/windows_layout.json` configuration file or in
+the `.tmux_windows_layout.json` file of the working directory of tmux. The local layout will overriding the global
+layout if there is a duplicate item.
 
 The configuration JSON file takes the format as:
 
