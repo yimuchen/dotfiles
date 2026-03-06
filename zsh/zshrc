@@ -89,6 +89,9 @@ else
   if [[ -d "/cvmfs/cms.cern.ch" ]]; then
     source $HOME/.config/zsh/cmssw_tools.sh
   fi
+  # Odd item with custom compdef, this must be delcared at top level??
+  compdef _ctmux ctmux
+  compdef _python_argcomplete tmux_session_launch.py
 fi
 
 if [[ "$MACHINE_TYPE_DETAIL" == "lxplus" ]]; then
@@ -106,8 +109,6 @@ bindkey  "^[[3~"  delete-char
 bindkey "^[[1~"   beginning-of-line
 bindkey "^[[4~"   end-of-line
 
-# Odd item with custom compdef, this must be delcared at top level??
-compdef _ctmux ctmux
 
 ############## Uncomment to run profiling
 # zprof

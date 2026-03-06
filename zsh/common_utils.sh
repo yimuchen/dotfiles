@@ -117,16 +117,8 @@ if [ ! -z "$CONDA_PREFIX" ]; then # Force reloading conda, ensures tmux internal
   conda activate $CONDA_PREFIX
 fi
 
-function ctmux() { # For spinning up tmux session in cross-cluster configruations
-  $HOME/.config/tmux-plugins-custom/cluster-session/scripts/ctmux attach-session $@
-}
-
-function _ctmux() { # Getting the list of managed sessions
-  local -a targets
-  targets=($($HOME/.config/tmux-plugins-custom/cluster-session/scripts/ctmux list-sessions))
-  _arguments -C '1:Select a session:('"${targets[*]}"')'
-}
-# compdef _ctmux ctmux ## For some reason this must be declared at top level??
+# Wrapper for handling tmux
+eval "$(cd $HOME/.config/dot-bin/common/ && register-python-argcomplete tmux_session_launch.py -s zsh)"
 
 #################################################################################
 # Functions for setting the title of tabs as they appear in terminal emulators
@@ -161,12 +153,8 @@ function preexec() {
   # SPeical
   if [[ "$1" == "nvim"* ]]; then
     cmd="🗒️ nvim"
-  elif [[ "$1" == "ctmux"* ]]; then
-    target=$(echo $1 | awk -F ' ' '{print $2}')
-    if [[ $target == "" ]]; then
-      target="$(basename $PWD)"
-    fi
-    cmd="💾 ctmux $target"
+  elif [[ "$1" == "tmux"* ]]; then
+    cmd="💾 tmux"
     # Overriding host to match the machine that is serving the tmux session
     cache_dir=${CLUSTER_SESSION_TMUX_CACHE_DIR:=$HOME/.local/state/tmux-cluster-session/}
     cache_file=${cache_dir}/tmux.session.${target}
