@@ -1,5 +1,5 @@
 import decman
-from decman.plugins import aur, flatpak, pacman
+from decman.plugins import aur, flatpak, pacman, systemd
 
 
 class hgcal_database(decman.Module):
@@ -24,6 +24,10 @@ class hgcal_database(decman.Module):
         # For printing at Campus north
         # deps += ["cnrdrvcups-lb"]
         return deps
+
+    @systemd.units
+    def services(self) -> set[str]:
+        return {"postgresql.service"}
 
     @flatpak.packages
     def flatpak_packages(self) -> set[str]:
