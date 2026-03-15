@@ -22,14 +22,14 @@ scriptizer = scriptize.Scriptizer(
 )
 
 """
-General functions for selecting credentials from bw CLI method. These will not
-be exposed for user interaction
+General functions for selecting credentials from Bitwarden CLI method. These
+will not be exposed for user interaction
 """
 
 
 def obtain_bw_items(item_filter: Optional[Callable] = None) -> List[Dict]:
     """
-    Getting the list of vault items in the default BitWarden vault. You can
+    Getting the list of vault items in the default Bitwarden vault. You can
     provide an additional function to filter the items of interest.
     """
     bw_process = subprocess.Popen(
@@ -73,7 +73,7 @@ def protocol_filter(protocol: str | List[str]):
 
 def get_protocols(item: Dict[str, Any], protocol: str):
     """
-    For a BitWarden vault item, return the URIs corresponding to the protocol
+    For a Bitwarden vault item, return the URIs corresponding to the protocol
     of interest.
     """
     return [
@@ -88,7 +88,7 @@ def kinit():
     """
     Creating the kerberos ticket
 
-    Generating the kerberos ticket using the credentials stored in BitWarden
+    Generating the kerberos ticket using the credentials stored in Bitwarden
     vaults. The credentials that will be used should contain the following
     information in the format of a URI:
 
@@ -162,7 +162,7 @@ def voms():
                     "--valid",
                     "192:00",  # Valid time (8 days by default)
                     "--out",
-                    # proxy file in single quotes for env expansion to be handled by the server-side
+                    # proxy file in single quotes for variable expansion to be handled by the server-side
                     "'${HOME}/x509up_u${UID}'",
                 ]
                 cmd = " ".join(ssh_cmd + voms_cmd)
@@ -182,7 +182,7 @@ def voms():
 @scriptizer.register_function
 def copypass(target: str):
     """
-    Browsing through the login credentials, copying the password to the wayland clipboard
+    Browsing through the login credentials, copying the password to the Wayland clipboard
 
     Parameters
     ==========
