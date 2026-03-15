@@ -9,6 +9,7 @@ return {
           ['_'] = { 'trim_whitespace' },
           -- ['*'] = { 'injected' }, -- Try to allow injected formatter for all items
         },
+        async = true
       }
       vim.api.nvim_create_autocmd('FileType', {
         pattern = { '*' },
@@ -26,7 +27,7 @@ return {
       local format_buffer = function()
         -- In most cases, the LSP should be configured to be the formatter
         -- (similar to calling vim.lsp.buf.format())
-        conform.format { lsp_format = "first", timeout_ms = 3000 }
+        conform.format { lsp_format = "first", timeout_ms = 10000 }
         -- Always try to trim whitespace
         conform.format { formatters = { 'trim_whitespace' } }
       end
