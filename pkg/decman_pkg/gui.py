@@ -2,7 +2,7 @@ import os
 
 import decman
 import decman_utils
-from decman.plugins import aur, flatpak, pacman
+from decman.plugins import aur, pacman, systemd
 
 from ._common import user
 
@@ -32,6 +32,10 @@ class Core(decman.Module):
         # My browser of choice
         deps = {"zen-browser-bin"}
         return deps
+
+    @systemd.user_units
+    def ghostty_service(self) -> dict[str, set]:
+        return {user.username: {"app-com.mitchellh.ghostty.service"}}
 
     def files(self):
         """
