@@ -23,6 +23,8 @@ class hgcal_database(decman.Module):
         deps = {"sqlfmt-bin"}
         # For printing at Campus north
         # deps += ["cnrdrvcups-lb"]
+        # For KIT internal communications for some reason
+        deps |= {"teams-for-linux-bin"}
         return deps
 
     @systemd.units
