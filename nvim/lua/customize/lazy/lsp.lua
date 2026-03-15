@@ -49,14 +49,6 @@ return {
     end,
   },
 
-  -- For additional lua LSP when editing neovim configurations
-  {
-    'folke/lazydev.nvim',
-    ft = 'lua',
-    opts = { library = { 'luvit-meta/library' }, },
-    dependencies = { { 'Bilal2453/luvit-meta', lazy = true } },
-  },
-
   -- Document outline
   {
     'hedyhli/outline.nvim',
