@@ -153,13 +153,17 @@ function preexec() {
   # SPeical
   if [[ "$1" == "nvim"* ]]; then
     cmd="🗒️ nvim"
-  elif [[ "$1" == "tmux"* ]]; then
-    cmd="💾 tmux"
+  elif [[ "$1" == "tmux_session_"* ]]; then
+    target=$(echo $@ | awk -F ' ' '{print $2}')
+    if [[ $target == "" ]]; then
+      target="$(basename $PWD)"
+    fi
+    cmd="💾 tmux:${target}"
     # Overriding host to match the machine that is serving the tmux session
-    cache_dir=${CLUSTER_SESSION_TMUX_CACHE_DIR:=$HOME/.local/state/tmux-cluster-session/}
-    cache_file=${cache_dir}/tmux.session.${target}
+    cache_dir=${HOME}/.local/state/tmux/
+    cache_file=${cache_dir}/tmux.session.${target}.json
     if [[ -f ${cache_file} ]]; then
-      host=$(cat ${cache_file})
+      host=$(jq '.machine' ${cache_file} | sed 's@"@@g')
     fi
     path_display=""
   else
