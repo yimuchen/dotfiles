@@ -7,8 +7,12 @@ import os
 import socket
 import subprocess
 
-import argcomplete
-from argcomplete.completers import ChoicesCompleter
+argcomplete = None
+try:
+    import argcomplete
+    from argcomplete.completers import ChoicesCompleter
+except:
+    pass
 
 ## Setting the default paths
 SESSION_FILE_DIR = os.getenv(
@@ -127,15 +131,18 @@ if __name__ == "__main__":
         "tmux_session_launch.py",
         description="Session launcher that automatically runs SSH command if required",
     )
-    parser.add_argument(
+    session_arg = parser.add_argument(
         "session_name",
         nargs="*",
         default=[os.path.basename(os.getcwd())],
         help="Launching session name. Will default to current working directory if this is not specified",
         # Do not use choices directly! That will forbid arbitrary session names
-    ).completer = ChoicesCompleter(_get_sessions_list())
+    )
+    if argcomplete:
+        session_arg.completer = ChoicesCompleter(_get_sessions_list())
 
     args = parser.parse_args()
-    argcomplete.autocomplete(parser)
+    if argcomplete:
+        argcomplete.autocomplete(parser)
     assert len(args.session_name) == 1, "Only 1 session name can be specified!"
     run(args.session_name[0])
