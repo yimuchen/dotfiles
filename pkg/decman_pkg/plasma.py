@@ -97,9 +97,13 @@ class Themes(decman.Module):
         """Packages required for themes to work"""
         return {"papirus-icon-theme", "fcitx5-breeze"}
 
+    @pacman.packages
+    def gtk_theme_control(self) -> set[str]:
+        return {"adw-gtk-theme", "nwg-look"}
+
     @aur.packages
     def aur_packages(self):
-        return {"arc-kde-git"}
+        return {"arc-kde-git", "qt6ct-kde"}
 
     def files(self):
         """Theming that are likely not chancing for a long time"""
