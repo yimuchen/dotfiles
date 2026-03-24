@@ -1,4 +1,5 @@
 import os
+from typing import Dict
 
 import decman
 import decman_utils
@@ -44,41 +45,63 @@ class Core(decman.Module):
         the install. This will be dynamically generated, but you will have to
         run the browser once to have this be generated.
         """
-        zen_base = os.path.join(user.home_path, ".zen")
-        zen_install_path = os.path.join(zen_base, "installs.ini")
-        zen_profile_path = os.path.join(zen_base, "profiles.ini")
-        zen_pref_path = os.path.join(zen_base, "prefs.js")
-        ## How is this generate???
-        user_hash = "15B76BAA26BA15E7"
-        user_profile = f"{user.username}Profile"
+        return {
+            **self.zen_install_file,
+            **self.zen_profile_file,
+            **self.zen_user_preferences,
+        }
+
+    """
+    Zen browser configuration
+    """
+
+    @property
+    def zen_base(self) -> str:
+        return os.path.join(user.home_path, ".zen")
+
+    @property
+    def zen_user_hash(self) -> str:  # Magic number??
+        return "15B76BAA26BA15E7"
+
+    @property
+    def zen_user_profile(self) -> str:
+        return f"{user.username}Profile"
+
+    @property
+    def zen_install_file(self) -> Dict[str, decman.File]:
         zen_install = decman_utils.ConfExp(
-            target_path=zen_install_path, user=user.username
+            target_path=os.path.join(self.zen_base, "installs.ini"), user=user.username
         )
-        zen_install[user_hash] = {"Default": f"{user.username}Profile", "Locked": "1"}
+        zen_install[self.zen_user_hash] = {
+            "Default": f"{user.username}Profile",
+            "Locked": "1",
+        }
+        return zen_install.to_decman()
+
+    @property
+    def zen_profile_file(self) -> Dict[str, decman.File]:
         zen_profile = decman_utils.ConfExp(
-            target_path=zen_profile_path, user=user.username
+            target_path=os.path.join(self.zen_base, "profiles.ini"), user=user.username
         )
         zen_profile["Profile0"] = {
-            "Name": user_profile,
+            "Name": self.zen_user_profile,
             "IsRelative": "1",
-            "Path": user_profile,
+            "Path": self.zen_user_profile,
             "Default": "1",
         }
         zen_profile["General"] = {"StartWithLastProfile": "1", "Version": "2"}
-        zen_profile[f"Install{user_hash}"] = {"Default": user_profile, "Locked": "1"}
-
-        zen_pref_path = os.path.join(zen_base, f"{user_profile}/prefs.js")
-
-        return {
-            **zen_install.to_decman(),
-            **zen_profile.to_decman(),
-            **self.zen_user_preferences(zen_pref_path),
+        zen_profile[f"Install{self.zen_user_hash}"] = {
+            "Default": self.zen_user_profile,
+            "Locked": "1",
         }
+        return zen_profile.to_decman()
 
-    def zen_user_preferences(self, orig_path: str):
-        if not os.path.exists(orig_path):
+    @property
+    def zen_user_preferences(self) -> Dict[str, decman.File]:
+        zen_pref_path = os.path.join(self.zen_base, f"{self.zen_user_profile}/prefs.js")
+        if not os.path.exists(zen_pref_path):
             return {}
-        with open(orig_path) as f:  # Getting the orignal content
+        with open(zen_pref_path) as f:  # Getting the original content
             contents = f.readlines()
         # Creating a new contents
         target_configs = {
@@ -106,14 +129,14 @@ class Core(decman.Module):
                     return make_line(k, v)
             return line
 
-        # Creating a new line
         new_contents = [modify_line(line) for line in contents]
         new_contents += [
             make_line(k, v) for k, v in target_configs.items() if not create_configs[k]
         ]
-
         return {
-            orig_path: decman.File(content="".join(new_contents), owner=user.username)
+            zen_pref_path: decman.File(
+                content="".join(new_contents), owner=user.username
+            )
         }
 
 
@@ -178,6 +201,19 @@ class Media(decman.Module):
     @aur.packages
     def aur_packages(self):
         return {"wl-color-picker", "droidcam"}
+
+    def files(self) -> Dict[str, decman.File]:
+        musescore_config = decman_utils.ConfExp(
+            target_path=os.path.join(user.config_path, "MuseScore/MuseScore4.ini"),
+            ref_path=os.path.join(user.config_path, "MuseScore/MuseScore4.ini"),
+            user=user.username,
+        )
+        musescore_config.update_from_fragment(
+            os.path.join(
+                user.config_source_dir, "config/fragments/MuseScore/MuseScore4.ini"
+            )
+        )
+        return musescore_config.to_decman()
 
 
 class MiscTools(decman.Module):
