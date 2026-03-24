@@ -1,0 +1,270 @@
+include "noctalia.kdl"
+
+input {
+   keyboard {
+        xkb {
+            layout "us"
+            variant "altgr-intl"
+            options "ctrl:nocaps"
+        }
+        numlock
+    }
+    touchpad {
+        tap
+        natural-scroll
+    }
+    mouse {
+        accel-profile "flat"
+    }
+    warp-mouse-to-focus
+    focus-follows-mouse max-scroll-amount="20%"
+}
+
+
+// Settings that influence how windows are positioned and sized.
+// Find more information on the wiki:
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Layout
+layout {
+    gaps 5
+    center-focused-column "never"
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+    default-column-width {}
+    focus-ring { // Colors are defined by noctalia
+        on
+        width 2
+    }
+
+    border {
+        width 2
+    }
+}
+
+// Add lines like this to spawn processes at startup.
+// Note that running niri as a session supports xdg-desktop-autostart,
+// which may be more convenient to use.
+// See the binds section below for more spawn examples.
+
+// Uncomment this line to ask the clients to omit their client-side decorations if possible.
+// If the client will specifically ask for CSD, the request will be honored.
+// Additionally, clients will be informed that they are tiled, removing some client-side rounded corners.
+// This option will also fix border/focus ring drawing behind some semitransparent windows.
+// After enabling or disabling this, you need to restart the apps for this to take effect.
+prefer-no-csd
+
+// You can change the path where screenshots are saved.
+// A ~ at the front will be expanded to the home directory.
+// The path is formatted with strftime(3) to give you the screenshot date and time.
+screenshot-path "~/temp/Screenshots/Screenshot_%Y%m%d_%H-%M-%S.png"
+
+// You can also set this to null to disable saving screenshots to disk.
+// screenshot-path null
+
+// Animation settings.
+// The wiki explains how to configure individual animations:
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Animations
+animations {
+	workspace-switch {
+		duration-ms 200
+		curve "cubic-bezier" 0.775 -0.500 0.4 1.20
+	}
+	overview-open-close {
+		duration-ms 100
+		curve "cubic-bezier" 0.670 -0.535 0.390 1.205
+	}
+}
+
+gestures {
+	hot-corners {
+		off
+	}
+}
+
+// Window rules let you adjust behavior for individual windows.
+// Find more information on the wiki:
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules
+// The keybinds is mainly for management of windows. For interacting with the
+// System bindings, we will be using the wlr-which-key for this
+binds {
+    // Mod-/, which is usually the same as Mod-?,
+    // shows a list of important hotkeys.
+    Mod+Shift+Slash { show-hotkey-overlay; }
+    Mod+Slash { spawn "wlr-which-key"; }
+
+    // Suggested binds for running programs: terminal, app launcher, screen locker.
+    Mod+Shift+Space hotkey-overlay-title="Launch new application (fuzzel)" { spawn "fuzzel"; }
+    Mod+Space hotkey-overlay-title="Launch/Focus application (fuzzel)" { spawn "wlr-which-key" "--initial-keys" "a"; }
+    Mod+Tab hotkey-overlay-title="Find existing applcation (fuzzel)" { spawn "~/.config/dot-bin/local/niri_pick_window.sh"; }
+
+    // You can also use a shell. Do this if you need pipes, multiple commands, etc.
+    // Note: the entire command goes as a single argument in the end.
+    // Mod+T { spawn "bash" "-c" "notify-send hello && exec alacritty"; }
+
+    // Example volume keys mappings for PipeWire & WirePlumber.
+    // The allow-when-locked=true property makes them work even when the session is locked.
+    XF86AudioRaiseVolume  allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
+    XF86AudioLowerVolume  allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
+    XF86AudioMute         allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+    XF86AudioMicMute      allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+    XF86MonBrightnessUp   allow-when-locked=true { spawn "brightnessctl" "s" "+5%"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "s" "5%-"; }
+
+    // Open/close the Overview: a zoomed-out view of workspaces and windows.
+    // You can also move the mouse into the top-left hot corner,
+    // or do a four-finger swipe up on a touchpad.
+
+    Mod+Q { close-window; }
+
+    // The core functionality of niri would be to handle windows motion and finding windows
+    Mod+Left  { focus-column-left; }
+    Mod+Down  { focus-window-down; }
+    Mod+Up    { focus-window-up; }
+    Mod+Right { focus-column-right; }
+    Mod+Ctrl+Left  { move-column-left; }
+    Mod+Ctrl+Down  { move-window-down; }
+    Mod+Ctrl+Up    { move-window-up; }
+    Mod+Ctrl+Right { move-column-right; }
+
+    Mod+Home { focus-column-first; }
+    Mod+End  { focus-column-last; }
+    Mod+Ctrl+Home { move-column-to-first; }
+    Mod+Ctrl+End  { move-column-to-last; }
+
+    Mod+Shift+Ctrl+Left  { move-column-to-monitor-left; }
+    Mod+Shift+Ctrl+Down  { move-column-to-monitor-down; }
+    Mod+Shift+Ctrl+Up    { move-column-to-monitor-up; }
+    Mod+Shift+Ctrl+Right { move-column-to-monitor-right; }
+    Mod+Shift+Ctrl+H     { move-column-to-monitor-left; }
+    Mod+Shift+Ctrl+J     { move-column-to-monitor-down; }
+    Mod+Shift+Ctrl+K     { move-column-to-monitor-up; }
+    Mod+Shift+Ctrl+L     { move-column-to-monitor-right; }
+
+    // Alternatively, there are commands to move just a single window:
+    // Mod+Shift+Ctrl+Left  { move-window-to-monitor-left; }
+    // ...
+
+    // And you can also move a whole workspace to another monitor:
+    // Mod+Shift+Ctrl+Left  { move-workspace-to-monitor-left; }
+    // ...
+
+    Mod+Page_Down      { focus-workspace-down; }
+    Mod+Page_Up        { focus-workspace-up; }
+    Mod+U              { focus-workspace-down; }
+    Mod+I              { focus-workspace-up; }
+    Mod+Ctrl+Page_Down { move-column-to-workspace-down; }
+    Mod+Ctrl+Page_Up   { move-column-to-workspace-up; }
+    Mod+Ctrl+U         { move-column-to-workspace-down; }
+    Mod+Ctrl+I         { move-column-to-workspace-up; }
+
+    // Alternatively, there are commands to move just a single window:
+    // Mod+Ctrl+Page_Down { move-window-to-workspace-down; }
+    // ...
+
+    Mod+Shift+Page_Down { move-workspace-down; }
+    Mod+Shift+Page_Up   { move-workspace-up; }
+    Mod+Shift+U         { move-workspace-down; }
+    Mod+Shift+I         { move-workspace-up; }
+
+    // For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
+    // will all refer to the 3rd workspace.
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+    Mod+Ctrl+1 { move-window-to-workspace 1; }
+    Mod+Ctrl+2 { move-window-to-workspace 2; }
+    Mod+Ctrl+3 { move-window-to-workspace 3; }
+    Mod+Ctrl+4 { move-window-to-workspace 4; }
+    Mod+Ctrl+5 { move-window-to-workspace 5; }
+    Mod+Ctrl+6 { move-window-to-workspace 6; }
+    Mod+Ctrl+7 { move-window-to-workspace 7; }
+    Mod+Ctrl+8 { move-window-to-workspace 8; }
+    Mod+Ctrl+9 { move-window-to-workspace 9; }
+
+    // Alternatively, there are commands to move just a single window:
+    // Mod+Ctrl+1 { move-window-to-workspace 1; }
+
+    // The following binds move the focused window in and out of a column.
+    // If the window is alone, they will consume it into the nearby column to the side.
+    // If the window is already in a column, they will expel it out.
+    Mod+BracketLeft  { consume-or-expel-window-left; }
+    Mod+BracketRight { consume-or-expel-window-right; }
+
+    // Consume one window from the right to the bottom of the focused column.
+    Mod+Comma  { consume-window-into-column; }
+    // Expel the bottom window from the focused column to the right.
+    Mod+Period { expel-window-from-column; }
+
+    Mod+R { switch-preset-column-width; }
+    Mod+Shift+R { switch-preset-window-height; }
+    Mod+Ctrl+R { reset-window-height; }
+    Mod+F { maximize-column; }
+    Mod+Shift+F { fullscreen-window; }
+
+    // Expand the focused column to space not taken up by other fully visible columns.
+    // Makes the column "fill the rest of the space".
+    Mod+Ctrl+F { expand-column-to-available-width; }
+
+    Mod+C { center-column; }
+
+    // Center all fully visible columns on screen.
+    Mod+Ctrl+C { center-visible-columns; }
+
+    // Finer width adjustments.
+    // This command can also:
+    // * set width in pixels: "1000"
+    // * adjust width in pixels: "-5" or "+5"
+    // * set width as a percentage of screen width: "25%"
+    // * adjust width as a percentage of screen width: "-10%" or "+10%"
+    // Pixel sizes use logical, or scaled, pixels. I.e. on an output with scale 2.0,
+    // set-column-width "100" will make the column occupy 200 physical screen pixels.
+    Mod+Minus { set-column-width "-5%"; }
+    Mod+Equal { set-column-width "+5%"; }
+
+    // Finer height adjustments when in column with other windows.
+    Mod+Shift+Minus { set-window-height "-5%"; }
+    Mod+Shift+Equal { set-window-height "+5%"; }
+
+    // Move the focused window between the floating and the tiling layout.
+    Mod+V       { toggle-window-floating; }
+    Mod+Shift+V { switch-focus-between-floating-and-tiling; }
+
+
+    Print { screenshot; }
+    Ctrl+Print { screenshot-screen; }
+    Alt+Print { screenshot-window; }
+
+    // Applications such as remote-desktop clients and software KVM switches may
+    // request that niri stops processing the keyboard shortcuts defined here
+    // so they may, for example, forward the key presses as-is to a remote machine.
+    // It's a good idea to bind an escape hatch to toggle the inhibitor,
+    // so a buggy application can't hold your session hostage.
+    //
+    // The allow-inhibiting=false property can be applied to other binds as well,
+    // which ensures niri always processes them, even when an inhibitor is active.
+    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+}
+
+environment {
+   DISPLAY ":1"
+   QT_QPA_PLATFORMTHEME "qt6ct"
+}
+
+// Items to start of the session
+spawn-at-startup "qs" "-c" "noctalia-shell"
+spawn-at-startup "swww-daemon"
+spawn-at-startup "xwayland-satellite"
+spawn-at-startup "nm-applet"
+spawn-at-startup "fcitx5"
+spawn-at-startup "gammastep-indicator" "-l" "48.1:11.5"
+
+include "./noctalia.kdl"
+

@@ -1,0 +1,58 @@
+# Theming
+font: JetBrainsMono Nerd Font 14
+background: "#282828d0"
+color: "#d8dee9ff"
+border: "#5e81acff"
+separator: " ➜ "
+border_width: 2
+corner_r: 10
+padding: 15 # Defaults to corner_r
+rows_per_column: 5 # No limit by default
+column_padding: 25 # Defaults to padding
+
+# Anchor and margin
+anchor: center # One of center, left, right, top, bottom, bottom-left, top-left, etc.
+# Only relevant when anchor is not center
+margin_right: 40
+margin_bottom: 40
+margin_left: 0
+margin_top: 0
+
+# namespace to use for the layer shell surface
+# namespace: "wlr_which_key"
+
+# Permits key bindings that conflict with compositor key bindings.
+# Default is `false`.
+inhibit_compositor_keyboard_shortcuts: true
+
+# Try to guess the correct keyboard layout to use. Default is `false`.
+auto_kbd_layout: true
+
+menu:
+  - key: "p"
+    desc: Power
+    submenu:
+      - key: "s"
+        desc: Sleep
+        cmd: systemctl suspend
+      - key: "r"
+        desc: Reboot
+        cmd: reboot
+      - key: "o"
+        desc: Off
+        cmd: poweroff
+  - key: "a"
+    desc: "Applications"
+    submenu:
+      - key: "t"
+        desc: "Terminal (Ghostty)"
+        cmd: ~/.config/dot-bin/local/launch_single.py com.mitchellh.ghostty
+      - key: "b"
+        desc: "Browzer (Zen Browser)"
+        cmd: ~/.config/dot-bin/local/launch_single.py zen
+      - key: "m"
+        desc: "Mail client (Thunderbird)"
+        cmd: ~/.config/dot-bin/local/launch_single.py org.mozilla.Thunderbird
+      - key: "p"
+        desc: "Player (Elisa)"
+        cmd: ~/.config/dot-bin/local/launch_single.py org.kde.elisa
