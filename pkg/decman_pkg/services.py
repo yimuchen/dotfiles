@@ -2,6 +2,7 @@ import os
 import socket
 import stat
 import xml.etree.ElementTree as ETree
+from typing import Dict
 
 import decman
 from decman.plugins import aur, pacman, systemd
@@ -18,27 +19,39 @@ class Syncthing(decman.Module):
         return {"syncthing"}
 
     def files(self):
-        self.modify_files()
-        return {}
+        return {**self.syncthing_config}
 
-    def modify_files(self):
+    @property
+    def syncthing_gui_port(self) -> int:
+        return 8021
+
+    @property
+    def syncthing_gui_addr(self) -> str:
+        return (
+            "127.0.0.1" if "Hetzner" not in socket.gethostname() else "0.0.0.0"
+        )  # Allow remote access
+
+    @property
+    def syncthing_config(self) -> Dict[str, decman.File]:
         # Modify the existing files if it exists
         target = os.path.join(user.home_path, ".local/state/syncthing/config.xml")
         if not os.path.exists(target):
-            return
+            {}
 
-        # Modifying the address to always export 8021 for syncthing
         tree = ETree.parse(target).getroot()
         try:
             gui_config = next(b for b in tree if b.tag == "gui")
             addr_config = next(b for b in gui_config if b.tag == "address")
-            addr_config.text = "127.0.0.1:8021"
+            addr_config.text = f"{self.syncthing_gui_addr}:{self.syncthing_gui_port}"
         except StopIteration:
             pass
-
-        with open(target, "wb") as f:
-            f.write(ETree.tostring(tree))
-        os.chmod(target, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IWGRP)
+        return {
+            target: decman.File(
+                content=ETree.tostring(tree).decode("utf-8"),
+                owner=user.username,
+                group=user.username,
+            )
+        }
 
     @systemd.user_units
     def systemd_units(self):
@@ -98,9 +111,9 @@ class LLMService(decman.Module):
         return deps
 
     @aur.packages
-    def aur_packages(self):
+    def aur_packages(self) -> set[str]:
         deps = {"opencode-bin"}
-        return {}
+        return set()
 
     def files(self):
         return self.ollama_service.to_decman()
