@@ -6,5 +6,5 @@
 ./kwinrulesrc                     $HOME/.config/kwinrulesrc
 ./fuzzel/                         $HOME/.config/fuzzel
 ./niri                            $HOME/.config/niri
-./mako/                           $HOME/.config/mako
-./waybar/                         $HOME/.config/waybar
+./wlr-which-key/                  $HOME/.config/wlr-which-key
+./noctalia/                       $HOME/.config/noctalia
