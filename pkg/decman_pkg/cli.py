@@ -25,12 +25,11 @@ class Neovim(decman.Module):
         return deps
 
     @aur.packages
-    def aur_packages(self):
-        # Additional language servers/formatters that are only available in the AUR
-        # For python
-        deps = {"pyrefly"}
-        # For nix
-        deps |= {"nixfmt"}
+    @decman_utils.common.package_on_host(disable="*Hetzner")
+    def aur_packages(self) -> set[str]:
+        """Additional language server for more advanced uses"""
+        deps = {"pyrefly", "zuban"}  # Python
+        deps |= {"nixfmt"}  # Nix formatting
         return deps
 
     def after_update(self, store):
@@ -106,7 +105,7 @@ class CliTools(decman.Module):
     @pacman.packages
     def pacman_packages(self):
         # Core tools
-        deps = {"git", "fzf", "parallel"}
+        deps = {"git", "fzf", "parallel", "ghostty-terminfo"}
         # Session management and monitoring
         deps |= {"tmux", "htop", "btop", "speedtest-cli", "tree"}
         # Configure file parsing
@@ -120,9 +119,10 @@ class CliTools(decman.Module):
         return deps
 
     @aur.packages
-    def aur_packages(self):
+    @decman_utils.common.package_on_host(disable="*Hetzner")
+    def aur_packages(self) -> set[str]:
         # For looking up items in the AUR
-        deps = {"paru", "yay"}
+        deps = {"paru", "yay", "ghostmirror"}
         # For python development
         deps |= {"miniconda3"}
         return deps
