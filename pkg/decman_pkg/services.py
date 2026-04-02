@@ -36,7 +36,7 @@ class Syncthing(decman.Module):
         # Modify the existing files if it exists
         target = os.path.join(user.home_path, ".local/state/syncthing/config.xml")
         if not os.path.exists(target):
-            {}
+            return {}
 
         tree = ETree.parse(target).getroot()
         try:
