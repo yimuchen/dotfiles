@@ -1,0 +1,15 @@
+output "Acer Technologies XV271U M3 1322131231233" {
+    mode "2560x1440@165"
+   scale 1
+}
+
+output "BOE 0x095F Unknown" {
+   mode "2256x1504@59.999"
+   scale 1
+}
+
+output "Lenovo Group Limited P27h-30 V30A4GKD" {
+   mode "2560x1440@74.780"
+   scale 1
+}
+

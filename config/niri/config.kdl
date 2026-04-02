@@ -1,4 +1,6 @@
 include "noctalia.kdl"
+include "outputs.kdl" // Pinned to a separate file
+include "rules.kdl"
 
 input {
    keyboard {
@@ -19,7 +21,6 @@ input {
     warp-mouse-to-focus
     focus-follows-mouse max-scroll-amount="20%"
 }
-
 
 // Settings that influence how windows are positioned and sized.
 // Find more information on the wiki:
@@ -55,26 +56,25 @@ layout {
 // After enabling or disabling this, you need to restart the apps for this to take effect.
 prefer-no-csd
 
-// You can change the path where screenshots are saved.
-// A ~ at the front will be expanded to the home directory.
-// The path is formatted with strftime(3) to give you the screenshot date and time.
 screenshot-path "~/temp/Screenshots/Screenshot_%Y%m%d_%H-%M-%S.png"
 
-// You can also set this to null to disable saving screenshots to disk.
-// screenshot-path null
 
-// Animation settings.
-// The wiki explains how to configure individual animations:
-// https://github.com/YaLTeR/niri/wiki/Configuration:-Animations
 animations {
 	workspace-switch {
-		duration-ms 200
+		duration-ms 50
 		curve "cubic-bezier" 0.775 -0.500 0.4 1.20
 	}
 	overview-open-close {
 		duration-ms 100
 		curve "cubic-bezier" 0.670 -0.535 0.390 1.205
 	}
+  horizontal-view-movement {
+    duration-ms 80
+  }
+
+  window-movement {
+    duration-ms 50
+  }
 }
 
 gestures {
@@ -95,8 +95,7 @@ binds {
     Mod+Slash { spawn "wlr-which-key"; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+Shift+Space hotkey-overlay-title="Launch new application (fuzzel)" { spawn "fuzzel"; }
-    Mod+Space hotkey-overlay-title="Launch/Focus application (fuzzel)" { spawn "wlr-which-key" "--initial-keys" "a"; }
+    Mod+Space hotkey-overlay-title="Launch/Focus application (fuzzel)" { spawn "~/.config/dot-bin/local/fuzzel_appwrap.py"; }
     Mod+Tab hotkey-overlay-title="Find existing applcation (fuzzel)" { spawn "~/.config/dot-bin/local/niri_pick_window.sh"; }
 
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
@@ -265,6 +264,4 @@ spawn-at-startup "xwayland-satellite"
 spawn-at-startup "nm-applet"
 spawn-at-startup "fcitx5"
 spawn-at-startup "gammastep-indicator" "-l" "48.1:11.5"
-
-include "./noctalia.kdl"
 

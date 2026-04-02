@@ -1,0 +1,11 @@
+window-rule {
+  match title="ghostty-picker"
+  // Open in a floating mode
+  open-floating true
+  open-maximized false
+  open-fullscreen false
+  open-maximized-to-edges false
+  // Take up ~60% of the screen by default
+  default-column-width { proportion 0.60; }
+  default-window-height { proportion  0.60; }
+}
