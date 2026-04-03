@@ -26,11 +26,19 @@ def _list_all_applications() -> Dict[str, str]:
     # Ordering according to count
     file_list = sorted(file_list, key=lambda x: count_cache.get(x, 0), reverse=True)
 
+    def is_valid_entry(desktop):
+        print(desktop)
+        if desktop["Type"] != "Application":
+            return False
+        if "NoDisplay" in desktop and desktop["NoDisplay"]:
+            return False
+        return True
+
     ret_dict = {}
     for file in file_list:
         parser = configparser.ConfigParser()
         parser.read(file)
-        if parser["Desktop Entry"]["Type"] == "Application":
+        if is_valid_entry(parser["Desktop Entry"]):
             ret_dict[parser["Desktop Entry"]["Name"]] = file
     return ret_dict
 
