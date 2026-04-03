@@ -44,6 +44,7 @@ wk.add {
 vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
   pattern = { 'oil://*' },
   callback = function()
+    vim.treesitter.stop()
     -- Functions for modifying the Oil inspection buffer
     wk.add {
       { '<C-p>', actions.preview.callback,       desc = '[P]review' },

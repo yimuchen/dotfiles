@@ -122,3 +122,4 @@ vim.filetype.add {
     --["/etc/foo/config"] = "toml",
   },
 }
+

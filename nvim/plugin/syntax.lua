@@ -1,7 +1,5 @@
 -- Additional packages to help with nonstandard syntax navigation and operations
 vim.pack.add({
-  'https://github.com/nvim-treesitter/nvim-treesitter',
-  'https://github.com/nvim-treesitter/nvim-treesitter-textobjects', -- For generating additional objects
   'https://github.com/hedyhli/outline.nvim',
   'https://github.com/GCBallesteros/jupytext.nvim',
   'https://github.com/jmbuhr/otter.nvim',     -- For multi-language files
@@ -32,36 +30,6 @@ require('mini.ai').setup {
 -- - sr)'  - [S]urround [R]eplace [)] [']
 require('mini.surround').setup()
 
--- Tree -sitter shenanigans update
-require('nvim-treesitter').setup {
-  ensure_installed = { 'c', 'cpp', 'python', 'markdown', 'markdown-inline', 'lua', 'query', 'nix' },
-  highlight = { enable = true, additional_vim_regex_highlighting = false },
-  sync_install = false,
-  auto_install = true,
-  -- Enabling additional symbol-based navigation, using items defined by mini-ai
-  textobjects = {
-    move = {
-      enable = true,
-      goto_next_start = {
-        [']C'] = { query = '@code_cell.inner', desc = '[(])N]Next [c]ode block' },
-        [']F'] = { query = '@function.outer', desc = '[(])N]ext [F]unction' },
-      },
-      goto_previous_start = {
-        ['[C'] = { query = '@code_cell.inner', desc = '[([)P]revious [c]ode block' },
-        ['[F'] = { query = '@function.outer', desc = '[([)P]revious [F]unction' },
-      },
-    },
-  },
-}
-vim.api.nvim_create_autocmd('PackChanged', { -- Automatically run TSUpdate when package is updated
-  callback = function(ev)
-    local name, kind = ev.data.spec.name, ev.data.kind
-    if name == 'nvim-treesitter' and kind == 'update' then
-      if not ev.data.active then vim.cmd.packadd('nvim-treesitter') end
-      vim.cmd('TSUpdate')
-    end
-  end
-})
 
 
 -- Formatter set
