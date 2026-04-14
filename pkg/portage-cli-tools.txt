@@ -12,8 +12,11 @@ imagemagick
 kitty
 sys-apps/ripgrep
 neovim
+dev-util/tree-sitter-cli
 dev-util/sh
 dev-python/uv
 dev-python/argcomplete
 dev-lang/rust-bin
 app-shells/starship
+app-eselect/eselect-repository
+app-portage/gemato
