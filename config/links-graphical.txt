@@ -1,8 +1,9 @@
 # Links for graphical program configurations
 #
+./environment.d/                  $HOME/.config/environment.d
+./xdg-desktop-portal/             $HOME/.config/xdg-desktop-portal
 ./ghostty/                        $HOME/.config/ghostty
 ./zen/chrome/userChrome.css       $HOME/.zen/enscProfile/chrome/userChrome.css
-./wezterm.lua                     $HOME/.wezterm.lua
 ./kwinrulesrc                     $HOME/.config/kwinrulesrc
 ./fuzzel/                         $HOME/.config/fuzzel
 ./niri                            $HOME/.config/niri
