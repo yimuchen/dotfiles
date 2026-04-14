@@ -254,7 +254,6 @@ binds {
 
 environment {
    DISPLAY ":1"
-   QT_QPA_PLATFORMTHEME "qt6ct"
 }
 
 // Items to start of the session
@@ -264,4 +263,4 @@ spawn-at-startup "xwayland-satellite"
 spawn-at-startup "nm-applet"
 spawn-at-startup "fcitx5"
 spawn-at-startup "gammastep-indicator" "-l" "48.1:11.5"
-
+spawn-at-startup "kded6" // For KDE theming
