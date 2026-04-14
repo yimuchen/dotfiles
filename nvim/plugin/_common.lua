@@ -44,12 +44,17 @@ vim.pack.add({
 })
 
 -- Tree-sitter shenanigans update
-local common_filetypes = { 'c', 'cpp', 'python', 'markdown', 'markdown-inline', 'lua', 'query', 'nix' }
-require('nvim-treesitter').setup {
-  ensure_installed = common_filetypes,
+local common_filetypes = {
+  -- Main tool languages
+  'c', 'cpp', 'python', 'lua',
+  -- Web stuff
+  "html", "css", "javascript", "jsdoc", "json", "tsx", "typescript", "sql",
+  -- Documentation languages
+  "git_config", "gitcommit", 'markdown', 'markdown_inline', 'query', 'nix' }
+local treesitter = require("nvim-treesitter")
+
+treesitter.setup { -- Setting up the treesitter plugin with custom text objects
   highlight = { enable = true, additional_vim_regex_highlighting = false },
-  sync_install = false,
-  auto_install = true,
   -- Enabling additional symbol-based navigation, using items defined by mini-ai
   textobjects = {
     move = {
@@ -66,11 +71,25 @@ require('nvim-treesitter').setup {
   },
 }
 
+-- Ensuring that the files syntax files are installed
+for _, parser in ipairs(common_filetypes) do
+  treesitter.install(parser)
+end
+
+-- Not every tree-sitter parser is the same as the filetype detected
+-- So the patterns need to be registered more cleverly. This solution is taken from here:
+-- https://mhpark.me/posts/update-treesitter-main/
+local patterns = {}
+for _, parser in ipairs(common_filetypes) do
+  local parser_patterns = vim.treesitter.language.get_filetypes(parser)
+  for _, pp in pairs(parser_patterns) do
+    table.insert(patterns, pp)
+  end
+end
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = common_filetypes,
+  pattern = patterns,
   callback = function() vim.treesitter.start() end,
 })
-
 
 vim.api.nvim_create_autocmd('PackChanged', { -- Automatically run TSUpdate when package is updated
   callback = function(ev)
