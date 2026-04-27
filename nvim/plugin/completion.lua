@@ -1,5 +1,5 @@
 vim.pack.add({
-  'https://github.com/saghen/blink.cmp', -- Main completion engine
+  { src = 'https://github.com/saghen/blink.cmp', version = vim.version.range('v1.x') }, -- Main completion engine
   'https://github.com/L3MON4D3/LuaSnip'
 })
 
