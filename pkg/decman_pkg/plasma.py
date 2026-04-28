@@ -103,7 +103,7 @@ class Themes(decman.Module):
 
     @aur.packages
     def aur_packages(self):
-        return {"arc-kde-git", "qt6ct-kde"}
+        return {"arc-kde-git"}
 
     def files(self):
         """Theming that are likely not chancing for a long time"""
