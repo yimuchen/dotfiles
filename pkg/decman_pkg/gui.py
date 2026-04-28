@@ -26,6 +26,8 @@ class Core(decman.Module):
         deps |= {"obsidian", "kate"}
         # For screen casting
         deps |= {"showmethekey"}
+        # For getting items from phone
+        deps |= {"kdeconnect"}
         return deps
 
     @aur.packages
