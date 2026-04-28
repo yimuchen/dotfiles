@@ -28,7 +28,7 @@ class Neovim(decman.Module):
     @decman_utils.common.package_on_host(disable="*Hetzner")
     def aur_packages(self) -> set[str]:
         """Additional language server for more advanced uses"""
-        deps = {"pyrefly", "zuban"}  # Python
+        deps = {"zuban"}  # Python
         deps |= {"nixfmt"}  # Nix formatting
         return deps
 
