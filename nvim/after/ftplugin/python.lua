@@ -1,6 +1,7 @@
 --- Settings specific to python
 vim.lsp.enable('ruff')
 vim.lsp.enable('ty')
+-- vim.lsp.enable('zuban')
 
 --- Adding multi-line strings to mini.ai
 require('mini.ai').config.custom_textobjects['M'] = function()
