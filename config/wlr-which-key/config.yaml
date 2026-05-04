@@ -41,18 +41,27 @@ menu:
       - key: "o"
         desc: Off
         cmd: poweroff
+  - key: "r"
+    desc: "Reload"
+    submenu:
+      - key: "s"
+        desc: "Shell (Noctalia)"
+        cmd: killall qs && qs -c 'noctalia-shell'
   - key: "a"
     desc: "Applications"
     submenu:
       - key: "t"
-        desc: "Terminal (Ghostty)"
+        desc: " Terminal (Ghostty)"
         cmd: ~/.config/dot-bin/local/launch_single.py com.mitchellh.ghostty
       - key: "b"
-        desc: "Browzer (Zen Browser)"
+        desc: "󰖟 Browzer (Zen Browser)"
         cmd: ~/.config/dot-bin/local/launch_single.py zen
       - key: "m"
-        desc: "Mail client (Thunderbird)"
+        desc: "󰺻 Mail client (Thunderbird)"
         cmd: ~/.config/dot-bin/local/launch_single.py org.mozilla.Thunderbird
       - key: "p"
-        desc: "Player (Elisa)"
+        desc: "󰥠 Player (Elisa)"
         cmd: ~/.config/dot-bin/local/launch_single.py org.kde.elisa
+      - key: " "
+        desc: "󰮫 Picker (Fuzzel)"
+        cmd: fuzzel

@@ -13,7 +13,7 @@ input {
     }
     touchpad {
         tap
-        natural-scroll
+        tap-button-map "left-middle-right"
     }
     mouse {
         accel-profile "flat"
@@ -26,8 +26,8 @@ input {
 // Find more information on the wiki:
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Layout
 layout {
-    gaps 5
-    center-focused-column "never"
+    gaps 2
+    center-focused-column "always"
     preset-column-widths {
         proportion 0.33333
         proportion 0.5
@@ -36,11 +36,11 @@ layout {
     default-column-width {}
     focus-ring { // Colors are defined by noctalia
         on
-        width 2
+        width 0.5
     }
 
     border {
-        width 2
+        width 0.5
     }
 }
 
@@ -69,11 +69,11 @@ animations {
 		curve "cubic-bezier" 0.670 -0.535 0.390 1.205
 	}
   horizontal-view-movement {
-    duration-ms 80
+    duration-ms 75
   }
 
   window-movement {
-    duration-ms 50
+    duration-ms 75
   }
 }
 
@@ -95,7 +95,7 @@ binds {
     Mod+Slash { spawn "wlr-which-key"; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+Space hotkey-overlay-title="Launch/Focus application (fuzzel)" { spawn "~/.config/dot-bin/local/fuzzel_appwrap.py"; }
+    Mod+Space hotkey-overlay-title="Application picker (fuzzel)" { spawn "wlr-which-key" "-k" "a"; }
     Mod+Tab hotkey-overlay-title="Find existing applcation (fuzzel)" { spawn "~/.config/dot-bin/local/niri_pick_window.sh"; }
 
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
@@ -104,8 +104,8 @@ binds {
 
     // Example volume keys mappings for PipeWire & WirePlumber.
     // The allow-when-locked=true property makes them work even when the session is locked.
-    XF86AudioRaiseVolume  allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
-    XF86AudioLowerVolume  allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
+    XF86AudioRaiseVolume  allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.05+"; }
+    XF86AudioLowerVolume  allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.05-"; }
     XF86AudioMute         allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
     XF86AudioMicMute      allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
     XF86MonBrightnessUp   allow-when-locked=true { spawn "brightnessctl" "s" "+5%"; }
@@ -114,7 +114,6 @@ binds {
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
     // or do a four-finger swipe up on a touchpad.
-
     Mod+Q { close-window; }
 
     // The core functionality of niri would be to handle windows motion and finding windows
@@ -151,8 +150,6 @@ binds {
 
     Mod+Page_Down      { focus-workspace-down; }
     Mod+Page_Up        { focus-workspace-up; }
-    Mod+U              { focus-workspace-down; }
-    Mod+I              { focus-workspace-up; }
     Mod+Ctrl+Page_Down { move-column-to-workspace-down; }
     Mod+Ctrl+Page_Up   { move-column-to-workspace-up; }
     Mod+Ctrl+U         { move-column-to-workspace-down; }
@@ -187,9 +184,6 @@ binds {
     Mod+Ctrl+7 { move-window-to-workspace 7; }
     Mod+Ctrl+8 { move-window-to-workspace 8; }
     Mod+Ctrl+9 { move-window-to-workspace 9; }
-
-    // Alternatively, there are commands to move just a single window:
-    // Mod+Ctrl+1 { move-window-to-workspace 1; }
 
     // The following binds move the focused window in and out of a column.
     // If the window is alone, they will consume it into the nearby column to the side.
@@ -235,7 +229,6 @@ binds {
     // Move the focused window between the floating and the tiling layout.
     Mod+V       { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
-
 
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }

@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 import argparse
-import configparser
 import json
 import os
-import shlex
 import subprocess
 
 if __name__ == "__main__":
@@ -25,9 +23,4 @@ if __name__ == "__main__":
         )
         if not os.path.exists(desktop_path):
             raise NotImplementedError(f"Desktop path [{desktop_path}] does not exist!")
-        desktop_entry = configparser.ConfigParser(interpolation=None)
-        desktop_entry.read(desktop_path)
-        desktop_cmd = shlex.split(
-            desktop_entry["Desktop Entry"]["Exec"].replace("%U", "").replace("%u", "")
-        )
-        subprocess.run(desktop_cmd)
+        subprocess.run(["gio", "launch", desktop_path])
