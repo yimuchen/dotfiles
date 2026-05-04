@@ -38,7 +38,7 @@ def obtain_bw_items(item_filter: Optional[Callable] = None) -> List[Dict]:
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
-    stdout, stderr = bw_process.communicate(
+    stdout, _ = bw_process.communicate(
         input=str.encode(getpass.getpass("Master password for Bitwarden vault:") + "\n")
     )
     try:
@@ -58,7 +58,7 @@ def protocol_filter(protocol: str | List[str]):
     Creating the method to filter items that contain a particular protocol in their URI
     """
     if isinstance(protocol, str):
-        protocol = [protocol]
+        return protocol_filter([protocol])
 
     def _f(item: Dict[str, Any]):
         if "login" not in item:
