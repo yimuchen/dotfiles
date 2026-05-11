@@ -171,7 +171,7 @@ class Office(decman.Module):
         }  # latex
         deps |= {"typst", "tinymist", "typstyle"}  # typst
         # PDF browsers
-        deps |= {"okular", "evince", "calibre"}
+        deps |= {"okular", "evince"}
         return deps
 
     @aur.packages
@@ -179,7 +179,7 @@ class Office(decman.Module):
         # Alternate office suite
         deps = {"wps-office"}
         # Additional
-        deps |= {"calibre-plugin-dedrm"}
+        deps |= {"calibre-bin"}
 
         return deps
 
@@ -194,7 +194,7 @@ class Media(decman.Module):
 
     @pacman.packages
     def image_packages(self):
-        return {"inkscape", "gimp", "gwenview", "digikam"}
+        return {"inkscape", "gimp", "gwenview", "digikam", "drawy"}
 
     @pacman.packages
     def video_packages(self):
