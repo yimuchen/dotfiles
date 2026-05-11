@@ -7,11 +7,11 @@ separator: " ➜ "
 border_width: 2
 corner_r: 10
 padding: 15 # Defaults to corner_r
-rows_per_column: 5 # No limit by default
+rows_per_column: 25 # No limit by default
 column_padding: 25 # Defaults to padding
 
 # Anchor and margin
-anchor: center # One of center, left, right, top, bottom, bottom-left, top-left, etc.
+anchor: bottom-right # One of center, left, right, top, bottom, bottom-left, top-left, etc.
 # Only relevant when anchor is not center
 margin_right: 40
 margin_bottom: 40
@@ -62,6 +62,9 @@ menu:
       - key: "p"
         desc: "󰥠 Player (Elisa)"
         cmd: ~/.config/dot-bin/local/launch_single.py org.kde.elisa
+      - key: "s"
+        desc: " Steam"
+        cmd: ~/.config/dot-bin/local/launch_single.py steam
       - key: " "
         desc: "󰮫 Picker (Fuzzel)"
         cmd: fuzzel
