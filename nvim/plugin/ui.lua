@@ -17,6 +17,17 @@ require("vim._core.ui2").enable({
 })
 -- Having items be a rounded item
 vim.opt.winborder = "rounded"
+-- Using tiny-cmdline to have a command bar be centered
+vim.pack.add({
+  {
+    src = "https://github.com/rachartier/tiny-cmdline.nvim",
+    config = function()
+      vim.o.cmdheight = 0
+      require("tiny-cmdline").setup({ border = nil })
+      vim.api.nvim_set_hl(0, "TinyCmdlineBorder", { bg = "#000000" })
+    end,
+  }
+})
 
 -- Setting up the color scheme
 require("nord").setup({ transparent = true })
