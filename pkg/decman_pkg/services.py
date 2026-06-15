@@ -92,32 +92,19 @@ class RcbListener(decman.Module):
 class LLMService(decman.Module):
     def __init__(self):
         super().__init__("llm_service")
-        self.ollama_service = user.create_service(service_name="ollama.service")
-        self.ollama_service["Install"] = {"WantedBy": "default.target"}
-        self.ollama_service["Service"] = {
-            "ExecStart": "ollama serve",
-            "Environment": "OLLAMA_HOST=0.0.0.0:11434",
-        }
-        self.ollama_service["Unit"] = {"Description": "Starting the base ollama server"}
 
     @pacman.packages
     def pacman_packages(self):
-        deps = {"ollama-docs"}
-        deps |= {"rust"}  # Required to build avante for nvim
+        deps = {"rust"}  # Required to build avante for nvim
         if socket.gethostname() == "enscAMDPC":
-            deps |= {"ollama-cuda", "nvtop"}
-        else:
-            deps |= {"ollama"}
+            deps |= {"nvtop"}
         return deps
 
     @aur.packages
     def aur_packages(self) -> set[str]:
         deps = {"opencode-bin"}
-        return set()
-
-    def files(self):
-        return self.ollama_service.to_decman()
-
-    @systemd.user_units
-    def systemd_user_units(self):
-        return self.ollama_service.to_decman_unit()
+        if socket.gethostname() == "enscAMDPC":
+            deps |= {"llama.cpp-cuda"}
+        else:
+            deps |= {"llama.cpp"}
+        return deps
