@@ -52,19 +52,19 @@ menu:
     submenu:
       - key: "t"
         desc: " Terminal (Ghostty)"
-        cmd: ~/.config/dot-bin/local/launch_single.py com.mitchellh.ghostty
+        cmd: ~/.config/dot-bin/local/niri_helper.py launch_single com.mitchellh.ghostty
       - key: "b"
         desc: "󰖟 Browzer (Zen Browser)"
-        cmd: ~/.config/dot-bin/local/launch_single.py zen
+        cmd: ~/.config/dot-bin/local/niri_helper.py launch_single zen
       - key: "m"
         desc: "󰺻 Mail client (Thunderbird)"
-        cmd: ~/.config/dot-bin/local/launch_single.py org.mozilla.Thunderbird
+        cmd: ~/.config/dot-bin/local/niri_helper.py launch_single org.mozilla.Thunderbird
       - key: "p"
         desc: "󰥠 Player (Elisa)"
-        cmd: ~/.config/dot-bin/local/launch_single.py org.kde.elisa
+        cmd: ~/.config/dot-bin/local/niri_helper.py launch_single org.kde.elisa
       - key: "s"
         desc: " Steam"
-        cmd: ~/.config/dot-bin/local/launch_single.py steam
+        cmd: ~/.config/dot-bin/local/niri_helper.py launch_single steam
       - key: " "
         desc: "󰮫 Picker (Fuzzel)"
         cmd: fuzzel

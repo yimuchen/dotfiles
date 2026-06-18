@@ -27,7 +27,7 @@ input {
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Layout
 layout {
     gaps 2
-    center-focused-column "always"
+    center-focused-column "never"
     preset-column-widths {
         proportion 0.33333
         proportion 0.5
@@ -188,8 +188,8 @@ binds {
     // The following binds move the focused window in and out of a column.
     // If the window is alone, they will consume it into the nearby column to the side.
     // If the window is already in a column, they will expel it out.
-    Mod+BracketLeft  { consume-or-expel-window-left; }
-    Mod+BracketRight { consume-or-expel-window-right; }
+    Mod+BracketLeft  { spawn "~/.config/dot-bin/local/niri_helper.py" "quick_split" "left";  }
+    Mod+BracketRight  { spawn "~/.config/dot-bin/local/niri_helper.py" "quick_split" "right";  }
 
     // Consume one window from the right to the bottom of the focused column.
     Mod+Comma  { consume-window-into-column; }
