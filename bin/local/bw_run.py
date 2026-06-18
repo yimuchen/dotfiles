@@ -180,14 +180,15 @@ def voms():
 
 
 @scriptizer.register_function
-def copypass(target: str):
+def copypass(target: Optional[str]):
     """
     Browsing through the login credentials, copying the password to the Wayland clipboard
 
     Parameters
     ==========
 
-    - target: this is a test
+    target : str
+        The login identifier store in the bw database, leave empty to not load a direct string
     """
     logins = obtain_bw_items(lambda x: "login" in x)
 
