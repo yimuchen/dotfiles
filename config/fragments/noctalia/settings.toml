@@ -1,0 +1,80 @@
+[bar]
+order = [ "Main" ]
+
+    [bar.Main]
+    background_opacity = 0.5599999874830246
+    center = [ "date", "clock" ]
+    end = [
+        "notifications",
+        "tray",
+        "clipboard",
+        "spacer_small",
+        "bluetooth",
+        "network",
+        "connect_bar",
+        "tailscale_status",
+        "spacer_small",
+        "volume",
+        "brightness",
+        "battery",
+        "spacer_small",
+        "control-center",
+        "session"
+    ]
+    font_family = "Noto Sans CJK JP"
+    margin_edge = 2
+    margin_ends = 5
+    margin_opposite_edge = 2
+    position = "bottom"
+    shadow = false
+    start = [ "launcher", "spacer_small", "workspaces", "spacer_small", "power_profile", "cpu", "temp", "ram", "spacer_small", "worldclock_bar" ]
+    widget_spacing = 10
+
+
+[notification]
+background_opacity = 0.85
+position = "bottom_right"
+
+[plugins]
+enabled = [ "davemhammer/tailscale", "noctalia/world_clock", "icefish/phone-connect" ]
+
+[shell.animation]
+speed = 3.2
+
+[shell.panel]
+transparency_mode = "soft"
+
+[theme]
+builtin = "Nord"
+
+[wallpaper.default]
+path = "/usr/share/noctalia/assets/noctalia-wallpaper.png"
+
+[wallpaper.last]
+path = "/usr/share/noctalia/assets/noctalia-wallpaper.png"
+
+[widget.worldclock_bar]
+type = "noctalia/world_clock:bar"
+
+[widget.connect_bar]
+type = "icefish/phone-connect:bar"
+
+[widget.clock]
+format = "{:%H:%M:%S}"
+
+[widget.date]
+format = "{:%Y %b %d (%a)}"
+
+[widget.spacer_small]
+length = 25
+type = "spacer"
+
+[widget.tailscale_status]
+type = "davemhammer/tailscale:status"
+
+[widget.workspaces]
+focused_output_only = true
+hide_when_empty = true
+label_source = "name"
+labels_only_when_occupied = true
+style = "focus_hint"

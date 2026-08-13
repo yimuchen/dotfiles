@@ -66,5 +66,5 @@ menu:
         desc: " Steam"
         cmd: ~/.config/dot-bin/local/niri_helper.py launch_single steam
       - key: " "
-        desc: "󰮫 Picker (Fuzzel)"
-        cmd: fuzzel
+        desc: "󰮫 Picker (Noctalia Launcher)"
+        cmd: noctalia msg panel-open launcher
