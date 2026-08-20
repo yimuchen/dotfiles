@@ -54,7 +54,7 @@ def run(session_name):
 
     session_info = json.load(open(session_file, "r"))
     if session_info["machine"] == socket.gethostname():
-        if check_session_exist(session_name):
+        if check_local_session_exist(session_name):
             log.info("Attaching to existing session")
             return attach_session(session_name)
         else:
@@ -63,8 +63,14 @@ def run(session_name):
 
     # Trying to log onto a new maachine
     host = session_info["machine"]
-    run_remote(session_name, host)
-    pass
+    if check_remote_session_exist(session_name, host):
+        log.info(f"Attaching to existing session on remote host {host}")
+        attach_remote(session_name, host)
+    else:
+        log.warning(
+            f"Old session on remote host {host} was not closed properly! Relaunching here"
+        )
+        launch_new_session(session_name, cwd=session_info["dir"])
 
 
 def _run(cmd, cwd):
@@ -72,7 +78,7 @@ def _run(cmd, cwd):
     subprocess.run(cmd, cwd=cwd)
 
 
-def check_session_exist(name):
+def check_local_session_exist(name):
     if not os.path.exists(_session_tmux_path(name)):
         return False
 
@@ -92,6 +98,17 @@ def check_session_exist(name):
     )
 
 
+def check_remote_session_exist(name, host):
+    status = subprocess.run(
+        ["ssh", host, "ls", _session_tmux_path(name)], capture_output=True
+    )
+    if status.returncode != 0:
+        log.warning(f"Not tmux session file found on {host} for session {name}")
+        return False
+
+    return True
+
+
 def attach_session(name):
     _run(
         [TMUX_EXEC, "-S", _session_tmux_path(name), "attach-session", "-t", name],
@@ -106,7 +123,7 @@ def launch_new_session(name, cwd):
     )
 
 
-def run_remote(name, host):
+def attach_remote(name, host):
     _run(
         [
             "ssh",
