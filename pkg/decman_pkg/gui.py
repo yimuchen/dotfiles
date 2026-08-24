@@ -263,15 +263,20 @@ class Gaming(decman.Module):
 
     @aur.packages
     def aur_packages(self):
-        return {
-            "r2modman-bin",
-            "proton-ge-custom-bin",
-            "bb_launcher",
-            "xpadneo-dkms",
-        }
+        return {"r2modman-bin", "bb_launcher", "xpadneo-dkms", "protonplus"}
 
     def on_enable(self, store):
         decman.prg(["gpasswd", "-a", user.username, "games"])
+
+    def after_update(self, store):
+        # Installing common proton version
+        # This currently doesn't work :(
+        decman.prg(
+            ["protonplus", "update", "steam-system", "proton-ge", "latest"],
+            user=user.username,
+            env_overrides={"HOME": user.home_path},
+        )
+        pass
 
 
 class Symlink(decman.Module):
