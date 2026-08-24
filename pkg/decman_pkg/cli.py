@@ -34,7 +34,7 @@ class Neovim(decman.Module):
 
     def after_update(self, store):
         # Installing the tools for python (mainly mdformat variants)
-        python_env = os.path.join(user.home_path, ".cli-python")
+        python_env = os.path.join(user.home_path, ".local/share/cli-python")
         python_path = os.path.realpath(os.path.join(python_env, "bin/python"))
         cache_dir = os.path.join(user.home_path, ".local/share/uv/python")
         create_env_cmd = [

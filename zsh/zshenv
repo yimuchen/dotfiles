@@ -36,7 +36,7 @@ function append_path(){
 # Common working paths for system tools that are installed by some
 # language-specific tool instead of the
 append_path "$HOME/.cargo/bin"
-append_path "$HOME/.cli-python/bin/"
+append_path "$HOME/.local/share/cli-python/bin/"
 
 # Local configurations for personal machines
 if [[ "$HOST" == "ensc"* ]]; then

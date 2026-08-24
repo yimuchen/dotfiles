@@ -41,12 +41,12 @@ function environment_update() {
     cp /tmp/$USER/portage/var/lib/portage/* $HOME/.portage/var-lib-portage
   fi
   # Upgrading everything that is managed by python-uv
-  if [[ ! -d $HOME/.cli-python ]]; then
-    uv venv --system-site-packages $HOME/.cli-python
-  elif [[ ! -f $(realpath $HOME/.cli-python/bin/python) ]]; then
-    uv venv --system-site-packages $HOME/.cli-python
+  if [[ ! -d "$HOME/.local/share/cli-python" ]]; then
+    uv venv --system-site-packages "$HOME/.local/share/cli-python"
+  elif [[ ! -f $(realpath $HOME/.local/share/cli-python/bin/python) ]]; then
+    uv venv --system-site-packages "$HOME/.local/share/cli-python"
   fi
-  VIRTUAL_ENV=$HOME/.cli-python uv pip install --upgrade --requirements $HOME/tools_config/pkg/cli-python-remote.txt
+  VIRTUAL_ENV="$HOME/.local/share/cli-python" uv pip install --upgrade --requirements $HOME/tools_config/pkg/cli-python-remote.txt
 
   # Cargo package management
   if [[ ! -f $HOME/bin/cargo-install-update ]]; then
@@ -57,3 +57,4 @@ function environment_update() {
   # Update all cargo tools
   cargo install-update -a
 }
+
