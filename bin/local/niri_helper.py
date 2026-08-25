@@ -3,7 +3,7 @@ import json
 import logging
 import os
 import subprocess
-from typing import Any, Dict
+from typing import Any
 
 import argcomplete
 import scriptize
@@ -20,7 +20,7 @@ Common helpers methods
 """
 
 
-def _get_niri(*args) -> Dict[str, Any]:
+def _get_niri(*args) -> dict[str, Any]:
     cmd = ["niri", "msg", "--json"] + [str(x) for x in args]
     return json.loads(subprocess.check_output(cmd).decode("utf-8"))
 
@@ -64,7 +64,7 @@ def launch_single(application: str):
     ==========
 
     application: str
-    Target application, the string should match the name used for the desktop file, which 
+    Target application, the string should match the name used for the desktop file, which
     is what is used for the default 'app_id' in niri.
     """
     windows = niri_windows()
