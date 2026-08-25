@@ -3,7 +3,7 @@ order = [ "Main" ]
 
     [bar.Main]
     background_opacity = 0.5599999874830246
-    center = [ "date", "clock" ]
+    center = [ "date", "clock", "spacer_small", "worldclock_bar" ]
     end = [
         "notifications",
         "tray",
@@ -27,7 +27,7 @@ order = [ "Main" ]
     margin_opposite_edge = 2
     position = "bottom"
     shadow = false
-    start = [ "launcher", "spacer_small", "workspaces", "spacer_small", "power_profile", "cpu", "temp", "ram", "spacer_small", "worldclock_bar" ]
+    start = [ "launcher", "spacer_small", "workspaces", "spacer_small", "power_profile", "cpu", "temp", "ram"]
     widget_spacing = 10
 
 
