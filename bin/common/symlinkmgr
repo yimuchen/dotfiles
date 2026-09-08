@@ -4,7 +4,6 @@ import hashlib
 import logging
 import os
 import warnings
-from typing import List, Tuple
 
 _log = logging.getLogger("symlinkmgr")
 
@@ -32,7 +31,7 @@ class SymLinkState:
             hashlib.sha256(self.source_file.encode("utf-8")).hexdigest() + ".txt",
         )
 
-    def read_state_file(self, file_path) -> List[Tuple[str, str]]:
+    def read_state_file(self, file_path) -> list[tuple[str, str]]:
         """
         Reading the state file
         """
@@ -59,7 +58,7 @@ class SymLinkState:
         return state
 
     @property
-    def current_state(self) -> List[Tuple[str, str]]:
+    def current_state(self) -> list[tuple[str, str]]:
         if os.path.exists(self.current_state_file):
             if not os.path.isfile(self.current_state_file):
                 raise RuntimeError(
@@ -71,7 +70,7 @@ class SymLinkState:
             return []
 
     @property
-    def target_state(self) -> List[Tuple[str, str]]:
+    def target_state(self) -> list[tuple[str, str]]:
         return self.read_state_file(self.source_file)
 
     def run_symlink(self, none_dry=False):
@@ -79,7 +78,7 @@ class SymLinkState:
         target_state = self.target_state
 
         # Clearing targets that are no-longer specified
-        for link_source, link_target in current_state:
+        for _, link_target in current_state:
             if not any(x[1] == link_target for x in target_state):
                 _log.info(f"Removing un-specified link [{link_target}]")
                 if none_dry:
@@ -119,10 +118,9 @@ class SymLinkState:
         if none_dry:
             _log.info(f"Writing to state file {self.current_state_file}")
             with open(self.current_state_file, "w") as f:
-                for source, target in executed_state:
-                    f.write(f"{source} {target}\n")
-
-        return
+                f.writelines(
+                    f"{source} {target}\n" for source, target in executed_state
+                )
 
     def save_state(self):
         pass
