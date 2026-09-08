@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import os
-from typing import List
 
 import tqdm
 from wand.image import Image
@@ -14,19 +13,19 @@ def _should_skip(file: str):
     if not os.path.isfile(file):
         return "Given path is not a file"
 
-    filedir, infile = os.path.split(file)
-    filename, ext = os.path.splitext(infile)
+    _, infile = os.path.split(file)
+    __, ext = os.path.splitext(infile)
     if ext != ".pdf":
         return "None PDF file"
 
 
 def _make_filename_png(file: str):
     filedir, infile = os.path.split(file)
-    filename, ext = os.path.splitext(infile)
+    filename, _ = os.path.splitext(infile)
     return os.path.join(filedir, filename + ".png")
 
 
-def _run_loop(file_list: List[str], density: int):
+def _run_loop(file_list: list[str], density: int):
     max_len = max([len(x) for x in file_list])
     with tqdm.cli.tqdm(file_list) as pbar:
         for file in pbar:

@@ -11,7 +11,6 @@ SESSION_FILE_DIR = os.getenv(
 )
 
 
-
 # Setting up the logging instance
 log = logging.getLogger("tmux_hooks")
 logging.basicConfig(
@@ -25,7 +24,7 @@ logging.basicConfig(
 
 def _session_file_path(session_name):
     if not os.path.exists(SESSION_FILE_DIR):
-        log.info("Creating base directory:", SESSION_FILE_DIR)
+        log.info(f"Creating base directory: {SESSION_FILE_DIR}")
         os.mkdir(SESSION_FILE_DIR)
     return os.path.join(SESSION_FILE_DIR, f"tmux.session.{session_name}.json")
 
@@ -45,7 +44,7 @@ def session_created(args: argparse.Namespace):
 
 def session_closed(args: argparse.Namespace):
     if os.path.exists(_session_file_path(args.session_name)):
-        log.info("Closing session:", args.session_name)
+        log.info(f"Closing session: {args.session_name}")
         os.remove(_session_file_path(args.session_name))
     else:
         log.warning("Session file does not exist")

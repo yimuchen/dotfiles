@@ -7,7 +7,7 @@ import subprocess
 import sys
 import tempfile
 import time
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable
 
 import argcomplete
 import scriptize
@@ -27,7 +27,7 @@ will not be exposed for user interaction
 """
 
 
-def obtain_bw_items(item_filter: Optional[Callable] = None) -> List[Dict]:
+def obtain_bw_items(item_filter: Callable | None = None) -> list[dict[str, Any]]:
     """
     Getting the list of vault items in the default Bitwarden vault. You can
     provide an additional function to filter the items of interest.
@@ -53,25 +53,25 @@ def obtain_bw_items(item_filter: Optional[Callable] = None) -> List[Dict]:
     return items_list
 
 
-def protocol_filter(protocol: str | List[str]):
+def protocol_filter(protocol: str | list[str]):
     """
     Creating the method to filter items that contain a particular protocol in their URI
     """
     if isinstance(protocol, str):
         return protocol_filter([protocol])
 
-    def _f(item: Dict[str, Any]):
+    def _f(item: dict[str, Any]):
         if "login" not in item:
             return False
         return any(
-            any([True if (x["uri"].startswith(p + "://")) else False for p in protocol])
+            any(x["uri"].startswith(p + "://") for p in protocol)
             for x in item["login"]["uris"]
         )
 
     return _f
 
 
-def get_protocols(item: Dict[str, Any], protocol: str):
+def get_protocols(item: dict[str, Any], protocol: str):
     """
     For a Bitwarden vault item, return the URIs corresponding to the protocol
     of interest.
@@ -180,7 +180,7 @@ def voms():
 
 
 @scriptizer.register_function
-def copypass(target: Optional[str]):
+def copypass(target: str | None):
     """
     Browsing through the login credentials, copying the password to the Wayland clipboard
 

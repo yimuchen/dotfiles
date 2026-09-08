@@ -5,13 +5,12 @@ import json
 import os
 import subprocess
 from dataclasses import dataclass
-from typing import Dict
 
 
 @dataclass
 class ConfigEntry:
-    title: str = None
-    cmd: str = None
+    title: str | None = None
+    cmd: str | None = None
     disable: bool = False
 
     def respawn_tmux_cmd(self, target):
@@ -31,22 +30,23 @@ class ConfigEntry:
 
 
 def parse_config_json(
-    config: Dict[str, ConfigEntry], json_path: str
-) -> Dict[str, ConfigEntry]:
+    config: dict[str, ConfigEntry], json_path: str
+) -> dict[str, ConfigEntry]:
     if not os.path.exists(json_path):
         return config
 
     try:
-        json_config = json.load(open(json_path, "r"))
-        for k, v in json_config.items():
-            config[k] = ConfigEntry(**v)
-    except Exception as err:
+        with open(json_path, "r") as f:
+            json_config = json.load(f)
+            for k, v in json_config.items():
+                config[k] = ConfigEntry(**v)
+    except Exception:  # noqa: BLE001, S110
         pass
     return config
 
 
 def switch_window(
-    session_name: str, window_idx: str, config: Dict[str, ConfigEntry]
+    session_name: str, window_idx: str, config: dict[str, ConfigEntry]
 ) -> None:
     tconf = config.get(window_idx, None)
     target = f"{session_name}:{window_idx}"

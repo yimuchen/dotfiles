@@ -3,7 +3,7 @@ import socket
 import xml.etree.ElementTree as ETree
 
 import decman
-from decman.plugins import aur, pacman, systemd
+from decman.plugins import pacman, systemd
 
 from ._common import user
 
