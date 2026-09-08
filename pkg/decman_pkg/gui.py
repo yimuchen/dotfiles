@@ -1,5 +1,4 @@
 import os
-from typing import Dict
 
 import decman
 import decman_utils
@@ -19,7 +18,7 @@ class Core(decman.Module):
         # For online interactions
         deps = {"bitwarden"}
         # For personal information management
-        deps |= {"thunderbird", "korganizer"}
+        deps |= {"thunderbird", "korganizer", "mariadb"}
         # Terminal of preference
         deps |= {"ghostty", "wezterm"}
         # For personal not taking
@@ -70,7 +69,7 @@ class Core(decman.Module):
         return f"{user.username}Profile"
 
     @property
-    def zen_install_file(self) -> Dict[str, decman.File]:
+    def zen_install_file(self) -> dict[str, decman.File]:
         zen_install = decman_utils.ConfExp(
             target_path=os.path.join(self.zen_base, "installs.ini"), user=user.username
         )
@@ -81,7 +80,7 @@ class Core(decman.Module):
         return zen_install.to_decman()
 
     @property
-    def zen_profile_file(self) -> Dict[str, decman.File]:
+    def zen_profile_file(self) -> dict[str, decman.File]:
         zen_profile = decman_utils.ConfExp(
             target_path=os.path.join(self.zen_base, "profiles.ini"), user=user.username
         )
@@ -99,7 +98,7 @@ class Core(decman.Module):
         return zen_profile.to_decman()
 
     @property
-    def zen_user_preferences(self) -> Dict[str, decman.File]:
+    def zen_user_preferences(self) -> dict[str, decman.File]:
         zen_pref_path = os.path.join(self.zen_base, f"{self.zen_user_profile}/prefs.js")
         if not os.path.exists(zen_pref_path):
             return {}
@@ -190,7 +189,7 @@ class Media(decman.Module):
 
     @pacman.packages
     def audio_packages(self):
-        return {"vlc", "elisa", "audacity", "kid3", "musescore"}
+        return {"vlc", "elisa", "audacity", "ffmpeg4.4", "kid3", "musescore", "ardour"}
 
     @pacman.packages
     def image_packages(self):
@@ -198,13 +197,25 @@ class Media(decman.Module):
 
     @pacman.packages
     def video_packages(self):
-        return {"kdenlive", "yt-dlp", "obs-studio", "k3b"}
+        return {"yt-dlp", "obs-studio", "k3b"}
 
     @aur.packages
     def aur_packages(self):
-        return {"wl-color-picker", "droidcam"}
+        return {"wl-color-picker", "droidcam", "kdenlive-appimage"}
 
-    def files(self) -> Dict[str, decman.File]:
+    @pacman.packages
+    def scarlet_package(self):
+        return {
+            "alsa-scarlett-gui",
+        }
+
+    @aur.packages
+    def scarlet_firmware(self):
+        return {
+            "scarlett2-firmware",
+        }
+
+    def files(self) -> dict[str, decman.File]:
         musescore_config = decman_utils.ConfExp(
             target_path=os.path.join(user.config_path, "MuseScore/MuseScore4.ini"),
             ref_path=os.path.join(user.config_path, "MuseScore/MuseScore4.ini"),
@@ -246,6 +257,8 @@ class MiscTools(decman.Module):
         deps = {"ungoogled-chromium-bin", "vscodium-bin"}
         # For boot USB management
         deps |= {"ventoy-bin"}
+        # For phone audio
+        deps |= {"audiorelay"}
         return deps
 
 
@@ -270,13 +283,11 @@ class Gaming(decman.Module):
 
     def after_update(self, store):
         # Installing common proton version
-        # This currently doesn't work :(
         decman.prg(
             ["protonplus", "update", "steam-system", "proton-ge", "latest"],
             user=user.username,
             env_overrides={"HOME": user.home_path},
         )
-        pass
 
 
 class Symlink(decman.Module):
