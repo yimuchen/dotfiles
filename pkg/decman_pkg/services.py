@@ -1,8 +1,6 @@
 import os
 import socket
-import stat
 import xml.etree.ElementTree as ETree
-from typing import Dict
 
 import decman
 from decman.plugins import aur, pacman, systemd
@@ -32,7 +30,7 @@ class Syncthing(decman.Module):
         )  # Allow remote access
 
     @property
-    def syncthing_config(self) -> Dict[str, decman.File]:
+    def syncthing_config(self) -> dict[str, decman.File]:
         # Modify the existing files if it exists
         target = os.path.join(user.home_path, ".local/state/syncthing/config.xml")
         if not os.path.exists(target):
@@ -97,14 +95,6 @@ class LLMService(decman.Module):
     def pacman_packages(self):
         deps = {"rust"}  # Required to build avante for nvim
         if socket.gethostname() == "enscAMDPC":
-            deps |= {"nvtop"}
-        return deps
-
-    @aur.packages
-    def aur_packages(self) -> set[str]:
-        deps = {"opencode-bin"}
-        if socket.gethostname() == "enscAMDPC":
-            deps |= {"llama.cpp-cuda"}
-        else:
-            deps |= {"llama.cpp"}
+            deps |= {"nvtop"}  # Monitory
+            deps |= {"llama-cpp", "ggml-vulkan"}  # llama proper
         return deps
