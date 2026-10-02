@@ -203,15 +203,13 @@ function modify-accept-line() {
   default_prefix=$(_add_buffer_prefix)
   if [[ $BUFFER == ./* ]]; then # Attempting to run a custom script/binary
     BUFFER="${default_prefix}${BUFFER}"
-  elif [[ $BUFFER == cmsRun* ]] || [[ $BUFFER == scram* ]]; then # cmsRun binaries
+  elif [[ $BUFFER == cmsRun* ]] || [[ $BUFFER == scram* ]] || [[ $BUFFER == edm* ]]; then # cmsRun binaries
     BUFFER="${default_prefix}$BUFFER"
   elif [[ $BUFFER == python* ]] || [[ $BUFFER == pip* ]]; then
     # For python executions test if try the default solution first, otherwise
     # load the default condor image for default python development
     if [[ ${default_prefix} != "" ]]; then
       BUFFER="${default_prefix}$BUFFER"
-    elif command -v _apptainer_conda.sh 2>&1 >/dev/null; then
-      BUFFER="_apptainer_conda.sh $BUFFER"
     fi
   fi
 
