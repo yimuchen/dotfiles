@@ -1,11 +1,34 @@
 window-rule {
-  match title="ghostty-picker"
-  // Open in a floating mode
-  open-floating true
-  open-maximized false
-  open-fullscreen false
-  open-maximized-to-edges false
-  // Take up ~60% of the screen by default
-  default-column-width { proportion 0.60; }
-  default-window-height { proportion  0.60; }
+  // Main applications (listed directly in which-key) should always open maximized
+  match app-id="com.mitchellh.ghostty"
+  match app-id="org.kde.elisa"
+  // Other primary applications
+  match app-id="MuseScore.*" title="MuseScore.*"
+  match app-id="Audacity" title="Audacity.*" // Initial open
+  match app-id=r#"libreoffice-.*"#
+  open-floating false
+  open-maximized true
+  open-maximized-to-edges true
 }
+
+// Entries that should be kept as floating windows of a "dominant" size
+window-rule {
+  match app-id="org.freedesktop.impl.portal.desktop.kde"
+  match app-id="ROOT"
+  match app-id="Audacity" // Other items that is spawned from the main items
+  match app-id="MuseScore.*"
+  open-floating true
+  default-window-height { proportion 0.8; }
+  default-column-width { proportion 0.8; }
+};
+
+
+// Browser related settings
+window-rule {
+  // Main applications (listed directly in which-key) should always open maximized
+  match app-id="zen"
+  open-floating false
+  open-maximized true
+  open-maximized-to-edges true
+}
+
