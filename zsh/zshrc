@@ -52,7 +52,7 @@ zstyle ':completion:*:(ssh|scp|sftp):*' hosts # Special case for ssh completions
 HISTSIZE="10000"
 SAVEHIST="10000"
 
-HISTFILE="$HOME/.zsh_history"
+HISTFILE="$HOME/.local/share/zsh_history"
 mkdir -p "$(dirname "$HISTFILE")"
 
 setopt HIST_FCNTL_LOCK
@@ -77,10 +77,6 @@ source "$HOME/.config/zsh/common_utils.sh"
 
 # Additional theme based on host name
 if [[ "$HOST" == "ensc"* ]]; then                # Personal machine
-  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=7   # White
-  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=232 # BLACK
-  typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=235 # DARK GRAY
-  typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=3   # Orange
   source $HOME/.config/zsh/local.sh
 else
   source $HOME/.config/zsh/remote.sh
