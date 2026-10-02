@@ -7,4 +7,3 @@
 ./kwinrulesrc                $HOME/.config/kwinrulesrc
 ./niri                       $HOME/.config/niri
 ./wlr-which-key/             $HOME/.config/wlr-which-key
-./user-dirs.dirs             $HOME/.config/user-dirs.dirs
