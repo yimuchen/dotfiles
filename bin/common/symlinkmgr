@@ -5,6 +5,13 @@ import logging
 import os
 import warnings
 
+import rich.logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(name)s :: %(message)s",
+    handlers=[rich.logging.RichHandler()],
+)
 _log = logging.getLogger("symlinkmgr")
 
 
