@@ -24,7 +24,6 @@ vim.pack.add({
     config = function()
       vim.o.cmdheight = 0
       require("tiny-cmdline").setup({ border = nil })
-      vim.api.nvim_set_hl(0, "TinyCmdlineBorder", { bg = "#000000" })
     end,
   }
 })
@@ -32,7 +31,6 @@ vim.pack.add({
 -- Setting up the color scheme
 require("nord").setup({ transparent = true })
 vim.cmd.colorscheme("nord")
-
 
 -- Setting up the bottom line
 require('lualine').setup {
