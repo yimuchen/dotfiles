@@ -21,6 +21,7 @@ fi
 export PATH="$PATH:$HOME/.config/dot-bin/common/"
 export EDITOR="nvim"
 export MAMBA_ROOT_PREFIX="$HOME/.mamba"
+export BAT_THEME="Nord"
 export MACHINE_TYPE_SIMPLE=""
 export MACHINE_TYPE_DETAIL=""
 export _TMUX_SHELL=$(realpath $(which zsh))
