@@ -82,12 +82,14 @@ class ScriptsDep(decman.Module):
             "python-requests",
             # Required for scriptize docstring parsing
             "python-numpydoc",
+            # Required for nicer logging format
+            "python-rich",
             # Commonly used for on-off data analysis scripts
             "python-numpy",
             "python-scipy",
         }
         # Image manipulations stuff
-        deps |= {"kitty", "ghostscript", "imagemagick"}
+        deps |= {"chafa", "ghostscript", "imagemagick"}
         # For password interactions in cli
         deps |= {"bitwarden-cli"}
         return deps
@@ -105,7 +107,7 @@ class CliTools(decman.Module):
     @pacman.packages
     def pacman_packages(self):
         # Core tools
-        deps = {"git", "fzf", "parallel", "ghostty-terminfo"}
+        deps = {"git", "fzf", "bat", "parallel", "ghostty-terminfo"}
         # Session management and monitoring
         deps |= {"tmux", "htop", "btop", "speedtest-cli", "tree"}
         # Configure file parsing
