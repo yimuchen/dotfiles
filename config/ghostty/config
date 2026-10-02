@@ -4,6 +4,7 @@ font-family = "JetBrainsMono Nerd Font"
 auto-update = off
 background-opacity = 0.93
 maximize = true
+scrollback-limit = 16777216
 # Forcing the cursor and disabling shell-integration
 cursor-style = block
 shell-integration-features = no-cursor,no-title
@@ -18,6 +19,10 @@ keybind = global:super+grave_accent=toggle_quick_terminal
 keybind = global:super+x=toggle_quick_terminal
 quick-terminal-position = center
 quick-terminal-size = 80%,80%
+
+# Keybinds - scrolling
+keybind = page_up=scroll_page_up
+keybind = page_down=scroll_page_down
 
 # Making the keybinds for tab switching more similar to other applications
 keybind = ctrl+one=goto_tab:1
