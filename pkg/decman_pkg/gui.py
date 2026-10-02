@@ -22,7 +22,7 @@ class Core(decman.Module):
         # Terminal of preference
         deps |= {"ghostty", "wezterm"}
         # For personal not taking
-        deps |= {"obsidian", "kate"}
+        deps |= {"kate"}
         # For screen casting
         deps |= {"showmethekey"}
         # For getting items from phone
@@ -140,6 +140,31 @@ class Core(decman.Module):
             )
         }
 
+    def after_update(self, store):
+        # Setting the xdg user directories
+        xdg_dir_map = {
+            "DESKTOP": user.home_path,
+            "DOCUMENTS": os.path.join(user.home_path, "projects"),
+            "DOWNLOAD": os.path.join(user.home_path, "temp/downloads"),
+            "MUSIC": os.path.join(user.home_path, "entertainment/Music"),
+            "PICTURES": user.home_path,
+            "PROJECTS": os.path.join(user.home_path, "projects"),
+            "TEMPLATES": os.path.join(user.home_path, "projects"),
+        }
+        xdg_cmd = sum(
+            [["--set", k, v] for k, v in xdg_dir_map.items()],
+            start=[
+                "xdg-user-dirs-update",
+                "--dummy-output",
+                os.path.join(user.config_path, "user-dirs.dirs"),
+            ],
+        )
+        decman.prg(
+            xdg_cmd,
+            user=user.username,
+            env_overrides={"HOME": user.home_path, "XDG_CONFIG_HOME": user.config_path},
+        )
+
 
 class Office(decman.Module):
     def __init__(self):
@@ -189,7 +214,11 @@ class Media(decman.Module):
 
     @pacman.packages
     def audio_packages(self):
-        return {"vlc", "elisa", "audacity", "ffmpeg4.4", "kid3", "musescore", "ardour"}
+        return {"vlc", "elisa", "audacity", "ffmpeg4.4", "kid3", "musescore"}
+
+    @pacman.packages
+    def reaper_packages(self):
+        return {"reaper", "reapack"}
 
     @pacman.packages
     def image_packages(self):
