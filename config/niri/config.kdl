@@ -1,6 +1,6 @@
-include "noctalia.kdl"
 include "outputs.kdl" // Pinned to a separate file
 include "rules.kdl"
+include "noctalia.kdl"
 
 input {
   keyboard {
@@ -22,9 +22,6 @@ input {
   focus-follows-mouse max-scroll-amount="20%"
 }
 
-// Settings that influence how windows are positioned and sized.
-// Find more information on the wiki:
-// https://github.com/YaLTeR/niri/wiki/Configuration:-Layout
 layout {
   gaps 2
   center-focused-column "never"
@@ -43,18 +40,7 @@ layout {
   }
 }
 
-// Add lines like this to spawn processes at startup.
-// Note that running niri as a session supports xdg-desktop-autostart,
-// which may be more convenient to use.
-// See the binds section below for more spawn examples.
-
-// Uncomment this line to ask the clients to omit their client-side decorations if possible.
-// If the client will specifically ask for CSD, the request will be honored.
-// Additionally, clients will be informed that they are tiled, removing some client-side rounded corners.
-// This option will also fix border/focus ring drawing behind some semitransparent windows.
-// After enabling or disabling this, you need to restart the apps for this to take effect.
 prefer-no-csd
-
 screenshot-path "~/temp/Screenshots/Screenshot_%Y%m%d_%H-%M-%S.png"
 
 
@@ -96,12 +82,6 @@ binds {
   Mod+Space hotkey-overlay-title="Application picker" { spawn "wlr-which-key" "-k" "a"; }
   Mod+Tab hotkey-overlay-title="List Open Application" { spawn "noctalia" "msg" "panel-open" "launcher" "/win"; }
 
-  // You can also use a shell. Do this if you need pipes, multiple commands, etc.
-  // Note: the entire command goes as a single argument in the end.
-  // Mod+T { spawn "bash" "-c" "notify-send hello && exec alacritty"; }
-
-  // Example volume keys mappings for PipeWire & WirePlumber.
-  // The allow-when-locked=true property makes them work even when the session is locked.
   XF86AudioRaiseVolume  allow-when-locked=true { spawn "noctalia" "msg" "volume-up" "5"; }
   XF86AudioLowerVolume  allow-when-locked=true { spawn "noctalia" "msg" "volume-down" "5"; }
   XF86AudioMute         allow-when-locked=true { spawn "noctalia" "msg" "volume-mute"; }
