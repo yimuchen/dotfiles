@@ -22,6 +22,7 @@ After attempting to install something via `cargo`, it will by default place the 
 ### Python-specific tools
 
 I am using the `python-uv` virtual environment to install a user-level instance of a python virtual environment at
-`$HOME/.cli-python`. Notice that tools/scripts install in this directory should automatically be generated with the
-`shebang` that points to the python in this virtual environment. It should be the case that we can just expose this path
-to the virtual environment's `bin` directory instead of having a virtual environment be silently active all the time.
+`$HOME/.local/share/cli-python`. Notice that tools/scripts install in this directory should automatically be generated
+with the `shebang` that points to the python in this virtual environment. It should be the case that we can just expose
+this path to the virtual environment's `bin` directory instead of having a virtual environment be silently active all
+the time.
