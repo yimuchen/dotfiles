@@ -77,7 +77,7 @@ if __name__ == "__main__":
         "--user_config",
         type=str,
         default=os.path.join(
-            os.getenv("$XDG_CONFIG_HOME", os.path.join(os.getenv("HOME"), ".config")),
+            os.getenv("XDG_CONFIG_HOME", os.path.join(os.getenv("HOME"), ".config")),
             "tmux/windows_layout.json",
         ),
         help="Path to global configurations files",
