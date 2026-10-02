@@ -50,7 +50,10 @@ local common_filetypes = {
   -- Web stuff
   "html", "css", "javascript", "jsdoc", "json", "tsx", "typescript", "sql",
   -- Documentation languages
-  "git_config", "gitcommit", 'markdown', 'markdown_inline', 'query', 'nix' }
+  "git_config", "gitcommit", 'markdown', 'markdown_inline', 'query', 'nix',
+  -- Additional items
+  'kdl',
+}
 local treesitter = require("nvim-treesitter")
 
 treesitter.setup { -- Setting up the treesitter plugin with custom text objects
