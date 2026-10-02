@@ -19,8 +19,8 @@ consistent window order, where each window number has a dedicated function defin
 of this, the switch-window method (prefix+number) is wrapped by the [`tmux_window_launch.py`](./tmux_window_launch.py)
 python script, that spawn as new window if it doesn't already exist, as well as automatically handling the windows
 renaming. The windows layout is handled globally by the `~/.config/tmux/windows_layout.json` configuration file or in
-the `.tmux_windows_layout.json` file of the working directory of tmux. The local layout will overriding the global
-layout if there is a duplicate item.
+the `.tmux_windows_layout.json` file of the working directory of tmux. The local layout will override the global layout
+if there is a duplicate item.
 
 The configuration JSON file takes the format as:
 
