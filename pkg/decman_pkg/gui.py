@@ -151,19 +151,16 @@ class Core(decman.Module):
             "PROJECTS": os.path.join(user.home_path, "projects"),
             "TEMPLATES": os.path.join(user.home_path, "projects"),
         }
-        xdg_cmd = sum(
-            [["--set", k, v] for k, v in xdg_dir_map.items()],
-            start=[
-                "xdg-user-dirs-update",
-                "--dummy-output",
-                os.path.join(user.config_path, "user-dirs.dirs"),
-            ],
-        )
-        decman.prg(
-            xdg_cmd,
-            user=user.username,
-            env_overrides={"HOME": user.home_path, "XDG_CONFIG_HOME": user.config_path},
-        )
+        for k, v in xdg_dir_map.items():
+            xdg_cmd = ["xdg-user-dirs-update", "--set", k, v]
+            decman.prg(
+                xdg_cmd,
+                user=user.username,
+                env_overrides={
+                    "HOME": user.home_path,
+                    "XDG_CONFIG_HOME": user.config_path,
+                },
+            )
 
 
 class Office(decman.Module):
@@ -245,6 +242,13 @@ class Media(decman.Module):
         }
 
     def files(self) -> dict[str, decman.File]:
+        return {
+            **self.musescore_user_config(),
+            **self.musescore_fcitx_desktop(),
+        }
+
+    # Musescore related fixes
+    def musescore_user_config(self) -> dict[str, decman.File]:
         musescore_config = decman_utils.ConfExp(
             target_path=os.path.join(user.config_path, "MuseScore/MuseScore4.ini"),
             ref_path=os.path.join(user.config_path, "MuseScore/MuseScore4.ini"),
@@ -256,6 +260,27 @@ class Media(decman.Module):
             )
         )
         return musescore_config.to_decman()
+
+    def musescore_fcitx_desktop(self) -> dict[str, decman.File]:
+        # Fix found here https://github.com/musescore/MuseScore/issues/31994#issuecomment-4363325737
+        DESKTOP_PATH = "/usr/share/applications/org.musescore.MuseScore.desktop"
+        cmd = [
+            "/usr/bin/env",
+            (
+                "LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:"
+                + os.getenv("LD_LIBRARY_PATH", "")
+            ),
+            "QT_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/qt6/plugins",
+            "QT_QPA_PLATFORM=xcb",
+            "QT_IM_MODULE=fcitx",
+            "mscore",
+            "%U",
+        ]
+        musescore_desktop = decman_utils.ConfExp(
+            target_path=DESKTOP_PATH, ref_path=DESKTOP_PATH
+        )
+        musescore_desktop["Desktop Entry"]["Exec"] = " ".join(cmd)
+        return musescore_desktop.to_decman()
 
 
 class MiscTools(decman.Module):
