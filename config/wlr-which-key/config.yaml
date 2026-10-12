@@ -31,22 +31,31 @@ auto_kbd_layout: true
 menu:
   - key: "p"
     desc: Power
-    submenu:
-      - key: "s"
-        desc: Sleep
-        cmd: systemctl suspend
-      - key: "r"
-        desc: Reboot
-        cmd: reboot
-      - key: "o"
-        desc: Off
-        cmd: poweroff
+    cmd: noctalia msg panel-open session
   - key: "r"
     desc: "Reload"
     submenu:
       - key: "s"
         desc: "Shell (Noctalia)"
-        cmd: killall qs && qs -c 'noctalia-shell'
+        cmd: noctalia msg config-reload
+  - key: "c"
+    desc: "Configurations"
+    submenu:
+      - key: "n"
+        desc: " Noctalia"
+        cmd: noctalia msg settings-open
+      - key: "k"
+        desc: " KDE and QT applications"
+        cmd: gio launch /usr/share/applications/kdesystemsettings.desktop
+      - key: "g"
+        desc: " Gnome and libadwatta applications"
+        cmd: gio launch /usr/share/applications/nwg-look.desktop
+      - key: "u"
+        desc: " Other configurations"
+        cmd: ghostty -e nvim ~/configurations/dotfiles
+      - key: "s"
+        desc: " System configurations"
+        cmd: ghostty -e nvim ~/configurations/systems
   - key: "a"
     desc: "Applications"
     submenu:
