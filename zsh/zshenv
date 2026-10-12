@@ -50,6 +50,7 @@ if [[ "$HOST" == "ensc"* ]]; then
 # Common configurations for remote machines
 else
   append_path "$HOME/.config/dot-bin/remote/"
+  append_path "$HOME/.portage/usr/sbin/"
   export MACHINE_TYPE_SIMPLE="remote"
   if [[ -d $HOME/.nix-profile/bin ]] ; then
     append_path "$HOME/.nix-profile/bin/"
@@ -83,4 +84,4 @@ elif [[ "$DOMAIN_NAME" == "etp.kit.edu" ]]; then # KIT RELATED MACHINES
   export CMSSW_APPTAINER_BINDPATH="/ceph,/work,/home,/cvmfs/grid.cern.ch/etc/grid-security:/etc/grid-security,/etc/condor,/var/lib/condor"
   export LARGE_STORAGE_DIR="/work/ychen";
   export MACHINE_TYPE_DETAIL="kit"
-fi # Don't do anything for unrecognized machines
+fi
