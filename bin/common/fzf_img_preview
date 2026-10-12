@@ -25,12 +25,12 @@ chafa_args=" --format=kitty"
 
 if [[ ! -z $FZF_PREVIEW_COLUMNS ]]; then
   chafa_args="${chafa_args}  --view-size=${FZF_PREVIEW_COLUMNS}x$((FZF_PREVIEW_LINES-4))"
-# else
+else
   # Getting terminal size via command tput, using system path as conda uses
   # loads an odd version of ncurses
-  # ROWS=$(/usr/bin/tput lines)
-  # COLS=$(/usr/bin/tput cols)
-  # chafa_args="${chafa_args} "
+  ROWS=$(/usr/bin/tput lines)
+  COLS=$(/usr/bin/tput cols)
+  chafa_args="${chafa_args} --view-size=$((COLS/2))x$((ROWS/2))"
 fi
 
 echo "Base name: [$(basename $(realpath preview_file))]"
