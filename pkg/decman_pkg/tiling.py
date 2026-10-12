@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 import decman
 import decman_utils.common
@@ -28,7 +29,24 @@ class NiriConfig(decman.Module):
         return {"wlr-which-key"}
 
     def files(self) -> dict[str, decman.File]:
-        return {**self.noctalia_settings}
+        return {**self.noctalia_settings, **self.completion_files}
+
+    @property
+    def completion_files(self) -> dict[str, decman.File]:
+        return {
+            os.path.join(user.share_path, "zsh/site-functions/_niri"): decman.File(
+                content=subprocess.check_output(
+                    ["niri", "completions", "zsh"], user=user.username
+                ).decode("utf-8"),
+                owner=user.username,
+            ),
+            os.path.join(user.share_path, "zsh/site-functions/_noctalia"): decman.File(
+                content=subprocess.check_output(
+                    ["noctalia", "completions", "zsh"], user=user.username
+                ).decode("utf-8"),
+                owner=user.username,
+            ),
+        }
 
     @property
     def noctalia_settings_path(self) -> str:

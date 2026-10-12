@@ -266,10 +266,6 @@ class Media(decman.Module):
         DESKTOP_PATH = "/usr/share/applications/org.musescore.MuseScore.desktop"
         cmd = [
             "/usr/bin/env",
-            (
-                "LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:"
-                + os.getenv("LD_LIBRARY_PATH", "")
-            ),
             "QT_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/qt6/plugins",
             "QT_QPA_PLATFORM=xcb",
             "QT_IM_MODULE=fcitx",
